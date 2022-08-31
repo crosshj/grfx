@@ -1,4 +1,3 @@
 # graphics-editor
 
-<img width="2560" alt="image" src="https://user-images.githubusercontent.com/1816471/187573927-a663ebdb-44f7-467c-b249-e0524424c873.png">
-
+<img width="1869" alt="image" src="https://user-images.githubusercontent.com/1816471/187768975-739f82a2-54a4-4a28-b01f-ceddd708cc17.png">
