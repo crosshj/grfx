@@ -1,3 +1,12 @@
-Active tool options bar
-Color picker
-Different icons
+## TODO
+
+- [ ] Active tool options bar
+- [ ] Color picker
+- [ ] icons
+
+<!--
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+-->
