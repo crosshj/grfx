@@ -10,9 +10,7 @@ body {
 }
 
 canvas {
-	width: 800px;
-	height: 600px;
-	background: #566;
+	background: #888;
 	box-shadow: 0 0 10px black;
 	image-rendering: pixelated;
 }
