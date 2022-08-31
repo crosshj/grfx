@@ -14,5 +14,6 @@ canvas {
 	height: 600px;
 	background: #566;
 	box-shadow: 0 0 10px black;
+	image-rendering: pixelated;
 }
 
