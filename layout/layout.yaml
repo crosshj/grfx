@@ -1,0 +1,26 @@
+---
+rows:
+  - iframe: '?'
+    module: top/index.html
+    height: 25px
+    resize: false
+    drop: false
+  - activate: false
+    columns:
+      - iframe: '?'
+        module: left/index.html
+        width: 50px
+        resize: false
+        drop: false
+      - iframe: '?'
+        module: main/index.html
+        drop: false
+      - iframe: '?'
+        module: right/index.html
+        width: 250px
+        drop: false
+  - iframe: '?'
+    module: bottom/index.html
+    height: 22px
+    resize: false
+    drop: false

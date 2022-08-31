@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+body {
+	background: ButtonFace;
+	background: #3c3c3c;
+	margin: 0;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 14px;
+	position: relative;
+}
+/* body:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: -1;
+	opacity: 0.45;
+	background: ButtonFace;
+} */
+
+svg {
+	width: 19px;
+	margin-top: 4px;
+	margin-right: 0px;
+	fill: #9eb27c;
+	/* background: black; */
+	/* border: 0px solid #db0000; */
+	/* border-radius: 50%; */
+	margin-left: 4px;
+}
+path {
+	stroke-width: 0;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	height: 100vh;
+}
+li {
+	display: inline-block;
+	padding: 0.1em 0.3em;
+	cursor: default;
+	margin-left: 0.25em;
+	position: relative;
+	opacity: 0.8;
+}
+li:hover:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: -1;
+	opacity: 0.5;
+	box-shadow: inset 0px 0 10px 20px Canvas;
+	border-radius: 0.25em;
+}
