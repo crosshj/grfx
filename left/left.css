@@ -15,7 +15,8 @@ body {
 	zoom: 1.4;
 	position: relative;
 }
-.icon:hover:before {
+.icon:hover:before,
+.icon.selected:before {
 	content: '';
 	border-radius: 3px;
 	box-shadow: inset 0px 0px 10px black;
