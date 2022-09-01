@@ -8,7 +8,7 @@ body {
 }
 .icon {
 	/*
-		-webkit-mask-image: url(./icons.svg);
+		-webkit-mask-image: url(icons.svg);
 		-webkit-mask-size: 528px 48px;
 		-webkit-mask-repeat: no-repeat;
 	*/
