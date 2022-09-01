@@ -7,7 +7,7 @@ body {
 	background: #333333;
 }
 .icon {
-	background: url("./icons.svg");
+	background-image: url("./icons.svg");
 	background-repeat: no-repeat;
 	background-size: 528px 48px;
 	height: 30px;
