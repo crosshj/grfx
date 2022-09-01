@@ -1,3 +1,5 @@
+// import { InlineSVG } from './utils.js';
+// await InlineSVG('./icons.svg', "svg-icons");
 
 document.addEventListener('pointerdown', (e) => {
 	if(!e.target.classList.contains('icon')) return;

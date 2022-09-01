@@ -1,4 +1,8 @@
-<svg viewBox="0 0 528 48" xmlns="http://www.w3.org/2000/svg" style="fill:white;stroke:white;">
+<!--
+	this is a copy of icons.svg with ONE change: fill & stroke are black
+	I used this because "use" syntax is either not working or a pain to work with
+-->
+<svg viewBox="0 0 528 48" xmlns="http://www.w3.org/2000/svg" style="fill:black;stroke:black;">
 	<defs>
 	</defs>
 
