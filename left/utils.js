@@ -1,3 +1,4 @@
+// ripped parts from: https://github.com/jonnyhaynes/inline-svg
 export const InlineSVG = async (src, id) => {
 	const svgSrc = await fetch(src).then(x => x.text());
 	const parser = new DOMParser();
@@ -14,6 +15,4 @@ export const InlineSVG = async (src, id) => {
 	inlinedSVG.removeAttribute('version');
 	inlinedSVG.setAttribute('id', id);
 	document.body.append(inlinedSVG);
-
-	console.log(src, id);
 };
