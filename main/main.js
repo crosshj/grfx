@@ -5,8 +5,11 @@ const canvas = document.querySelector('canvas');
 const mouseStrength = 1.4;
 const pinchStrength = 0.003;
 let scale = 1.0;
-canvas.addEventListener('wheel', (ev) => {
+
+document.body.addEventListener('wheel', (ev) => {
 	ev.preventDefault();
+	ev.stopPropagation();
+
 	const isPinch = Math.abs(ev.deltaY) < 50;
 
 	if (isPinch) {
@@ -21,7 +24,7 @@ canvas.addEventListener('wheel', (ev) => {
 		//console.log(`Mouse: scale is ${scale}`);
 	}
 	canvas.style.transform = `scale(${scale})`;
-});
+}, { passive: false });
 
 const image = new Image();
 image.onload = () => {
