@@ -1,4 +1,11 @@
-<svg viewBox="0 0 528 48" xmlns="http://www.w3.org/2000/svg" style="fill:white;stroke:white;">
+<svg viewBox="0 0 528 48" xmlns="http://www.w3.org/2000/svg">
+	<link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" href="../colors.css" type="text/css"/>
+	<style>
+		* {
+			fill: #aaa;
+			stroke: #aaa;
+		}
+	</style>
 	<defs>
 	</defs>
 

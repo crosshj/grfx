@@ -1,34 +1,4 @@
-:root {
-    --main-bg-color: #333;
-    --bg-highlight-color: #333b4c;
-    --bg-light-color: #444;
-    --bg-lighter-color: #666;
-    --bg-lightest-color: #888;
-    --bg-dark-color: #222;
-        
-    --main-text-color: #aaa;
-    --text-secondary-color: #191919;
-    --light-text-color: #bbb;
-    --disabled-text-color: #777;
-}
-
-/* lighter */
-
-/*
-
-:root {
-    --main-bg-color: #c7c6be;
-    --bg-highlight-color: #3c4456;
-    --bg-light-color: #8a8989;
-    --bg-lighter-color: #625f73;
-    --bg-lightest-color: #e61010;
-    --bg-dark-color: #2af300;
-    --main-text-color: #333;
-    --light-text-color: #bbb;
-    --disabled-text-color: #8e8787;
-}
-
-*/
+@import url('../colors.css');
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: var(--text-secondary-color);

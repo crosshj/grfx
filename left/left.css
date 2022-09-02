@@ -1,10 +1,12 @@
+@import url('../colors.css');
+
 :root {
 	--button-pad: 3px;
 }
 
 body {
 	margin: 4px;
-	background: #333333;
+	background: var(--main-bg-color);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

@@ -2,4 +2,4 @@
 
 > an image editor (WIP)
 
-<img width="1680" alt="image" src="https://user-images.githubusercontent.com/1816471/188086792-a12edc3d-2de2-4a8c-b045-0b28dc20fbec.png">
+<img width="1680" alt="image" src="https://user-images.githubusercontent.com/1816471/188097702-84010147-e040-49b5-8f85-302252346173.png">
