@@ -5,6 +5,10 @@
 body {
 	margin: 4px;
 	background: #333333;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 .icon {
 	/*
@@ -17,7 +21,7 @@ body {
 	background-size: 528px 48px;
 	height: 30px;
 	width: 30px;
-	zoom: 1.4;
+	zoom: 1.1;
 	position: relative;
 }
 .icon:hover:before,

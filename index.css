@@ -20,9 +20,6 @@ body {
 	overflow: hidden;
 }
 
-#layout > .layout-container > .layout-container .pane {
-	margin-bottom: -23px;
-}
 .tab .icon::before {
 	display: inline-flex;
 	padding-right: 3px;

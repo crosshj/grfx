@@ -5,6 +5,11 @@ rows:
     height: 25px
     resize: false
     drop: false
+  - iframe: '?'
+    module: top-bar/top-bar.html
+    height: 25px
+    resize: false
+    drop: false
   - activate: false
     columns:
       - iframe: '?'
