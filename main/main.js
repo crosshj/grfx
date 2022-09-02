@@ -1,5 +1,6 @@
-const canvas = document.querySelector('canvas');
+import fs from '../shared/fs.js';
 
+const canvas = document.querySelector('canvas');
 
 // https://stackoverflow.com/a/66874077
 const mouseStrength = 1.4;
@@ -33,12 +34,14 @@ image.onload = () => {
 	const sy = 0;
 	const sWidth = image.width;
 	const sHeight = image.height;
+	const sAspect = image.width/image.height;
 
 	const dx = 0;
-	const dy = 0;
+	const dy = 0; //0.5 * (canvas.height - canvas.width * sAspect);
 	const dWidth = canvas.width;
-	const dHeight = canvas.height;
+	//const dHeight = canvas.height;
+	const dHeight = canvas.width * sAspect;
 
 	ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 };
-image.src = "../assets/feedforward.png";
+image.src = await fs.readImage("/indexDB/owl.jpg");
