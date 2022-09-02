@@ -34,14 +34,14 @@ image.onload = () => {
 	const sy = 0;
 	const sWidth = image.width;
 	const sHeight = image.height;
-	const sAspect = image.width/image.height;
+	const sAspect = image.height/image.width;
 
 	const dx = 0;
-	const dy = 0; //0.5 * (canvas.height - canvas.width * sAspect);
+	const dy = 0.25 * (canvas.height - canvas.height * sAspect);
 	const dWidth = canvas.width;
 	//const dHeight = canvas.height;
-	const dHeight = canvas.width * sAspect;
+	const dHeight = canvas.height*sAspect;
 
 	ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 };
-image.src = await fs.readImage("/indexDB/owl.jpg");
+image.src = await fs.readImage("/indexDB/sky.jpg");

@@ -6,6 +6,7 @@ const EXAMPLE_IMAGE_ROBOT = "https://images.nightcafe.studio/jobs/wJMbnnlCfS9WEV
 const EXAMPLE_IMAGE_SQUID = "https://images.nightcafe.studio/jobs/gZVKddsDrWb2odrM3vsY/gZVKddsDrWb2odrM3vsY--2--Y98HJ.jpg";
 const EXAMPLE_GOLD = "https://images.nightcafe.studio/jobs/7OXU5TcnbVF71K1zN79N/7OXU5TcnbVF71K1zN79N--3--5TQRK.jpg";
 const EXAMPLE_OWL = "https://images.nightcafe.studio/jobs/5freDC2naZa9EQrIUOQY/5freDC2naZa9EQrIUOQY.jpg";
+const EXAMPLE_SKY = "https://images.nightcafe.studio/jobs/lheEUAmhcoUn9fsxXGZP/lheEUAmhcoUn9fsxXGZP_6.9444x.jpg";
 
 const mountConfig = {
 	fs: "MountableFileSystem",
@@ -104,10 +105,10 @@ var walk = function(dir, done) {
 
 let indexDBContents = await readdir({ fs, path: '/indexDB' });
 if(!indexDBContents.length){
-	const example = await fetch(EXAMPLE_OWL).then(x => x.blob());
+	const example = await fetch(EXAMPLE_SKY).then(x => x.blob());
 	await writeFile({
 		fs,
-		path: '/indexDB/owl.jpg',
+		path: '/indexDB/sky.jpg',
 		data: await blobToBase64(example)
 	});
 	indexDBContents = await readdir({ fs, path: '/indexDB' });
