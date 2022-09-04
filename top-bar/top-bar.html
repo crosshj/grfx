@@ -12,10 +12,178 @@
 		<link rel="stylesheet" href="top-bar.css" />
 	</head>
 
+	<template class="selectfree">
+		<div class="options select-free">
+			<label for="select-type">Type</label>
+			<select id="select-type">
+				<option>Free</option>
+				<option>Polygon</option>
+				<option>Bezier</option>
+				<option>Magnetic</option>
+			</select>
+			<label for="select-mode">Mode</label>
+			<select id="select-mode">
+				<option>New Selection</option>
+				<option>Add to Selected</option>
+				<option>Subtract from Selected</option>
+			</select>
+			<label for="select-size">Size</label>
+			<input type="number" id="select-size" min="1" max="120" value=50>
+			<label for="select-feather">Feather</label>
+			<input type="number" id="select-feather"  min="1" max="100" value=0>
+		</div>
+	</template>
+
+	<template class="selectbox">
+		<div class="options select-box">
+			<label for="select-type">Type</label>
+			<select id="select-type">
+				<option>Rectangle</option>
+				<option>Ellipse</option>
+			</select>
+			<label for="select-mode">Mode</label>
+			<select id="select-mode">
+				<option>New Selection</option>
+				<option>Add to Selected</option>
+				<option>Subtract from Selected</option>
+			</select>
+			<label for="select-feather">Feather</label>
+			<input type="number" id="select-feather"  min="1" max="100" value=0>
+		</div>
+	</template>
+
+	<template class="erase">
+		<div class="options erase">
+			<label for="erase-brush">Brush</label>
+			<input type="number" id="erase-brush" min="1" max="1000" value=20>
+			<label for="erase-opacity">Opacity</label>
+			<input type="number" id="erase-opacity" min="1" max="100" value=100>
+			<label for="erase-flow">Flow</label>
+			<input type="number" id="erase-flow" min="1" max="100" value=100>
+		</div>
+	</template>
+
+	<template class="fill">
+		<div class="options fill">
+			<label for="fill-tolerance">Tolerance</label>
+			<input type="number" id="fill-tolerance" min="1" max="255" value=20>
+			<label for="fill-opacity">Opacity</label>
+			<input type="number" id="fill-opacity" min="1" max="100" value=100>
+		</div>
+	</template>
+
+	<template class="dropper">
+		<div class="options dropper">
+			<label for="dropper-target">Target</label>
+			<select id="dropper-target">
+				<option>Main</option>
+				<option>Alter</option>
+			</select>
+		</div>
+	</template>
+
+	<template class="mag">
+		<div class="options mag">
+			<label for="mag-mode">Mode</label>
+			<select id="mag-mode">
+				<option>Plus</option>
+				<option>Minus</option>
+			</select>
+		</div>
+	</template>
+
+	<template class="pencil">
+		<div class="options pencil">
+			<label for="select-type">Variant</label>
+			<select id="select-type">
+				<option>Plain</option>
+				<option>Neon</option>
+				<option>Sketchy</option>
+				<option>Parallel</option>
+				<option>Trail</option>
+				<option>Shaded</option>
+				<option>Furry</option>
+				<option>Crayon</option>
+				<option>Ink</option>
+			</select>
+			<label for="pencil-size">Size</label>
+			<input type="number" id="pencil-size"  min="1" max="50" value=1>
+			<label for="pencil-amount">Amount</label>
+			<input type="number" id="pencil-amount"  min="1" max="100" value=100>
+			<label for="pencil-opacity">Opacity</label>
+			<input type="number" id="pencil-opacity"  min="1" max="100" value=100>
+		</div>
+	</template>
+
+	<template class="brush">
+		<div class="options brush">
+			<span>brush options</span>
+		</div>
+	</template>
+
+	<template class="airbrush">
+		<div class="options airbrush">
+			<span>airbrush options</span>
+		</div>
+	</template>
+
+	<template class="text">
+		<div class="options text">
+			<label for="text-font">Font</label>
+			<select id="text-font">
+				<option>Serif</option>
+				<option>Sans Serif</option>
+				<option>Script</option>
+				<option>Mono</option>
+				<option>Display</option>
+			</select>
+			<label for="text-fill">Fill</label>
+			<input type="color" id="text-fill" value="#634587">
+			<label for="text-size">Size</label>
+			<input type="number" id="text-size" value=12>
+		</div>
+	</template>
+
+	<template class="line">
+		<div class="options line">
+			<span>line options</span>
+		</div>
+	</template>
+
+	<template class="curve">
+		<div class="options curve">
+			<span>curve options</span>
+		</div>
+	</template>
+
+	<template class="rect">
+		<div class="options rect">
+			<span>rect options</span>
+		</div>
+	</template>
+
+	<template class="poly">
+		<div class="options poly">
+			<span>poly options</span>
+		</div>
+	</template>
+
+	<template class="ellipse">
+		<div class="options ellipse">
+			<span>ellipse options</span>
+		</div>
+	</template>
+
+	<template class="rounded">
+		<div class="options rounded">
+			<span>rounded options</span>
+		</div>
+	</template>
+
 	<body>
-		<span>Tool:</span>
 		<div class="icon current none"></div>
+		<div class="options current none"></div>
 	</body>
-	
+
 	<script type="module" src="top-bar.js"></script>
 </html>

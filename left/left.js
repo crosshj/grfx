@@ -26,4 +26,4 @@ document.addEventListener('pointerdown', (e) => {
 
 setTimeout(() => {
 	selectTool(localStorage.getItem('gfx-currentTool') || "pencil");
-}, 100);
+}, 300);
