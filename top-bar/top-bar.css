@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 @import url('../colors.css');
 
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
-@import url('../colors.css');
-
 body {
 	background: var(--main-bg-color);
 	color: var(--main-text-color);
@@ -11,15 +8,28 @@ body {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 14px;
 	position: relative;
-	border-top: 1px solid #222;
-	border-bottom: 1px solid #222;
-	height: 23px;
+	height: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	padding-left: 1em;
 }
-
+body:after {
+	content: '';
+	background: var(--bg-dark-color);
+	position: absolute;
+	left:0;right:0;
+	bottom:0;
+	height: 1px;
+}
+body:before {
+	content: '';
+	background: var(--bg-dark-color);
+	position: absolute;
+	left:0;right:0;
+	top:0;
+	height: 1px;
+}
 .icon {
 	background-image: url("../shared/icons.svg");
 	background-repeat: no-repeat;
@@ -30,6 +40,7 @@ body {
 	position: relative;
 }
 
+.none { visibility: hidden; }
 .select-free { background-position: -9px -8.5px; }
 .select-box { background-position: -40.5px -8.5px; }
 .erase { background-position: -72px -8.5px; }

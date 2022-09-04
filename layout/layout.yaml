@@ -7,7 +7,7 @@ rows:
     drop: false
   - iframe: '?'
     module: top-bar/top-bar.html
-    height: 25px
+    height: 30px
     resize: false
     drop: false
   - activate: false
