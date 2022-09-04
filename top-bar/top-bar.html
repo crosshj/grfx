@@ -10,17 +10,18 @@
 		<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
 		<meta name="color-scheme" content="dark light">
 		<link rel="stylesheet" href="top-bar.css" />
+		<script type="module" src="../shared/components.js"></script>
 	</head>
 
 	<template class="selectfree">
 		<div class="options select-free">
 			<label for="select-type">Type</label>
-			<select id="select-type">
+			<x-select id="select-type">
 				<option>Free</option>
 				<option>Polygon</option>
 				<option>Bezier</option>
 				<option>Magnetic</option>
-			</select>
+			</x-select>
 			<label for="select-mode">Mode</label>
 			<select id="select-mode">
 				<option>New Selection</option>
@@ -37,10 +38,10 @@
 	<template class="selectbox">
 		<div class="options select-box">
 			<label for="select-type">Type</label>
-			<select id="select-type">
+			<x-select id="select-type">
 				<option>Rectangle</option>
 				<option>Ellipse</option>
-			</select>
+			</x-select>
 			<label for="select-mode">Mode</label>
 			<select id="select-mode">
 				<option>New Selection</option>
@@ -75,27 +76,27 @@
 	<template class="dropper">
 		<div class="options dropper">
 			<label for="dropper-target">Target</label>
-			<select id="dropper-target">
+			<x-select id="dropper-target">
 				<option>Main</option>
 				<option>Alter</option>
-			</select>
+			</x-select>
 		</div>
 	</template>
 
 	<template class="mag">
 		<div class="options mag">
 			<label for="mag-mode">Mode</label>
-			<select id="mag-mode">
+			<x-select id="mag-mode">
 				<option>Plus</option>
 				<option>Minus</option>
-			</select>
+			</x-select>
 		</div>
 	</template>
 
 	<template class="pencil">
 		<div class="options pencil">
-			<label for="select-type">Variant</label>
-			<select id="select-type">
+			<label for="pencil-variant">Variant</label>
+			<select id="pencil-variant">
 				<option>Plain</option>
 				<option>Neon</option>
 				<option>Sketchy</option>
@@ -117,13 +118,37 @@
 
 	<template class="brush">
 		<div class="options brush">
-			<span>brush options</span>
+			<label for="brush-size">Size</label>
+			<input type="number" id="brush-size"  min="1" max="1000" value=1>
+			<label for="brush-opacity">Opacity</label>
+			<input type="number" id="brush-opacity"  min="1" max="100" value=100>
+			<label for="brush-flow">Flow</label>
+			<input type="number" id="brush-flow"  min="1" max="100" value=100>
+			<label for="brush-mirror">Mirror</label>
+			<x-select id="brush-mirror">
+				<option>None</option>
+				<option>Vertical</option>
+				<option>Horizontal</option>
+				<option>Four Way</option>
+			</x-select>
 		</div>
 	</template>
 
 	<template class="airbrush">
 		<div class="options airbrush">
-			<span>airbrush options</span>
+			<label for="airbrush-size">Size</label>
+			<input type="number" id="airbrush-size"  min="1" max="1000" value=1>
+			<label for="airbrush-opacity">Opacity</label>
+			<input type="number" id="airbrush-opacity"  min="1" max="100" value=100>
+			<label for="airbrush-flow">Flow</label>
+			<input type="number" id="airbrush-flow"  min="1" max="100" value=100>
+			<label for="airbrush-mirror">Mirror</label>
+			<x-select id="airbrush-mirror">
+				<option>None</option>
+				<option>Vertical</option>
+				<option>Horizontal</option>
+				<option>Four Way</option>
+			</x-select>
 		</div>
 	</template>
 
@@ -140,43 +165,59 @@
 			<label for="text-fill">Fill</label>
 			<input type="color" id="text-fill" value="#634587">
 			<label for="text-size">Size</label>
-			<input type="number" id="text-size" value=12>
+			<input type="number" id="text-size" min=1 max=1000 value=12>
 		</div>
 	</template>
 
 	<template class="line">
 		<div class="options line">
-			<span>line options</span>
+			<label for="line-size">Size</label>
+			<input type="number" id="line-size"  min="1" max="1000" value=1>
+			<label for="line-opacity">Opacity</label>
+			<input type="number" id="line-opacity"  min="1" max="100" value=100>
+			<label for="line-color">Color</label>
+			<input type="color" id="line-color" value="#634587">
 		</div>
 	</template>
 
 	<template class="curve">
 		<div class="options curve">
-			<span>curve options</span>
+			<label for="curve-size">Size</label>
+			<input type="number" id="curve-size"  min="1" max="1000" value=1>
+			<label for="curve-opacity">Opacity</label>
+			<input type="number" id="curve-opacity"  min="1" max="100" value=100>
+			<label for="curve-color">Color</label>
+			<input type="color" id="curve-color" value="#634587">
 		</div>
 	</template>
 
 	<template class="rect">
 		<div class="options rect">
-			<span>rect options</span>
+			<label for="rect-color">Color</label>
+			<input type="color" id="rect-color" value="#275BB0">
 		</div>
 	</template>
 
 	<template class="poly">
 		<div class="options poly">
-			<span>poly options</span>
+			<label for="poly-fill">Fill</label>
+			<input type="color" id="poly-fill" value="#3CBE6E">
 		</div>
 	</template>
 
 	<template class="ellipse">
 		<div class="options ellipse">
-			<span>ellipse options</span>
+			<label for="ellipse-fill">Fill</label>
+			<input type="color" id="ellipse-fill" value="#DE673F">
 		</div>
 	</template>
 
 	<template class="rounded">
 		<div class="options rounded">
-			<span>rounded options</span>
+			<label for="rounded-color">Color</label>
+			<input type="color" id="rounded-color" value="#DA6C98">
+			<label for="rounded-radius">Radius</label>
+			<input type="number" id="rounded-radius"  min="0" max="100" value=0>
 		</div>
 	</template>
 

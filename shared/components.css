@@ -1,0 +1,32 @@
+
+.optionButton {
+	cursor: default;
+	display: inline-block;
+	border-radius: 0.25em;
+	background: #383838;
+	padding: 0.25em;
+	text-transform: uppercase;
+}
+.optionButton.selected {
+	background: teal;
+}
+
+.optionButton:first-child {
+	border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
+	padding-left: 0.75em;
+	padding-right: 0.5em;
+}
+.optionButton:last-child {
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+	padding-right: 0.75em;
+	padding-left: 0.5em;
+}
+.optionButton:not(:first-child):not(:last-child) {
+	margin-left: 0;
+	border-radius: 0;
+	border-bottom-left-radius: 0;
+	padding-right: 1em;
+	padding-left: 1em;
+}
