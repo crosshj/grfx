@@ -1,13 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 @import url('../colors.css');
 
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('../colors.css');
+
 body {
 	background: var(--main-bg-color);
+	color: var(--main-text-color);
 	margin: 0;
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 14px;
 	position: relative;
-/* 	border-top: 1px solid #222;
-	border-bottom: 1px solid #222; */
+	border-top: 1px solid #222;
+	border-bottom: 1px solid #222;
 	height: 23px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-left: 1em;
 }
+
+.icon {
+	background-image: url("../shared/icons.svg");
+	background-repeat: no-repeat;
+	background-size: 528px 48px;
+	height: 30px;
+	width: 30px;
+	zoom: 1;
+	position: relative;
+}
+
+.select-free { background-position: -9px -8.5px; }
+.select-box { background-position: -40.5px -8.5px; }
+.erase { background-position: -72px -8.5px; }
+.fill { background-position: -104px -8.5px; }
+.dropper { background-position: -136px -8.5px; }
+.mag { background-position: -168px -8.5px; }
+.pencil { background-position: -201px -8.5px; }
+.brush { background-position: -233px -8.5px; }
+.airbrush { background-position: -264.25px -8.5px; }
+.text { background-position: -295.5px -8.5px; }
+.line { background-position: -329px -8.5px; }
+.curve { background-position: -360px -8.5px; }
+.rect { background-position: -392.5px -8.5px; }
+.poly { background-position: -424px -8.5px; }
+.ellipse { background-position: -456.25px -8.5px; }
+.rounded { background-position: -488.5px -8.5px; }
