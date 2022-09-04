@@ -87,7 +87,7 @@ var walk = function(dir, done) {
 			var file = list[i++];
 			if (!file) return done(null, results);
 			file = path.resolve(dir, file);
-			console.log(file)
+			//console.log(file)
 			fs.stat(file, function(err, stat) {
 				if (stat && stat.isDirectory()) {
 					walk(file, function(err, res) {
@@ -113,7 +113,7 @@ if(!indexDBContents.length){
 	});
 	indexDBContents = await readdir({ fs, path: '/indexDB' });
 }
-console.log(indexDBContents)
+//console.log(indexDBContents)
 
 // walk('/', function(err, results) {
 // 	if (err) throw err;
