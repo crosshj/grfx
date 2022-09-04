@@ -10,17 +10,18 @@
 		<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
 		<meta name="color-scheme" content="dark light">
 		<link rel="stylesheet" href="top-bar.css" />
+		<script type="module" src="../shared/components.js"></script>
 	</head>
 
 	<template class="selectfree">
 		<div class="options select-free">
 			<label for="select-type">Type</label>
-			<select id="select-type">
+			<x-select id="select-type">
 				<option>Free</option>
 				<option>Polygon</option>
 				<option>Bezier</option>
 				<option>Magnetic</option>
-			</select>
+			</x-select>
 			<label for="select-mode">Mode</label>
 			<select id="select-mode">
 				<option>New Selection</option>
@@ -37,10 +38,10 @@
 	<template class="selectbox">
 		<div class="options select-box">
 			<label for="select-type">Type</label>
-			<select id="select-type">
+			<x-select id="select-type">
 				<option>Rectangle</option>
 				<option>Ellipse</option>
-			</select>
+			</x-select>
 			<label for="select-mode">Mode</label>
 			<select id="select-mode">
 				<option>New Selection</option>
@@ -75,20 +76,20 @@
 	<template class="dropper">
 		<div class="options dropper">
 			<label for="dropper-target">Target</label>
-			<select id="dropper-target">
+			<x-select id="dropper-target">
 				<option>Main</option>
 				<option>Alter</option>
-			</select>
+			</x-select>
 		</div>
 	</template>
 
 	<template class="mag">
 		<div class="options mag">
 			<label for="mag-mode">Mode</label>
-			<select id="mag-mode">
+			<x-select id="mag-mode">
 				<option>Plus</option>
 				<option>Minus</option>
-			</select>
+			</x-select>
 		</div>
 	</template>
 
@@ -124,12 +125,12 @@
 			<label for="brush-flow">Flow</label>
 			<input type="number" id="brush-flow"  min="1" max="100" value=100>
 			<label for="brush-mirror">Mirror</label>
-			<select id="brush-mirror">
+			<x-select id="brush-mirror">
 				<option>None</option>
 				<option>Vertical</option>
 				<option>Horizontal</option>
 				<option>Four Way</option>
-			</select>
+			</x-select>
 		</div>
 	</template>
 
@@ -142,12 +143,12 @@
 			<label for="airbrush-flow">Flow</label>
 			<input type="number" id="airbrush-flow"  min="1" max="100" value=100>
 			<label for="airbrush-mirror">Mirror</label>
-			<select id="airbrush-mirror">
+			<x-select id="airbrush-mirror">
 				<option>None</option>
 				<option>Vertical</option>
 				<option>Horizontal</option>
 				<option>Four Way</option>
-			</select>
+			</x-select>
 		</div>
 	</template>
 
