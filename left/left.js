@@ -10,6 +10,7 @@ document.addEventListener('pointerdown', (e) => {
 	currentSelected?.classList.remove('selected');
 	e.target.classList.add('selected');
 	const tool = e.target.classList.toString().split(" ")
-		.filter(x => !["selected", "icon"].includes(x));
+		.filter(x => !["selected", "icon"].includes(x))
+		.join(" ");
 	send('tool-select', { tool });
 });
