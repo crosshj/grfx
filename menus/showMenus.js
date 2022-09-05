@@ -19,7 +19,7 @@ const getCoords = (elem) => {
 		bottom: box.bottom + window.pageYOffset + offsetTop,
 		left: box.left + window.pageXOffset + offsetLeft
 	};
-}
+};
 
 const getMenuItems = (e) => {
 	const items = [];
@@ -40,6 +40,7 @@ const getMenuItems = (e) => {
 			items.push({ name: child.textContent, disabled });
 			continue;
 		}
+
 		const groupChildren = Array.from(child.children)
 			.filter(x => !x.hidden);
 
@@ -56,7 +57,6 @@ const getMenuItems = (e) => {
 		if(Number(i)+1 === children.length) continue;
 		items.push("seperator");
 	}
-	console.log(items)
 	return items;
 };
 
