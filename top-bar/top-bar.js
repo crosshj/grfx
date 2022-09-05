@@ -1,4 +1,5 @@
 import { listen } from '../shared/messages.js';
+import showMenu from './showMenu.js';
 
 const selectTool = ({ tool }) => {
 	const currentToolIcon = document.querySelector('.icon.current');
@@ -13,4 +14,15 @@ const selectTool = ({ tool }) => {
 	document.body.append(clone);
 };
 
+const menuSelect = (e) => {
+	if(!window.selectListener) return;
+	window.selectListener(e);
+};
+
 listen("tool-select", selectTool);
+listen("contextmenu-select", menuSelect);
+
+document.addEventListener('pointerdown', (e) => {
+	const menu = e.target.dataset.menu;
+	if(menu) return showMenu(e);
+});

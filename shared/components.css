@@ -3,12 +3,17 @@
 	cursor: default;
 	display: inline-block;
 	border-radius: 0.25em;
-	background: #383838;
+	background: var(--bg-light-color);
 	padding: 0.25em;
 	text-transform: uppercase;
+	min-width: 3.5em;
+	text-align: center;
+}
+.optionButton:not(.selected):hover {
+	background: var(--bg-light-hover-color);
 }
 .optionButton.selected {
-	background: teal;
+	background: var(--bg-highlight-color);
 }
 
 .optionButton:first-child {
