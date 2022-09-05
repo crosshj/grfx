@@ -1,5 +1,9 @@
 import { listen } from '../shared/messages.js';
-import showMenu from './showMenu.js';
+import Menus from '../menus/showMenus.js';
+
+Menus.setOffsets(0, 25);
+Menus.attach();
+listen("contextmenu-select", Menus.menuSelect);
 
 const selectTool = ({ tool }) => {
 	const currentToolIcon = document.querySelector('.icon.current');
@@ -13,16 +17,4 @@ const selectTool = ({ tool }) => {
 	clone.querySelector('.options').classList.add('current');
 	document.body.append(clone);
 };
-
-const menuSelect = (e) => {
-	if(!window.selectListener) return;
-	window.selectListener(e);
-};
-
 listen("tool-select", selectTool);
-listen("contextmenu-select", menuSelect);
-
-document.addEventListener('pointerdown', (e) => {
-	const menu = e.target.dataset.menu;
-	if(menu) return showMenu(e);
-});

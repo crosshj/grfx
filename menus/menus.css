@@ -1,0 +1,28 @@
+body .ContextOverlay {
+	--horiz-pad: 10px;
+	--vert-pad: 5px;
+	--sep-height: 10px;
+	background-color: unset !important;
+	transition: unset !important;
+	background: unset;
+}
+
+body .ContextMenu .menu-container:after {
+	color: var(--main-text-color);
+	background: var(--bg-light-color);;
+	border: 1px solid var(--bg-medium-color);
+	box-shadow: 3px 2px 5px var(--bg-dark-color);
+	border-radius: 0;
+	opacity: 1;
+	backdrop-filter: none;
+	z-index: -1;
+	top: 0;
+	left: -1px;
+}
+
+body .ContextMenu .list .item button {
+	color: var(--main-text-color);
+}
+body .ContextMenu .list .item:hover {
+	background: var(--bg-highlight-color);
+}

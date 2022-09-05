@@ -1,20 +1,18 @@
-const listItems = [{
-	name: "New File",
-}, {
-	name: "New Folder",
-},
-	"seperator",
-{
-	name: "Cut",
-}, {
-	name: "Copy",
-}];
+let offsetLeft=0;
+let offsetTop=0;
 
-function getCoords(elem) {
-	const offsetLeft = 0;
-	const offsetTop = 25;
+const setOffsets = (x,y) => {
+	offsetLeft = x;
+	offsetTop = y;
+};
+
+const menuSelect = (e) => {
+	if(!window.selectListener) return;
+	window.selectListener(e);
+};
+
+const getCoords = (elem) => {
 	const box = elem.getBoundingClientRect();
-
 	return {
 		top: box.top + window.pageYOffset + offsetTop,
 		right: box.right + window.pageXOffset + offsetLeft,
@@ -39,7 +37,7 @@ const showMenu = (e) => {
 		detail: {
 			x: left,
 			y: bottom,
-			list: getMenuItems(e) || listItems,
+			list: getMenuItems(e) || [],
 			parent: "top-bar"
 		}
 	})
@@ -51,4 +49,16 @@ const showMenu = (e) => {
 	return false;
 };
 
-export default showMenu;
+const attach = () => {
+	document.addEventListener('pointerdown', (e) => {
+		const menu = e.target.dataset.menu;
+		if(menu) return showMenu(e);
+	});
+};
+
+const menus = {};
+menus.setOffsets = setOffsets;
+menus.menuSelect = menuSelect;
+menus.attach = attach;
+
+export default menus;

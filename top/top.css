@@ -44,13 +44,15 @@ ul {
 }
 li {
 	display: inline-block;
-	padding: 0.1em 0.3em;
 	cursor: default;
 	margin-left: 0.25em;
 	position: relative;
-	opacity: 0.8;
+/* 	opacity: 0.8; */
 }
-li:hover:before {
+label {
+	padding: 0.1em 0.3em;
+}
+label:hover:before {
 	content: '';
 	position: absolute;
 	left: 0;
@@ -61,4 +63,17 @@ li:hover:before {
 	opacity: 0.5;
 	box-shadow: inset 0px 0 10px 20px var(--bg-dark-color);
 	border-radius: 0.25em;
+}
+
+label {
+	position: relative;
+	user-select: none;
+}
+label select {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	opacity: 0;
 }
