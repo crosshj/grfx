@@ -22,19 +22,28 @@ const getCoords = (elem) => {
 }
 
 const getMenuItems = (e) => {
-	const children = Array.from(e.target.children);
+	const children = Array.from(e.target.children)
+		.filter(x => !x.hidden);
 	const items = [];
 	for(const [i, child] of Object.entries(children)){
+		const { disabled } = child;
+
 		if(child.tagName !== "OPTGROUP"){
-			items.push({ name: child.textContent });
+			items.push({ name: child.textContent, disabled });
 			continue;
 		}
-		const previous = children[Number(i)-1];
+		const groupChildren = Array.from(child.children)
+			.filter(x => !x.hidden);
+
+		const previous = groupChildren[Number(i)-1];
 		if(previous && previous.tagName !== "OPTGROUP" && Number(i)-1 !== 0){
 			items.push("seperator");
 		}
-		for(const groupChild of child.children){
-			items.push({ name: groupChild.textContent });
+		for(const groupChild of groupChildren){
+			items.push({
+				name: groupChild.textContent,
+				disabled: groupChild.disabled || disabled
+			});
 		}
 		if(Number(i)+1 === children.length) continue;
 		items.push("seperator");
