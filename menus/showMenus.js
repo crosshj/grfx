@@ -22,9 +22,17 @@ const getCoords = (elem) => {
 }
 
 const getMenuItems = (e) => {
-	const children = Array.from(e.target.children)
-		.filter(x => !x.hidden);
 	const items = [];
+	const children = Array.from(e.target.children)
+		.filter(x => {
+			if(x.hidden) return false;
+			if(x.tagName !== "OPTGROUP") return true;
+			const groupChildren = Array.from(x.children)
+				.filter(y => !y.hidden);
+			if(groupChildren.length) return true;
+			return false;
+		});
+
 	for(const [i, child] of Object.entries(children)){
 		const { disabled } = child;
 
