@@ -22,10 +22,25 @@ const getCoords = (elem) => {
 }
 
 const getMenuItems = (e) => {
-	const children = e.target.children;
-	return Array.from(children).map(child => {
-		return { name: child.textContent };
-	});
+	const children = Array.from(e.target.children);
+	const items = [];
+	for(const [i, child] of Object.entries(children)){
+		if(child.tagName !== "OPTGROUP"){
+			items.push({ name: child.textContent });
+			continue;
+		}
+		const previous = children[Number(i)-1];
+		if(previous && previous.tagName !== "OPTGROUP" && Number(i)-1 !== 0){
+			items.push("seperator");
+		}
+		for(const groupChild of child.children){
+			items.push({ name: groupChild.textContent });
+		}
+		if(Number(i)+1 === children.length) continue;
+		items.push("seperator");
+	}
+	console.log(items)
+	return items;
 };
 
 const showMenu = (e) => {
