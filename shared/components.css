@@ -13,7 +13,7 @@
 	background: var(--bg-light-hover-color);
 }
 .optionButton.selected {
-	background: var(--bg-highlight-color);
+	background: var(--bg-lighter-color);
 }
 
 .optionButton:first-child {
