@@ -1,555 +1,555 @@
 @import url('../colors.css');
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: var(--text-secondary-color);
+		color: var(--text-secondary-color);
 }
 ::-moz-placeholder { /* Firefox 19+ */
-    color: var(--text-secondary-color);
+		color: var(--text-secondary-color);
 }
 :-ms-input-placeholder { /* IE 10+ */
-    color: var(--text-secondary-color);
+		color: var(--text-secondary-color);
 }
 :-moz-placeholder { /* Firefox 18- */
-    color: var(--text-secondary-color);
+		color: var(--text-secondary-color);
 }
 
  #sidebar ::-webkit-scrollbar {
-    width: 6px;
+		width: 6px;
 }
- 
+
 #sidebar ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.6); 
-    border-radius: 0px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.6); 
+		border-radius: 0px;
 }
- 
+
 #sidebar ::-webkit-scrollbar-thumb {
-    border-radius: 0px;
-    background: var(--bg-light-color);
+		border-radius: 0px;
+		background: var(--bg-light-color);
 }
 
 
 #sidebar {
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    height: 100vh;
-    /* bottom: 0px; */
-    background: var(--main-bg-color);
-    width: 220px;
+		position: fixed;
+		right: 0px;
+		top: 0px;
+		height: 100vh;
+		/* bottom: 0px; */
+		background: var(--main-bg-color);
+		width: 220px;
 	width: 100vw;
-    color: var(--main-text-color);
-    border-left: 1px solid var(--bg-light-color);
-    user-select: none;
+		color: var(--main-text-color);
+		border-left: 1px solid var(--bg-light-color);
+		user-select: none;
 }
 #sidebar div.scrollContainer {
-    padding-left: 6px;
-    padding-right: 2px;
-    overflow-y: auto;
-    overflow-x: hidden;
+		padding-left: 6px;
+		padding-right: 2px;
+		overflow-y: auto;
+		overflow-x: hidden;
 /*     height: calc(100% - 20px); */
 	height: 100%;
-    box-sizing: border-box;
+		box-sizing: border-box;
 /*     margin-top: 20px; */
-    padding-bottom: 20px;
+		padding-bottom: 20px;
 }
 #sidebar div.scrollContainer > div {
-    padding-right: 5px;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
+		padding-right: 5px;
+		display: flex;
+		justify-content: space-between;
+		margin-top: 5px;
 }
 #sidebar span.label {
-    display: inline-block;
-    min-width: 84px;
-    max-width: 84px;
+		display: inline-block;
+		min-width: 84px;
+		max-width: 84px;
 }
 #sidebar, #sidebar span.label, input, select {
-    text-transform: uppercase;
-    /* font-family: monospace; */
-    font-family: 'Lucida Grande', sans-serif;
-    font-size: 8px;
-    line-height: 17px;
+		text-transform: uppercase;
+		/* font-family: monospace; */
+		font-family: 'Lucida Grande', sans-serif;
+		font-size: 8px;
+		line-height: 17px;
 }
 #sidebar input {
-    width: 100%;
-    margin: 0px;
-    box-sizing: border-box;
+		width: 100%;
+		margin: 0px;
+		box-sizing: border-box;
 }
 #sidebar input:focus {
-    border-radius: 0px;
-    border: 0px;
-    background: var(--bg-lighter-color);
+		border-radius: 0px;
+		border: 0px;
+		background: var(--bg-lighter-color);
 }
 input[type=text] {
-    border: none;
-    height: 16px;
-    color: var(--main-text-color);
-    padding-right: 5px;
-    padding-left: 5px;
-    text-align: right;
-    padding-top: 0px;
-    padding-bottom: 0px;
+		border: none;
+		height: 16px;
+		color: var(--main-text-color);
+		padding-right: 5px;
+		padding-left: 5px;
+		text-align: right;
+		padding-top: 0px;
+		padding-bottom: 0px;
 }
 input[type=range] {
-    -webkit-appearance: none;
-    background: transparent;
+		-webkit-appearance: none;
+		background: transparent;
 }
 input[type=range]:focus {
-    /* outline: none; */
+		/* outline: none; */
 }
 input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: 0px;
-    height: 17px;
-    width: 10px;
-    border-radius: 0px;
-    background: var(--bg-lightest-color);
-    cursor: pointer;
+		-webkit-appearance: none;
+		border: 0px;
+		height: 17px;
+		width: 10px;
+		border-radius: 0px;
+		background: var(--bg-lightest-color);
+		cursor: pointer;
 }
 input[type=range]::-webkit-slider-runnable-track,
 input[type=text],
 .slider,
 select {
-    background: var(--bg-light-color);
+		background: var(--bg-light-color);
 }
 input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 17px;
-    cursor: pointer;
-    border-radius: 0px;
-    border: 0px;
+		width: 100%;
+		height: 17px;
+		cursor: pointer;
+		border-radius: 0px;
+		border: 0px;
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
-    background: var(--bg-lighter-color);
+		background: var(--bg-lighter-color);
 }
 div#header {
-    margin: 0px;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 20px;
-    right: 0px;
-    background: var(--bg-lighter-color);;
-    padding-left: 6px;
-    line-height: 20px;
-    color: var(--main-text-color);
-    font-size: 10px;
-    text-transform: capitalize;
-    padding-right: 5px;
-    display: flex;
-    justify-content: space-between;
+		margin: 0px;
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		height: 20px;
+		right: 0px;
+		background: var(--bg-lighter-color);;
+		padding-left: 6px;
+		line-height: 20px;
+		color: var(--main-text-color);
+		font-size: 10px;
+		text-transform: capitalize;
+		padding-right: 5px;
+		display: flex;
+		justify-content: space-between;
 	display: none;
 }
 #closeSettings:not([disabled]), #openSettings:not([disabled]) {
-    cursor: pointer;
+		cursor: pointer;
 }
 #closeSettings, #openSettings {
-    min-width: 11px;
-    text-align: center;
-    height: 12px;
-    margin-top: auto;
-    margin-bottom: auto;
-    line-height: 11px;
-    font-size: 14px;
-    user-select: none;
+		min-width: 11px;
+		text-align: center;
+		height: 12px;
+		margin-top: auto;
+		margin-bottom: auto;
+		line-height: 11px;
+		font-size: 14px;
+		user-select: none;
 }
 #openSettings {
-    background: var(--bg-light-color);
-    color: var(--main-text-color);
-    position: absolute;
-    top: 4px;
-    right: 5px;
-    /* font-family: monospace; */
-    font-family: 'Lucida Grande', sans-serif;
+		background: var(--bg-light-color);
+		color: var(--main-text-color);
+		position: absolute;
+		top: 4px;
+		right: 5px;
+		/* font-family: monospace; */
+		font-family: 'Lucida Grande', sans-serif;
 }
 #closeSettings:hover:not([disabled]),
 #openSettings:hover,
 #pinButton:hover
  {
-    background: var(--bg-dark-color);
-    color: var(--main-text-color);
+		background: var(--bg-dark-color);
+		color: var(--main-text-color);
 }
 #closeSettings[disabled] {
-    color: var(--disabled-text-color);
+		color: var(--disabled-text-color);
 }
 .sliderValue {
-    /* padding-right: 5px;
-    margin-left: -39px;
-    direction: rtl;
-    width: 64px;
-    user-select: none; */
-    user-select: none;
-    position: absolute;
-    z-index: 1;
-    padding-left: 5px;
-    padding-right: 5px;
+		/* padding-right: 5px;
+		margin-left: -39px;
+		direction: rtl;
+		width: 64px;
+		user-select: none; */
+		user-select: none;
+		position: absolute;
+		z-index: 1;
+		padding-left: 5px;
+		padding-right: 5px;
 }
 
 /* The switch - the box around the slider */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 30px;
-    height: 18px;
+		position: relative;
+		display: inline-block;
+		width: 30px;
+		height: 18px;
 }
 /* Hide default HTML checkbox */
 .switch input {display:none;}
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    -webkit-transition: .4s;
-    transition: .4s;
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		-webkit-transition: .4s;
+		transition: .4s;
 }
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 10px;
-    width: 10px;
-    left: 4px;
-    bottom: 4px;
-    background-color: var(--bg-lightest-color);
-    -webkit-transition: .4s;
-    transition: .4s;
+		position: absolute;
+		content: "";
+		height: 10px;
+		width: 10px;
+		left: 4px;
+		bottom: 4px;
+		background-color: var(--bg-lightest-color);
+		-webkit-transition: .4s;
+		transition: .4s;
 }
 input:checked + .slider {
-    /* background-color: var(--bg-lighter-color); */
+		/* background-color: var(--bg-lighter-color); */
 }
 input:checked + .slider:before {
-    /* background-color: var(--main-text-color); */
+		/* background-color: var(--main-text-color); */
 }
 input:focus + .slider {
-    background-color: var(--bg-lightest-color);
+		background-color: var(--bg-lightest-color);
 }
 input:checked + .slider:before {
-    -webkit-transform: translateX(12px);
-    -ms-transform: translateX(12px);
-    transform: translateX(12px);
+		-webkit-transform: translateX(12px);
+		-ms-transform: translateX(12px);
+		transform: translateX(12px);
 }
 .booleanValue {
-    padding-right: 5px;
-    margin-left: 2px;
-    direction: rtl;
-    width: 64px;
-    line-height: 19px;
-    user-select: none;
+		padding-right: 5px;
+		margin-left: 2px;
+		direction: rtl;
+		width: 64px;
+		line-height: 19px;
+		user-select: none;
 }
 
 select {
-    color: var(--main-text-color);
-    text-transform: uppercase;
-    /* font-family: monospace; */
-    font-family: 'Lucida Grande', sans-serif;
-    width: 100%;
-    border-radius: 0px;
-    border: 0px;
-    direction: rtl;
-    text-overflow: ellipsis;
-    white-space: normal;
-    max-height: 16px;
-    font-size: 8px;
-    -webkit-appearance: none;
-    padding-right: 5px;
+		color: var(--main-text-color);
+		text-transform: uppercase;
+		/* font-family: monospace; */
+		font-family: 'Lucida Grande', sans-serif;
+		width: 100%;
+		border-radius: 0px;
+		border: 0px;
+		direction: rtl;
+		text-overflow: ellipsis;
+		white-space: normal;
+		max-height: 16px;
+		font-size: 8px;
+		-webkit-appearance: none;
+		padding-right: 5px;
 }
 select:focus {
-    border: 0px;
-    border-radius: 0px;
+		border: 0px;
+		border-radius: 0px;
 }
 
 #sidebar .buttonContainer {
-    display: flex;
-    flex-direction: column;
+		display: flex;
+		flex-direction: column;
 }
 #sidebar .buttonContainer > button {
-    border: 0px;
-    border-radius: 0px;
-    font-size: 10px;
-    color: var(--main-text-color);
-    width: -webkit-fill-available;
-    text-transform: uppercase;
-    height: 23px;
-    padding: 0px;
-    min-height: unset;
-    margin: 3px 0px;
-    transition: unset;
-    background: var(--bg-light-color);
+		border: 0px;
+		border-radius: 0px;
+		font-size: 10px;
+		color: var(--main-text-color);
+		width: -webkit-fill-available;
+		text-transform: uppercase;
+		height: 23px;
+		padding: 0px;
+		min-height: unset;
+		margin: 3px 0px;
+		transition: unset;
+		background: var(--bg-lighter-color);
 }
 #sidebar .buttonContainer > button:hover {
-    background-color: var(--bg-lighter-color);
+		background-color: var(--bg-lightest-color);
 }
 #sidebar div.divider:nth-child(n+3) {
-    margin-top: 19px !important;
+		margin-top: 19px !important;
 }
 #sidebar div.divider {
-    margin-left: -3px;
-    border-bottom: 1px solid var(--bg-light-color);
-    font-style: italic;
+		margin-left: -3px;
+		border-bottom: 1px solid var(--bg-light-color);
+		font-style: italic;
 }
 
 .layers {
-    flex-direction: column;
+		flex-direction: column;
 }
 .layers ul {
-    list-style-type: none;
-    padding-left: 0px;
-    flex-direction: column;
-    display: flex;
-    margin-bottom: 0px;
+		list-style-type: none;
+		padding-left: 0px;
+		flex-direction: column;
+		display: flex;
+		margin-bottom: 0px;
 }
 .layers li {
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 3px;
-    padding: 4px;
-    padding-left: 0px;
-    border: 1px solid transparent;
-    touch-action: none;
+		height: 60px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		margin-bottom: 3px;
+		padding: 4px;
+		padding-left: 0px;
+		border: 1px solid transparent;
+		touch-action: none;
 }
 
 .layers .contains-dragging {
-    cursor: move;
-    cursor: -webkit-grabbing;
-    cursor: -moz-grabbing;
-    cursor: grabbing;
+		cursor: move;
+		cursor: -webkit-grabbing;
+		cursor: -moz-grabbing;
+		cursor: grabbing;
 }
 
 .layers li.dragging {
-    filter: brightness(.6);
-    background: var(--bg-light-color);
+		filter: brightness(.6);
+		background: var(--bg-light-color);
 }
 
 .layers li.selected {
-    background-color: var(--bg-highlight-color);
-    border-radius: 0px;
-    border: 1px solid var(--bg-dark-color);
+		background-color: var(--bg-highlight-color);
+		border-radius: 0px;
+		border: 1px solid var(--bg-dark-color);
 }
 .layers input[type='checkbox'] {
-    width: 20px !important;
+		width: 20px !important;
 }
 .layers .image {
-    max-height: 100%;
-    max-width: 80px;
-    /* background: var(--bg-lighter-color); */
-    margin-left: 4px;
-    --main-color: var(--main-text-color);
-    --second-color: var(--light-text-color);
-    background-image: linear-gradient(45deg, var(--main-color) 25%, transparent 25%), linear-gradient(-45deg, var(--main-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--main-color) 75%), linear-gradient(-45deg, transparent 75%, var(--main-color) 75%);
-    background-size: 10px 10px;
-    background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
-    background-color: var(--second-color);
-    pointer-events: none;
+		max-height: 100%;
+		max-width: 80px;
+		/* background: var(--bg-lighter-color); */
+		margin-left: 4px;
+		--main-color: var(--main-text-color);
+		--second-color: var(--light-text-color);
+		background-image: linear-gradient(45deg, var(--main-color) 25%, transparent 25%), linear-gradient(-45deg, var(--main-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--main-color) 75%), linear-gradient(-45deg, transparent 75%, var(--main-color) 75%);
+		background-size: 10px 10px;
+		background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+		background-color: var(--second-color);
+		pointer-events: none;
 }
 .layers span.label {
-    margin-bottom: 4px;
-    padding-left: 0px;
-    pointer-events: none;
+		margin-bottom: 4px;
+		padding-left: 0px;
+		pointer-events: none;
 }
 .layers span {
-    margin-left: 4px;
+		margin-left: 4px;
 }
 .layerProps {
-    display: flex;
-    flex-direction: row;
+		display: flex;
+		flex-direction: row;
 }
 .layerProps:focus {
-    border: 0px;
-    border-radius: 0px;
-    display: flex;
+		border: 0px;
+		border-radius: 0px;
+		display: flex;
 }
 .layerProps select:disabled {
-    color: var(--disabled-text-color);
-    opacity: 0.5;
+		color: var(--disabled-text-color);
+		opacity: 0.5;
 }
 
 .slider-component {
-    position: relative;
+		position: relative;
 }
 .layerProps .slider-component {
-    width: 50% !important;
-    margin-left: 5px !important;
+		width: 50% !important;
+		margin-left: 5px !important;
 }
 .layerProps .select-component {
-    width: 50%;
+		width: 50%;
 }
 .layerProps select {
-    min-height: 17px;
+		min-height: 17px;
 }
 
 .layerTools {
-    height: 29px;
-    margin-top: 5px;
-    background: var(--bg-dark-color);
-    padding-left: 3px;
-    padding-right: 3px;
-    display: flex;
-    justify-content: flex-end;
+		height: 29px;
+		margin-top: 5px;
+		background: var(--bg-light-color);
+		padding-left: 3px;
+		padding-right: 3px;
+		display: flex;
+		justify-content: flex-end;
 }
 
 .layerTools .buttonContainer {
-    width: 28px;
-    margin-left: 5px;
+		width: 28px;
+		margin-left: 5px;
 }
 
 .eyeToggle {
-    width: 19px;
-    height: 25px;
-    fill: var(--bg-lighter-color);
-    padding-right: 2px;
-    padding-left: 2px;
+		width: 19px;
+		height: 25px;
+		fill: var(--bg-lightest-color);
+		padding-right: 2px;
+		padding-left: 2px;
 }
 #pinButton {
-    margin-right: 12px;
-    margin-left: auto;
-    font-size: smaller;
-    /* border: 0.5px solid var(--bg-lighter-color); */
-    padding: 2px 3px 2px 3px;
-    margin-top: 6px;
-    margin-bottom: 5px;
-    line-height: 4px;
-    cursor: pointer;
-    color: var(--main-text-color);
+		margin-right: 12px;
+		margin-left: auto;
+		font-size: smaller;
+		/* border: 0.5px solid var(--bg-lighter-color); */
+		padding: 2px 3px 2px 3px;
+		margin-top: 6px;
+		margin-bottom: 5px;
+		line-height: 4px;
+		cursor: pointer;
+		color: var(--main-text-color);
 }
 #pinIcon {
-    margin-right: 6px;
-    height: 16px;
-    padding-top: 4px;
-    margin-left: auto;
+		margin-right: 6px;
+		height: 16px;
+		padding-top: 4px;
+		margin-left: auto;
 }
 #pinIcon path {
-    fill: var(--main-text-color);
+		fill: var(--main-text-color);
 }
 #pinIcon path:hover {
-    fill: turquoise;
+		fill: turquoise;
 }
 
 .layer-drop.active {
-    display: flex !important;
-    height: 0px;
-    padding: 0px;
-    margin: 0px;
-    background: black;
-    margin-top: -2px;
+		display: flex !important;
+		height: 0px;
+		padding: 0px;
+		margin: 0px;
+		background: black;
+		margin-top: -2px;
 }
 
 div#layer-create {
-    position: fixed;
-    background: var(--main-bg-color);
-    border: 1px solid var(--bg-lighter-color);
-    bottom: 0px;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    margin: 20px auto;
-    max-width: 600px;
-    /* margin-top: auto;
-    margin-bottom: auto; */
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 10;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		position: fixed;
+		background: var(--main-bg-color);
+		border: 1px solid var(--bg-lighter-color);
+		bottom: 0px;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		margin: 20px auto;
+		max-width: 600px;
+		/* margin-top: auto;
+		margin-bottom: auto; */
+		padding: 30px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		z-index: 10;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 div#layer-create input {
-    direction: unset;
-    text-align: unset;
+		direction: unset;
+		text-align: unset;
 }
 
 div#layer-create textarea:focus,
 div#layer-create input:focus,
 div#layer-create select:focus {
-    outline: 1px;
+		outline: 1px;
 }
 
 div#layer-create label {
-    display: block;
+		display: block;
 }
 
 div#layer-create #layerDef {
-    height: 85%;
-    max-height: 85%;
-    margin: 5px;
-    width: calc(100% - 10px);
-    max-width: calc(100% - 10px);
-    text-align: left;
-    border: 0px;
-    box-sizing: border-box;
-    resize: none;
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding: 15px;
+		height: 85%;
+		max-height: 85%;
+		margin: 5px;
+		width: calc(100% - 10px);
+		max-width: calc(100% - 10px);
+		text-align: left;
+		border: 0px;
+		box-sizing: border-box;
+		resize: none;
+		overflow-x: hidden;
+		overflow-y: auto;
+		padding: 15px;
 }
 
 div#layer-create #layerDef.full {
-  height: 95%;
-  max-height: 95%;
+	height: 95%;
+	max-height: 95%;
 }
 
 div#layer-create textarea {
-    background: var(--bg-dark-color);
-    color: var(--main-text-color);
+		background: var(--bg-dark-color);
+		color: var(--main-text-color);
 }
 
 div#layer-create #topBar, div#layer-create #bottomBar {
-    display: flex;
-    justify-content: space-between;
+		display: flex;
+		justify-content: space-between;
 }
 
 div#layer-create #topBar > *, div#layer-create #bottomBar > *{
-    flex: 1 1 0;
-    margin: 5px;
+		flex: 1 1 0;
+		margin: 5px;
 }
 
 .editIcon div {
-    margin: 3px;
-    margin-right: 0px;
-    padding: 3px;
-    background: var(--bg-light-color);
-    height: 17px;
-    width: 20px;
+		margin: 3px;
+		margin-right: 0px;
+		padding: 3px;
+		background: var(--bg-light-color);
+		height: 17px;
+		width: 20px;
 }
 
 .editIcon div:hover {
-    background: var(--bg-lighter-color);
+		background: var(--bg-lighter-color);
 }
 .editIcon div:hover svg {
-    filter: drop-shadow( 1px 1px 1px rgba(0,0,0,.5));
+		filter: drop-shadow( 1px 1px 1px rgba(0,0,0,.5));
 }
 
 .editIcon svg {
-    /* filter: grayscale(100%) contrast(1.5); */
-    height: 100%;
-    margin-left: 2px;
+		/* filter: grayscale(100%) contrast(1.5); */
+		height: 100%;
+		margin-left: 2px;
 }
 
 .tabBar {
-    display: flex;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 5px 2px;
+		display: flex;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 5px 2px;
 }
 
 .tab {
-    flex: 1;
-    background: var(--bg-light-color);
-    text-align: center;
-    margin: 0px 3px;
-    color: var(--disabled-text-color);
+		flex: 1;
+		background: var(--bg-light-color);
+		text-align: center;
+		margin: 0px 3px;
+		color: var(--disabled-text-color);
 }
 
 .tab:hover {
-    background: var(--bg-highlight-color);
-    color: var(--light-text-color);
-    outline: 1px solid var(--bg-lighter-color);
+		background: var(--bg-highlight-color);
+		color: var(--light-text-color);
+		outline: 1px solid var(--bg-lighter-color);
 }
 
 .tab.active {
-    background: var(--bg-lighter-color);
-    color: var(--light-text-color);
+		background: var(--bg-lighter-color);
+		color: var(--light-text-color);
 }

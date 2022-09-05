@@ -18,7 +18,7 @@ body {
 }
 body:after {
 	content: '';
-	background: var(--bg-dark-color);
+	background: var(--bg-light-color);
 	position: absolute;
 	left:0;right:0;
 	bottom:0;
@@ -26,14 +26,24 @@ body:after {
 }
 body:before {
 	content: '';
-	background: var(--bg-dark-color);
+	background: var(--bg-light-color);
 	position: absolute;
 	left:0;right:0;
 	top:0;
 	height: 1px;
 }
+
+@media (prefers-color-scheme: dark) {
+	.icon {
+		background-image: url("../shared/icons.svg");
+	}
+}
+@media (prefers-color-scheme: light) {
+	.icon {
+		background-image: url("../shared/icons.dark.svg");
+	}
+}
 .icon {
-	background-image: url("../shared/icons.svg");
 	background-repeat: no-repeat;
 	background-size: 528px 48px;
 	height: 30px;
