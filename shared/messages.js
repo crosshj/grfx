@@ -1,14 +1,18 @@
+const broadcast = (message, source) => {
+	const iframes = document.body.querySelectorAll('iframe');
+	for(var iframe of Array.from(iframes)){
+		const { href: dest } = iframe.contentWindow.location;
+		if(source === dest) continue;
+		iframe.contentWindow.postMessage({ source, ...message });
+	}
+};
+
 export const host = () => {
 	window.addEventListener("message", (event) => {
 		const { href: source } = event.source.location;
-		
-		const iframes = document.body.querySelectorAll('iframe');
-		for(var iframe of Array.from(iframes)){
-			const { href: dest } = iframe.contentWindow.location;
-			if(source === dest) continue;
-			iframe.contentWindow.postMessage({ source, ...event.data });
-		}
+		broadcast(event.data, source);
 	}, false);
+	return { broadcast };
 };
 
 export const listen = (eventName, handler) => {

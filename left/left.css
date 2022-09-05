@@ -12,13 +12,22 @@ body {
 	justify-content: center;
 	align-items: center;
 }
+@media (prefers-color-scheme: dark) {
+	.icon {
+		background-image: url("../shared/icons.svg");
+	}
+}
+@media (prefers-color-scheme: light) {
+	.icon {
+		background-image: url("../shared/icons.dark.svg");
+	}
+}
 .icon {
 	/*
 		-webkit-mask-image: url(icons.svg);
 		-webkit-mask-size: 528px 48px;
 		-webkit-mask-repeat: no-repeat;
 	*/
-	background-image: url("icons.svg");
 	background-repeat: no-repeat;
 	background-size: 528px 48px;
 	height: 30px;
@@ -30,7 +39,7 @@ body {
 .icon.selected:before {
 	content: '';
 	border-radius: 3px;
-	box-shadow: inset 0px 0px 10px black;
+	box-shadow: inset 0px 0px 10px  var(--bg-dark-color);
 	opacity: 0.5;
 	position: absolute;
 	z-index: -1;

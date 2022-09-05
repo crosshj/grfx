@@ -1,5 +1,17 @@
+import Menus from './menus/menus.js';
 import Layout from './layout/layout.js';
-import { host } from './shared/messages.js';
+import { host as MessageHost } from './shared/messages.js';
 
 const layout = await Layout();
-host();
+
+const host = MessageHost();
+
+document.body.append(Menus());
+
+window.addEventListener('contextmenu-select', (e) => {
+	host.broadcast({
+		eventName: 'contextmenu-select',
+		type: 'contextmenu-select',
+		data: e.detail,
+	});
+});
