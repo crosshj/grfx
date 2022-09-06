@@ -325,9 +325,10 @@ select:focus {
 }
 
 .layers li.selected {
-		background-color: var(--bg-highlight-color);
+/* 		background-color: var(--bg-highlight-color); */
+		background: var(--bg-light-color);
 		border-radius: 0px;
-		border: 1px solid var(--bg-dark-color);
+		border: 1px solid var(--bg-medium-color);
 }
 .layers input[type='checkbox'] {
 		width: 20px !important;

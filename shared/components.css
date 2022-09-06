@@ -3,10 +3,11 @@
 	display: inline-block;
 	border-radius: 0.25em;
 	background: var(--bg-light-color);
-	padding: 0.25em;
 	text-transform: uppercase;
 	min-width: 3.5em;
 	text-align: center;
+	padding: 0.5em;
+	font-size: 0.8em;
 }
 .optionButton:not(.selected):hover {
 	background: var(--bg-light-hover-color);
