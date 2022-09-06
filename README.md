@@ -8,7 +8,7 @@
 
 ## features
 
-- Dark and Light Mode
+- Dark and Light Modes
 <img width="1719" alt="image" src="https://user-images.githubusercontent.com/1816471/188524907-ab48ab56-6e32-4947-962d-f5e659240373.png">
 
 - Small   
