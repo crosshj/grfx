@@ -11,8 +11,8 @@
 - Dark and Light Mode
 <img width="1719" alt="image" src="https://user-images.githubusercontent.com/1816471/188524907-ab48ab56-6e32-4947-962d-f5e659240373.png">
 
-- Small
+- Small   
 less than 2.6 MB before optimization
 
-- Open
+- Open   
 it's all right here.  You don't owe us anything.
