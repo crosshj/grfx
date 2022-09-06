@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=optional');
 @import url('../colors.css');
+@import url('../shared/icons.css');
 
 body, input, select {
 	color: var(--main-text-color);
@@ -14,7 +15,6 @@ body {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	padding-left: 11px;
 }
 body:after {
 	content: '';
@@ -33,43 +33,17 @@ body:before {
 	height: 1px;
 }
 
-@media (prefers-color-scheme: dark) {
-	.icon {
-		background-image: url("../shared/icons.svg");
-	}
+.currentContainer {
+	width: 50px;
+	display: flex;
 }
-@media (prefers-color-scheme: light) {
-	.icon {
-		background-image: url("../shared/icons.dark.svg");
-	}
-}
-.icon {
-	background-repeat: no-repeat;
-	background-size: 528px 48px;
-	height: 30px;
-	width: 30px;
-	zoom: 1.1;
-	position: relative;
+.icon.current {
+	margin: auto;
 }
 
-.icon.none { visibility: hidden; }
-.icon.select-free { background-position: -9px -8.5px; }
-.icon.select-box { background-position: -40.5px -8.5px; }
-.icon.erase { background-position: -72px -8.5px; }
-.icon.fill { background-position: -104px -8.5px; }
-.icon.dropper { background-position: -136px -8.5px; }
-.icon.mag { background-position: -168px -8.5px; }
-.icon.pencil { background-position: -201px -8.5px; }
-.icon.brush { background-position: -233px -8.5px; }
-.icon.airbrush { background-position: -264.25px -8.5px; }
-.icon.text { background-position: -295.5px -8.5px; }
-.icon.line { background-position: -329px -8.5px; }
-.icon.curve { background-position: -360px -8.5px; }
-.icon.rect { background-position: -392.5px -8.5px; }
-.icon.poly { background-position: -424px -8.5px; }
-.icon.ellipse { background-position: -456.25px -8.5px; }
-.icon.rounded { background-position: -488.5px -8.5px; }
-
+.options.current :first-child {
+	margin-left: 4px;
+}
 .options.current {
 	display: flex;
 	flex-direction: row;
@@ -97,6 +71,8 @@ select[data-menu] {
 	text-transform: uppercase;
 	padding: 0.5em;
 	border-radius: 0.25em;
+
+	font-size: 0.8em;
 }
 
 input[type="text"]:focus,
@@ -124,7 +100,4 @@ select[data-menu] {
 		5px 5px,
 		5px 5px;
 	background-repeat: no-repeat;
-}
-.optionButton {
-
 }

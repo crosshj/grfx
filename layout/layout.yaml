@@ -2,7 +2,7 @@
 rows:
   - iframe: '?'
     module: top/index.html
-    height: 25px
+    height: 30px
     resize: false
     drop: false
   - iframe: '?'

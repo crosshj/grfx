@@ -19,13 +19,45 @@ const getCoords = (elem) => {
 		bottom: box.bottom + window.pageYOffset + offsetTop,
 		left: box.left + window.pageXOffset + offsetLeft
 	};
-}
+};
 
 const getMenuItems = (e) => {
-	const children = e.target.children;
-	return Array.from(children).map(child => {
-		return { name: child.textContent };
-	});
+	const items = [];
+	const children = Array.from(e.target.children)
+		.filter(x => {
+			if(x.hidden) return false;
+			if(x.tagName !== "OPTGROUP") return true;
+			const groupChildren = Array.from(x.children)
+				.filter(y => !y.hidden);
+			if(groupChildren.length) return true;
+			return false;
+		});
+
+	for(const [i, child] of Object.entries(children)){
+		const { disabled } = child;
+
+		if(child.tagName !== "OPTGROUP"){
+			items.push({ name: child.textContent, disabled });
+			continue;
+		}
+
+		const groupChildren = Array.from(child.children)
+			.filter(x => !x.hidden);
+
+		const previous = groupChildren[Number(i)-1];
+		if(previous && previous.tagName !== "OPTGROUP" && Number(i)-1 !== 0){
+			items.push("seperator");
+		}
+		for(const groupChild of groupChildren){
+			items.push({
+				name: groupChild.textContent,
+				disabled: groupChild.disabled || disabled
+			});
+		}
+		if(Number(i)+1 === children.length) continue;
+		items.push("seperator");
+	}
+	return items;
 };
 
 const showMenu = (e) => {

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=optional');
 @import url('../colors.css');
 
 body {
@@ -9,6 +9,9 @@ body {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 14px;
 	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 /* body:before {
 	content: '';
@@ -22,16 +25,32 @@ body {
 	background: ButtonFace;
 } */
 
-svg {
-	width: 19px;
-	margin-top: 4px;
-	margin-right: 4px;
-	fill: var(--main-text-color);
-	opacity: 0.8;
-	margin-left: 9px;
+
+@media (prefers-color-scheme: dark) {
+	.logo {
+		background-image: url("../shared/logo.svg");
+	}
 }
-path {
-	stroke-width: 0;
+@media (prefers-color-scheme: light) {
+	.logo {
+		background-image: url("../shared/logo.dark.svg");
+		zoom: 1.2;
+	}
+}
+.logo {
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 1.2em;
+	width: 1.2em;
+	margin: auto;
+}
+.logoContainer {
+	width: 50px;
+	display: flex;
+}
+
+ul :first-child {
+	margin-left: 0;
 }
 
 ul {
@@ -45,9 +64,8 @@ ul {
 li {
 	display: inline-block;
 	cursor: default;
-	margin-left: 0.25em;
+	margin-left: 0.5em;
 	position: relative;
-/* 	opacity: 0.8; */
 }
 label {
 	padding: 0.1em 0.3em;
