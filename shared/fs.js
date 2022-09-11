@@ -1,12 +1,14 @@
 //import * as filer from 'https://unpkg.com/filer';
 import BrowserFS from 'https://cdn.skypack.dev/browserfs';
 
-const EXAMPLE_IMAGE = "https://raw.githubusercontent.com/crosshj/graphics-editor/main/assets/feedforward.png";
-const EXAMPLE_IMAGE_ROBOT = "https://images.nightcafe.studio/jobs/wJMbnnlCfS9WEVur80Qx/wJMbnnlCfS9WEVur80Qx_8.9286x.jpg";
-const EXAMPLE_IMAGE_SQUID = "https://images.nightcafe.studio/jobs/gZVKddsDrWb2odrM3vsY/gZVKddsDrWb2odrM3vsY--2--Y98HJ.jpg";
-const EXAMPLE_GOLD = "https://images.nightcafe.studio/jobs/7OXU5TcnbVF71K1zN79N/7OXU5TcnbVF71K1zN79N--3--5TQRK.jpg";
-const EXAMPLE_OWL = "https://images.nightcafe.studio/jobs/5freDC2naZa9EQrIUOQY/5freDC2naZa9EQrIUOQY.jpg";
-const EXAMPLE_SKY = "https://images.nightcafe.studio/jobs/lheEUAmhcoUn9fsxXGZP/lheEUAmhcoUn9fsxXGZP_6.9444x.jpg";
+const examples = {
+	dunno: "https://raw.githubusercontent.com/crosshj/graphics-editor/main/assets/feedforward.png",
+	robot: "https://images.nightcafe.studio/jobs/wJMbnnlCfS9WEVur80Qx/wJMbnnlCfS9WEVur80Qx_8.9286x.jpg",
+	squid: "https://images.nightcafe.studio/jobs/gZVKddsDrWb2odrM3vsY/gZVKddsDrWb2odrM3vsY--2--Y98HJ.jpg",
+	gold: "https://images.nightcafe.studio/jobs/7OXU5TcnbVF71K1zN79N/7OXU5TcnbVF71K1zN79N--3--5TQRK.jpg",
+	owl: "https://images.nightcafe.studio/jobs/5freDC2naZa9EQrIUOQY/5freDC2naZa9EQrIUOQY.jpg",
+	sky: "https://images.nightcafe.studio/jobs/lheEUAmhcoUn9fsxXGZP/lheEUAmhcoUn9fsxXGZP_6.9444x.jpg",
+};
 
 const mountConfig = {
 	fs: "MountableFileSystem",
@@ -105,12 +107,14 @@ var walk = function(dir, done) {
 
 let indexDBContents = await readdir({ fs, path: '/indexDB' });
 if(!indexDBContents.length){
-	const example = await fetch(EXAMPLE_SKY).then(x => x.blob());
-	await writeFile({
-		fs,
-		path: '/indexDB/sky.jpg',
-		data: await blobToBase64(example)
-	});
+	for(const [name, url] of Object.entries(examples)){
+		const example = await fetch(url).then(x => x.blob());
+		await writeFile({
+			fs,
+			path: `/indexDB/${name}.jpg`,
+			data: await blobToBase64(example)
+		});
+	}
 	indexDBContents = await readdir({ fs, path: '/indexDB' });
 }
 //console.log(indexDBContents)
