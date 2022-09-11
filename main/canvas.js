@@ -5,8 +5,8 @@ const thumbs = [];
 
 function thumbnail(image) {
 	const canvas = document.createElement("canvas");
-	canvas.width = 48 * (image.width / image.height);
-	canvas.height = 48;
+	canvas.width = 180 * (image.width / image.height);
+	canvas.height = 180;
 	canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
 	return canvas.toDataURL('image/png');
 }
