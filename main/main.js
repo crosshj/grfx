@@ -19,8 +19,6 @@ const layers = [{
 	render: loadImage("/indexDB/sky.jpg")
 }];
 
-//dunno, robot, squid, gold, owl, sky
-
 const container = document.querySelector('.canvasContainer');
 
 const canvas = await Canvas({
