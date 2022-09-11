@@ -33,7 +33,7 @@ send('update-thumbs', { thumbs: canvas.thumbs });
 
 // https://stackoverflow.com/a/66874077
 const mouseStrength = 1.4;
-const pinchStrength = 0.003;
+const pinchStrength = 0.002;
 let scale = container.getBoundingClientRect().width / container.offsetWidth;
 
 document.body.addEventListener('wheel', (ev) => {

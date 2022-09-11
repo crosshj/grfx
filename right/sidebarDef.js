@@ -61,7 +61,7 @@ const sidebarDef = ({
 						layersHidden: [1],
 						layers: [
 							{
-								name: "3D Canvas",
+								name: "Dangerous Clouds",
 								type: "3D Canvas",
 								render:
 									parseFunction(`function({ ctx, gl, alpha, width, height}){
@@ -69,22 +69,22 @@ const sidebarDef = ({
 											}`),
 							},
 							{
-								name: "Uber Layer",
+								name: "owl at sea",
 								type: "2D Canvas",
 								render: "shape",
 							},
 							{
-								name: "Middle Layer",
+								name: "golden boy",
 								type: "2D Canvas",
 								render: "circle",
 							},
 							{
-								name: "Top Layer",
+								name: "Mon*star's Sky-Runner",
 								type: "2D Canvas",
 								render: "triangle",
 							},
 							{
-								name: "Bottom Layer",
+								name: "Cyberpunk Robot",
 								type: "2D Canvas",
 								render: "square",
 							},
@@ -96,51 +96,51 @@ const sidebarDef = ({
 				name: "History",
 				collapsed: true,
 				items: [
-					{
-						type: "text",
-						name: "Current Layer Alpha",
-						default: "100",
-						onChange: (currentLayer, value) => {
-							debugger;
-							// TODO: so much to do here, where do I begin?
-							currentLayer.changeLayerArgs(currentLayer.number, Number(value));
-						},
-					},
-					{
-						type: "slider",
-						name: "slider",
-						default: 30,
-						min: 0,
-						max: 100,
-						step: 5,
-						onChange: (value) => {
-							console.log(value);
-						},
-					},
-					{
-						type: "boolean",
-						name: "boolean",
-						default: "FALSE",
-						onChange: (e) => {
-							console.log(e.target.value);
-						},
-					},
-					{
-						type: "select",
-						name: "select",
-						default: "blue",
-						options: ["red", "green", "blue", "yellow", "orange"],
-						onChange: (value) => {
-							console.log(value);
-						},
-					},
-					{
-						type: "button",
-						name: "button",
-						onClick: () => {
-							console.log("button clicked");
-						},
-					},
+					// {
+					// 	type: "text",
+					// 	name: "Current Layer Alpha",
+					// 	default: "100",
+					// 	onChange: (currentLayer, value) => {
+					// 		debugger;
+					// 		// TODO: so much to do here, where do I begin?
+					// 		currentLayer.changeLayerArgs(currentLayer.number, Number(value));
+					// 	},
+					// },
+					// {
+					// 	type: "slider",
+					// 	name: "slider",
+					// 	default: 30,
+					// 	min: 0,
+					// 	max: 100,
+					// 	step: 5,
+					// 	onChange: (value) => {
+					// 		console.log(value);
+					// 	},
+					// },
+					// {
+					// 	type: "boolean",
+					// 	name: "boolean",
+					// 	default: "FALSE",
+					// 	onChange: (e) => {
+					// 		console.log(e.target.value);
+					// 	},
+					// },
+					// {
+					// 	type: "select",
+					// 	name: "select",
+					// 	default: "blue",
+					// 	options: ["red", "green", "blue", "yellow", "orange"],
+					// 	onChange: (value) => {
+					// 		console.log(value);
+					// 	},
+					// },
+					// {
+					// 	type: "button",
+					// 	name: "button",
+					// 	onClick: () => {
+					// 		console.log("button clicked");
+					// 	},
+					// },
 				],
 			},
 		],
