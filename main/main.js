@@ -1,5 +1,6 @@
 import Canvas from './canvas.js';
 import loadImage from './layers/image.js';
+import { send } from '../shared/messages.js';
 
 const layers = [{
 	number: 1,
@@ -12,10 +13,10 @@ const layers = [{
 	render: loadImage("/indexDB/gold.jpg")
 }, {
 	number: 4,
+	visible: false,
 	render: loadImage("/indexDB/owl.jpg")
 }, {
 	number: 5,
-	visible: false,
 	render: loadImage("/indexDB/sky.jpg")
 }];
 
@@ -27,8 +28,8 @@ const canvas = await Canvas({
 	layers,
 	container
 });
+send('update-thumbs', { thumbs: canvas.thumbs });
 
-console.log(canvas)
 
 // https://stackoverflow.com/a/66874077
 const mouseStrength = 1.4;
