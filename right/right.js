@@ -1,16 +1,18 @@
-import Sidebar from './sidebar.js';
-import SidebarReady from './sidebarReady.js'
 import { listen } from '../shared/messages.js';
+import Sidebar from './sidebar.js';
 
-Sidebar.init(SidebarReady);
-
-
-const thumbsListener = ({ thumbs, def }) => {
-	const thumbContainers = Array.from(
-		document.querySelectorAll('.layers li img')
-	).reverse();
-	for(const [i,thumb] of Object.entries(thumbs)){
-		thumbContainers[Number(i)-1].src = thumbs[i];
-	}
+const state = {
+	thumbs: undefined,
+	layers: undefined
 };
-listen('update-thumbs', thumbsListener);
+
+listen('update-thumbs', ({ thumbs }) => {
+	if(state.thumbs) return;
+	state.thumbs = thumbs;
+	Sidebar(state);
+});
+
+listen('layers-update', ({ layers }) => {
+	state.layers = layers;
+});
+

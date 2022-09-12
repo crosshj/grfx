@@ -1,42 +1,34 @@
+import { listen, send } from '../shared/messages.js';
 import Canvas from './canvas.js';
 import loadImage from './layers/image.js';
-import { send } from '../shared/messages.js';
-
-const layers = [{
-	number: 1,
-	render: loadImage("/indexDB/robot.jpg")
-}, {
-	number: 2,
-	render: loadImage("/indexDB/squid.jpg")
-}, {
-	number: 3,
-	render: loadImage("/indexDB/gold.jpg")
-}, {
-	number: 4,
-	visible: false,
-	render: loadImage("/indexDB/owl.jpg")
-}, {
-	number: 5,
-	render: loadImage("/indexDB/sky.jpg")
-}];
 
 const container = document.querySelector('.canvasContainer');
+let canvas;
 
-const canvas = await Canvas({
-	width: 1440,
-	height: 1080,
-	layers,
-	container
+listen('layers-update', async ({ type, layers }) => {
+	if(type === "layers-update"){
+		canvas = await Canvas({
+			width: 1440,
+			height: 1080,
+			layers: layers.reverse().map(layer => ({
+				...layer,
+				render: loadImage(layer.image)
+			})),
+			container
+		});
+		send('update-thumbs', { thumbs: canvas.thumbs });
+	}
 });
-send('update-thumbs', { thumbs: canvas.thumbs });
 
+send('ping', 'main');
 
 // https://stackoverflow.com/a/66874077
 const mouseStrength = 1.4;
 const pinchStrength = 0.002;
-let scale = container.getBoundingClientRect().width / container.offsetWidth;
+let scale;
 
 document.body.addEventListener('wheel', (ev) => {
+	scale = scale ||  container.getBoundingClientRect().width / container.offsetWidth;
 	ev.preventDefault();
 	ev.stopPropagation();
 

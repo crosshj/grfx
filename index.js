@@ -1,10 +1,14 @@
+import Core from './core/core.js';
 import Menus from './menus/menus.js';
 import Layout from './layout/layout.js';
 import { host as MessageHost } from './shared/messages.js';
 
 const layout = await Layout();
-
 const host = MessageHost();
+
+Core({ host });
+// window.addEventListener('load', async function () {
+// });
 
 document.body.append(Menus());
 
