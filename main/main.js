@@ -2,6 +2,7 @@ import { listen, send } from '../shared/messages.js';
 import { sleep } from '../shared/utils.js';
 import Canvas from './canvas.js';
 import loadImage from './layers/image.js';
+import './cursor.js';
 
 const container = document.querySelector('.canvasContainer');
 let canvas;

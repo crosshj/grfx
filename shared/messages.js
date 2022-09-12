@@ -2,14 +2,14 @@
 const resolve = {};
 const online = {};
 if(window.top === window){
-	const clients = ['main', 'right'];
+	const clients = ['main', 'right', 'top-bar'];
 	for(const client of clients){
 		online[client] = new Promise(r => resolve[client] = r);
 	}
 }
 
 const broadcast = async (message, source) => {
-	await online.main;
+	await Promise.all(Object.values(online));
 	const iframes = document.body.querySelectorAll('iframe');
 	for(var iframe of Array.from(iframes)){
 		const { href: dest } = iframe.contentWindow.location;
@@ -32,6 +32,9 @@ export const host = () => {
 		}
 		if(eventName === "ping" && source.includes('grfx/right')){
 			return resolve.right();
+		}
+		if(eventName === "ping" && source.includes('grfx/top-bar')){
+			return resolve['top-bar']();
 		}
 		if(listeners[eventName]){
 			for(const listener of listeners[eventName]){

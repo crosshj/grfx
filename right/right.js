@@ -1,4 +1,4 @@
-import { listen } from '../shared/messages.js';
+import { listen, send } from '../shared/messages.js';
 import Sidebar from './sidebar.js';
 
 let dispatch;
