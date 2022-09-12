@@ -1,7 +1,6 @@
-import concretejs from "https://cdn.skypack.dev/concretejs";
-const { Concrete } = concretejs;
+import Concrete from "./concrete.js";
 
-const thumbs = [];
+const thumbs = {};
 
 function thumbnail(image) {
 	const canvas = document.createElement("canvas");
@@ -11,14 +10,12 @@ function thumbnail(image) {
 	return canvas.toDataURL('image/png');
 }
 
-const getRender = (layerDef) => async ({
-	layer, alpha=1, width, height
-}) => {
+const getRender = ({ layer, width, height, layerDef }) => async (args={}) => {
 	const { number, render } = layerDef;
 	const ctx = layer.scene.context;
 	ctx.clearRect(0, 0, width, height);
-	ctx.globalAlpha = alpha;
-	await render({ ctx, width, height});
+	ctx.globalAlpha = args.alpha || layerDef.alpha || 1;
+	await render({ ctx, width, height });
 	thumbs[number] = thumbnail(layer.scene.canvas);
 };
 
@@ -26,15 +23,19 @@ const initLayer = async (args) => {
 	const { viewport, layerDef } = args;
 
 	const layer = new Concrete.Layer(layerDef);
+	layer.number = layerDef.number;
+	viewport.add(layer);
+
 	if(typeof layerDef.visible !== "undefined"){
 		layer.visible = layerDef.visible;
 	}
-	viewport.add(layer);
+	if(typeof layerDef.blendMode !== "undefined"){
+		layer.blendMode = layerDef.blendMode.toLowerCase();
+	}
 
-	const render = getRender(layerDef);
-	render.def = render.toString();
-
-	await render({ layer, ...args });
+	const render = getRender({ layerDef, layer, ...args });
+	//render.def = render.toString();
+	await render();
 
 	return { layer, render };
 };
@@ -43,15 +44,15 @@ async function Canvas(args) {
 	const { width, height, layers:layerDefs } = args;
 	const viewport = new Concrete.Viewport(args);
 
-	const layers = [];
-	const renderFns = [];
+	const layers = {};
+	const renderFns = {};
 
 	for(const layerDef of layerDefs){
 		const res = await initLayer({
 			viewport, width, height, layerDef
 		});
-		layers.push(res.layer);
-		renderFns.push(res.render);
+		layers[layerDef.number] = res.layer;
+		renderFns[layerDef.number] = res.render;
 	}
 	viewport.render();
 

@@ -2,7 +2,7 @@ import rxReact from './rxReact.js';
 import { isNumeric, clone } from '../shared/utils.js';
 import constructLayer from './constructLayer.js';
 
-export default function sidebarStart({ sidebarDef }, startCallback) {
+export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 	const getRoot = (components, dispatcher) => {
 		const {
 			div,
@@ -442,6 +442,7 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 			layersSelected,
 			globalState,
 			layerOrder,
+			thumbs
 		}) {
 			if (!layersHidden) {
 				layersHidden = item.layersHidden;
@@ -843,9 +844,7 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 							className: "image",
 							tabIndex: 0,
 							draggable: false,
-							src: layer.getThumb
-								? layer.getThumb({ number: layersIndex })
-								: "",
+							src: thumbs[layersIndex] || "",
 							key: `${section.name}-${item.name}-${index}-thumbnail-${layersIndex}`,
 						}),
 						span(
@@ -882,7 +881,26 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 			const selectedLayers = reorderedLayers.filter((x, i) =>
 				(layersSelected || []).includes(x.number)
 			);
-			//console.log({selectedLayers});
+			const selectedBlendMode = {
+					normal: "Normal",
+					multiply: "Multiply",
+					screen: "Screen",
+					overlay: "Overlay",
+					darken: "Darken",
+					lighten: "Lighten",
+					"color-dodge": "Color-Dodge",
+					"color-burn": "Color-Burn",
+					"hard-light": "Hard-Light",
+					"soft-light": "Soft-Light",
+					difference: "Difference",
+					exclusion: "Exclusion",
+					hue: "Hue",
+					saturation: "Saturation",
+					color: "Color",
+					luminosity: "Luminosity",
+				}[(selectedLayers[0].blendMode||"normal").toLowerCase()]
+
+			const selectedAlpha = (selectedLayers[0].alpha || 1) * 100;
 
 			return div(
 				{
@@ -912,7 +930,7 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 								item: {
 									name: "layer-blend",
 									disabled: false,
-									default: "Normal",
+									default: selectedBlendMode,
 									options: [
 										"Normal",
 										"Multiply",
@@ -963,13 +981,13 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 									min: 0,
 									max: 100,
 									step: 5,
-									default: 100,
+									default: selectedAlpha,
 									onChange: ({ key, value }) => {
 										// store in reducer
 										layersPropertiesChanged({ alpha: { key, value } });
 										// call function for alpha change setup in sidebar def
 										const changeSelectedAlpha = () => {
-											debugger;
+											//debugger;
 											(layersSelected || [0]).forEach((layerNumber) => {
 												item.layers
 													.find((x) => x.number === layerNumber)
@@ -1102,8 +1120,9 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 				},
 			],
 			layerOrder = [],
-		}) =>
-			fragment([
+			thumbs = []
+		}) => {
+			return fragment([
 				div({ id: "header", key: "header" }, [
 					span({ key: "headerText" }, sidebarDef.title),
 					span(
@@ -1166,8 +1185,8 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 											index: j,
 											globalState,
 										}),
-									layers: () =>
-										layersComponent({
+									layers: (...args) => {
+										return layersComponent({
 											div,
 											span,
 											section,
@@ -1178,7 +1197,9 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 											layersSelected,
 											globalState,
 											layerOrder,
-										}),
+											thumbs
+										});
+									}
 								}[item.type];
 							})
 							.forEach((component) => all.push(component()));
@@ -1186,7 +1207,7 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 					}, [])
 				),
 			]);
-
+		}
 		return root;
 	};
 
@@ -1199,11 +1220,13 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 		layerOrder: undefined, //TODO:
 		pinned: undefined, //TODO:
 		hidden: undefined, //TODO:
+		thumbs,
 	});
 
 	// reducer should be built with respect to sidebar definition
 	const getReducer = () => {
 		const reducer = (state, action) => {
+			//console.log(action.type)
 			var newState = clone(state);
 
 			function updateSelectedLayers(state, layersSelected) {
@@ -1331,6 +1354,10 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 					newState = Object.assign({}, state, { hidden: action.payload });
 					break;
 				}
+				case "UPDATE_THUMBS": {
+					newState = Object.assign({}, state, { thumbs: action.payload });
+					break;
+				}
 				case "LAYER_VISIBILE_TOGGLED": {
 					var layersHidden = state.layersHidden || [];
 					if (!isNumeric(action.payload)) {
@@ -1358,7 +1385,7 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 						? clone(state.layersProperties)
 						: [];
 					const currentSelectedLayers = state.layersSelected || [0];
-					console.log(`current selected layers ${currentSelectedLayers}`);
+					//console.log(`current selected layers ${currentSelectedLayers}`);
 					currentSelectedLayers.forEach((selected) => {
 						// ensure existence
 						const exists = (newLayersProperties || [])
@@ -1412,7 +1439,7 @@ export default function sidebarStart({ sidebarDef }, startCallback) {
 				attach: sidebarRoot,
 				initialState: getInitialState(),
 			},
-			startCallback
+			() => startCallback({ dispatcher })
 		);
 	}
 

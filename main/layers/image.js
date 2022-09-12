@@ -1,27 +1,31 @@
 import fs from '../../shared/fs.js';
 
-const loadImage = (url) => async function loadImage({ ctx, width, height}){
-	const src = await fs.readImage(url);
+const images = {};
 
-	await new Promise((resolve) => {
+const loadImage = (url) => {
+	const src = fs.readImage(url);
+	const image = new Promise(async (resolve) => {
 		const image = new Image();
-		image.onload = () => {
-			const sx = 0;
-			const sy = 0;
-			const sWidth = image.width;
-			const sHeight = image.height;
-			const sAspect = image.height/image.width;
-
-			const dx = 0;
-			const dy = 0.25 * (height - height * sAspect);
-			const dWidth = width;
-			const dHeight = height*sAspect;
-
-			ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-			resolve();
-		};
-		image.src = src;
+		image.onload = () => resolve(image);
+		image.src = await src;
 	});
-};
+
+	return async function drawImage({ ctx, width, height }){
+		images[url] = images[url] || await image;
+		const i = images[url];
+		const sx = 0;
+		const sy = 0;
+		const sWidth = i.width;
+		const sHeight = i.height;
+		const sAspect = i.height/i.width;
+
+		const dx = 0;
+		const dy = 0.25 * (height - height * sAspect);
+		const dWidth = width;
+		const dHeight = height*sAspect;
+
+		ctx.drawImage(i, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+	};
+}
 
 export default loadImage;

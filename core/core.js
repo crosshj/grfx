@@ -1,12 +1,15 @@
 const layers = [{
 	number: 0,
 	visible: true,
+	alpha: 0.6,
+	blendMode: 'overlay',
 	name: "Dangerous Clouds",
 	image: "/indexDB/sky.jpg"
 }, {
 	number: 1,
-	visible: false,
 	name: "Owl At Sea",
+	alpha: 0.2,
+	blendMode: 'saturation',
 	image: "/indexDB/owl.jpg"
 }, {
 	visible: false,
@@ -38,7 +41,25 @@ const Core = ({ host }) => {
 			type: 'layers-update',
 			data: { layers },
 		});
-	})
+	});
+	host.listen('layer-alpha', ({ number, alpha }) => {
+		const l = layers.find(x => x.number === Number(number));
+		l.alpha = alpha;
+		host.broadcast({
+			eventName: 'layers-update',
+			type: 'layers-update',
+			data: { layers },
+		});
+	});
+	host.listen('layer-blend-mode', ({ number, mode }) => {
+		const l = layers.find(x => x.number === Number(number));
+		l.blendMode = mode;
+		host.broadcast({
+			eventName: 'layers-update',
+			type: 'layers-update',
+			data: { layers },
+		});
+	});
 };
 
 export default Core;

@@ -1,4 +1,5 @@
 import { listen, send } from '../shared/messages.js';
+import { sleep } from '../shared/utils.js';
 import Canvas from './canvas.js';
 import loadImage from './layers/image.js';
 
@@ -6,7 +7,7 @@ const container = document.querySelector('.canvasContainer');
 let canvas;
 
 listen('layers-update', async ({ type, layers }) => {
-	if(type === "layers-update"){
+	if(type === "layers-update" && !canvas){
 		canvas = await Canvas({
 			width: 1440,
 			height: 1080,
@@ -17,6 +18,27 @@ listen('layers-update', async ({ type, layers }) => {
 			container
 		});
 		send('update-thumbs', { thumbs: canvas.thumbs });
+		return
+	}
+	if(type === "layers-update" && canvas){
+		//right/sidebarReady.js:51
+		for(const layer of layers){
+			const canvasLayer = canvas.layers[layer.number];
+			const render = canvas.renderFns[layer.number];
+			if(!canvasLayer) continue;
+
+			if(layer.visible !== undefined)
+				canvasLayer.visible = layer.visible;
+			if(layer.blendMode !== undefined){
+				canvasLayer.blendMode = layer.blendMode;
+			}
+			if(layer.alpha !== undefined)
+				render(layer);
+		}
+		canvas.viewport.render();
+		await sleep(1);
+		send('update-thumbs', { thumbs: canvas.thumbs });
+		return;
 	}
 });
 

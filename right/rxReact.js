@@ -64,7 +64,7 @@ rxReact.scriptsAfter = (callback) => {
 	};
 
 	function RXConnector(props) {
-		this.state = {};
+		this.state = props.initialState;
 		this.render = () => {
 			return components.fragment(props.render(this.state));
 		};
@@ -85,7 +85,7 @@ rxReact.scriptsAfter = (callback) => {
 	) => {
 		const store$ = action$.pipe(scan(reducer, initialState));
 
-		render(Connector({ observable$: store$, render: root }), attach);
+		render(Connector({ observable$: store$, render: root, initialState }), attach);
 		reactStartCallback();
 	};
 
