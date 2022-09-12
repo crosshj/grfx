@@ -1,14 +1,14 @@
 const layers = [{
 	number: 0,
 	visible: true,
-	alpha: 0.6,
+	alpha: 0.5,
 	blendMode: 'overlay',
 	name: "Dangerous Clouds",
 	image: "/indexDB/sky.jpg"
 }, {
 	number: 1,
 	name: "Owl At Sea",
-	alpha: 0.2,
+	alpha: 0.1,
 	blendMode: 'saturation',
 	image: "/indexDB/owl.jpg"
 }, {
@@ -18,7 +18,6 @@ const layers = [{
 	image: "/indexDB/gold.jpg"
 }, {
 	number: 3,
-	visible: false,
 	name: "Mon*star's Sky-Runner",
 	image: "/indexDB/squid.jpg"
 }, {

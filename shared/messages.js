@@ -2,7 +2,7 @@
 const resolve = {};
 const online = {};
 if(window.top === window){
-	const clients = ['main'];
+	const clients = ['main', 'right'];
 	for(const client of clients){
 		online[client] = new Promise(r => resolve[client] = r);
 	}
@@ -29,6 +29,9 @@ export const host = () => {
 		const { href: source } = event.source.location;
 		if(eventName === "ping" && source.includes('grfx/main')){
 			return resolve.main();
+		}
+		if(eventName === "ping" && source.includes('grfx/right')){
+			return resolve.right();
 		}
 		if(listeners[eventName]){
 			for(const listener of listeners[eventName]){

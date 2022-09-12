@@ -18,3 +18,5 @@ listen('layers-update', ({ layers }) => {
 	});
 });
 
+send('ping', 'right');
+
