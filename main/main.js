@@ -3,9 +3,18 @@ import { sleep } from '../shared/utils.js';
 import Canvas from './canvas.js';
 import loadImage from './layers/image.js';
 import './cursor.js';
+import attachDraw from './draw.js';
 
 const container = document.querySelector('.canvasContainer');
 let canvas;
+
+const drawFn = (ctx) => ({ x1, y1, x2, y2 }) => {
+	ctx.lineWidth = 5;
+	ctx.beginPath();
+	ctx.moveTo(x1, y1);
+	ctx.lineTo(x2, y2);
+	ctx.stroke();
+};
 
 listen('layers-update', async ({ type, layers }) => {
 	if(type === "layers-update" && !canvas){
@@ -19,6 +28,12 @@ listen('layers-update', async ({ type, layers }) => {
 			container
 		});
 		send('update-thumbs', { thumbs: canvas.thumbs });
+		console.log(canvas);
+		attachDraw(
+			canvas.viewport.scene.canvas,
+			drawFn(canvas.viewport.scene.context)
+			//drawFn(canvas.layers[1].scene.context)
+		);
 		return
 	}
 	if(type === "layers-update" && canvas){
