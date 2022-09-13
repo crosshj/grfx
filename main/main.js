@@ -8,11 +8,20 @@ import attachDraw from './draw.js';
 const container = document.querySelector('.canvasContainer');
 let canvas;
 
+const brushImage = await new Promise(async (resolve) => {
+	const image = new Image();
+	image.onload = () => resolve(image);
+	image.src = 'https://www.html5canvastutorials.com/demos/assets/wood-pattern.png';
+});
+
+// consider: https://github.com/disjukr/croquis.js
 const drawFn = (ctx) => ({ x1, y1, x2, y2 }) => {
-	ctx.lineWidth = 5;
+	//const pattern = ctx.createPattern(brushImage, 'repeat');
 	ctx.beginPath();
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
+	//ctx.strokeStyle = pattern;
+	ctx.lineWidth = 5;
 	ctx.stroke();
 };
 
