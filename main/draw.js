@@ -38,10 +38,7 @@ const getDraw = (canvas, listen, prev) => (e) => {
 			y2: pos.y
 		});
 	}
-	prev = {
-		x: pos.x,
-		y: pos.y
-	};
+	prev = pos;
 };
 
 const attachDrawListener = (canvas, listen) => {
