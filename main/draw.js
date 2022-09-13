@@ -50,12 +50,14 @@ const attachDrawListener = (canvas, listen) => {
 	const end = () => {
 		canvas.removeEventListener("pointermove", draw, false);
 		canvas.removeEventListener("pointerup", end, false);
+		canvas.removeEventListener("pointerleave", end, false);
 		prev = null;
 	};
 	const down = () => {
 		draw = getDraw(canvas, listen, prev);
 		canvas.addEventListener("pointermove", draw, false);
 		canvas.addEventListener("pointerup", end, false);
+		canvas.addEventListener("pointerleave", end, false);
 	};
 	canvas.addEventListener("pointerdown", down, false);
 };
