@@ -1,7 +1,3 @@
-export function isNumeric(n) {
-	return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
 // cache script, https://github.com/webpgr/cached-webpgr.js
 // also see: https://addyosmani.com/basket.js/
 // maybe use service worker instead

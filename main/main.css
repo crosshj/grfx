@@ -14,6 +14,38 @@ https://philiprogers.com/svgpatterns
 	}
 }
 
+:root {
+	--cursor-dim: 50px;
+	--cursor-inner-dim: 2px;
+	--cursor-inner-pos: 24px;
+	--cursor-color: black;
+}
+* { cursor: none; }
+.cursor {
+	width: var(--cursor-dim);
+	height: var(--cursor-dim);
+	border-radius: 100%;
+	border: 1px solid var(--cursor-color);
+	border-radius: 50%;
+	outline: 0.25px solid #888;
+/* 	opacity: .3; */
+	position: fixed;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+}
+.cursor:after {
+	content: '';
+	position: absolute;
+	left: var(--cursor-inner-pos);
+	top: var(--cursor-inner-pos);
+	width: var(--cursor-inner-dim);;
+	height: var(--cursor-inner-dim);;
+	background: var(--cursor-color);
+	display: block;
+	border-radius: 50%;
+	opacity: 1;
+}
+
 body {
 	background-color: var(--bg-medium-color);
 	margin: 0px;
@@ -23,10 +55,12 @@ body {
 	justify-content: center;
 	height: 100vh;
 }
-
-canvas {
-	background: var(--bg-dark-color);
+.canvasContainer {
 	box-shadow: 0 0 10px black;
+	transform: scale(0.6);
+}
+.canvasContainer canvas {
+	background: var(--bg-medium-color);
 	image-rendering: pixelated;
 }
 

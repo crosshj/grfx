@@ -23,7 +23,12 @@ const sidebarDef = ({
 	addLayer,
 	updateLayer,
 	removeLayers,
+	layers
 }) => {
+	const layersSorted = layers.sort((a,b) => a.number - b.number);
+	const layersHidden = layers
+		.map((x,i) => x.visible === false ? i : undefined)
+		.filter(x => x !== undefined);
 	const defin = {
 		title: "Sidebar Demo",
 		pinHandler,
@@ -31,117 +36,22 @@ const sidebarDef = ({
 		pinned: true,
 		sections: [
 			{
-				name: "Properties",
+				name: "Layers",
 				items: [
-					// {
-					// 	type: "button",
-					// 	name: "reload",
-					// 	onClick: () => {
-					// 		window.parent.caches.delete("call");
-					// 		//TODO: would be nice if this only reloaded DOM/scripts/CSS, not reload page
-					// 		document.location = document.location;
-					// 	},
-					// },
-					// {
-					// 	type: "button",
-					// 	name: "filter",
-					// 	onClick: toggleFilter,
-					// },
-					// {
-					// 	type: "button",
-					// 	name: "fullscreen",
-					// 	onClick: (e) => fullscreen(),
-					// },
 					{
 						type: "layers",
-						name: "layers",
 						addLayer,
 						updateLayer,
 						removeLayers,
-						layersHidden: [1],
-						layers: [
-							{
-								name: "3D Canvas",
-								type: "3D Canvas",
-								render:
-									parseFunction(`function({ ctx, gl, alpha, width, height}){
-													${window.threejsFunction}
-											}`),
-							},
-							{
-								name: "Uber Layer",
-								type: "2D Canvas",
-								render: "shape",
-							},
-							{
-								name: "Middle Layer",
-								type: "2D Canvas",
-								render: "circle",
-							},
-							{
-								name: "Top Layer",
-								type: "2D Canvas",
-								render: "triangle",
-							},
-							{
-								name: "Bottom Layer",
-								type: "2D Canvas",
-								render: "square",
-							},
-						],
+						layersHidden,
+						layers: layersSorted
 					},
 				],
 			},
 			{
 				name: "History",
 				collapsed: true,
-				items: [
-					{
-						type: "text",
-						name: "Current Layer Alpha",
-						default: "100",
-						onChange: (currentLayer, value) => {
-							debugger;
-							// TODO: so much to do here, where do I begin?
-							currentLayer.changeLayerArgs(currentLayer.number, Number(value));
-						},
-					},
-					{
-						type: "slider",
-						name: "slider",
-						default: 30,
-						min: 0,
-						max: 100,
-						step: 5,
-						onChange: (value) => {
-							console.log(value);
-						},
-					},
-					{
-						type: "boolean",
-						name: "boolean",
-						default: "FALSE",
-						onChange: (e) => {
-							console.log(e.target.value);
-						},
-					},
-					{
-						type: "select",
-						name: "select",
-						default: "blue",
-						options: ["red", "green", "blue", "yellow", "orange"],
-						onChange: (value) => {
-							console.log(value);
-						},
-					},
-					{
-						type: "button",
-						name: "button",
-						onClick: () => {
-							console.log("button clicked");
-						},
-					},
-				],
+				items: [],
 			},
 		],
 	};

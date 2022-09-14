@@ -1,4 +1,4 @@
-import { listen } from '../shared/messages.js';
+import { listen, send } from '../shared/messages.js';
 import Menus from '../menus/showMenus.js';
 
 Menus.setOffsets(0, 30);
@@ -18,3 +18,5 @@ const selectTool = ({ tool }) => {
 	document.body.append(clone);
 };
 listen("tool-select", selectTool);
+
+send('ping', 'top-bar');

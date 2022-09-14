@@ -1,4 +1,15 @@
-const broadcast = (message, source) => {
+
+const resolve = {};
+const online = {};
+if(window.top === window){
+	const clients = ['main', 'right', 'top-bar'];
+	for(const client of clients){
+		online[client] = new Promise(r => resolve[client] = r);
+	}
+}
+
+const broadcast = async (message, source) => {
+	await Promise.all(Object.values(online));
 	const iframes = document.body.querySelectorAll('iframe');
 	for(var iframe of Array.from(iframes)){
 		const { href: dest } = iframe.contentWindow.location;
@@ -8,11 +19,31 @@ const broadcast = (message, source) => {
 };
 
 export const host = () => {
+	const listeners = {};
+	const listen = (name, handler) => {
+		listeners[name] = listeners[name] || [];
+		listeners[name].push(handler);
+	};
 	window.addEventListener("message", (event) => {
+		const { eventName } = event.data;
 		const { href: source } = event.source.location;
+		if(eventName === "ping" && source.includes('grfx/main')){
+			return resolve.main();
+		}
+		if(eventName === "ping" && source.includes('grfx/right')){
+			return resolve.right();
+		}
+		if(eventName === "ping" && source.includes('grfx/top-bar')){
+			return resolve['top-bar']();
+		}
+		if(listeners[eventName]){
+			for(const listener of listeners[eventName]){
+				listener({ source, ...event.data.data });
+			}
+		}
 		broadcast(event.data, source);
 	}, false);
-	return { broadcast };
+	return { broadcast, listen };
 };
 
 export const listen = (eventName, handler) => {
