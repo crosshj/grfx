@@ -78,6 +78,7 @@ const drawFn = (concrete, brushFn) => {
 	};
 };
 
+//https://github.com/Wicklets/WickBrush/tree/main/brushes
 const brushes = {
 	ink, pixel
 };
@@ -110,5 +111,3 @@ const attachDrawListener = (concrete, brush) => {
 
 export default attachDrawListener;
 
-
-//https://github.com/Wicklets/WickBrush/tree/main/brushes
