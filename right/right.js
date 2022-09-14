@@ -4,7 +4,7 @@ import Sidebar from './sidebar.js';
 let dispatch;
 
 let initResolve;
-const initPromise = new Promise(r => initResolve);
+const initPromise = new Promise(r => initResolve = r);
 
 listen('update-thumbs', async ({ thumbs }) => {
 	await initPromise;
