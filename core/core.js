@@ -2,8 +2,8 @@ const layers = [{
 	number: 0,
 	visible: true,
 	selected: true,
-	alpha: 0.5,
-	blendMode: 'overlay',
+	// alpha: 0.5,
+	// blendMode: 'overlay',
 	name: "Dangerous Clouds",
 	image: "/indexDB/sky.jpg"
 }, {
