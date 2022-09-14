@@ -1,3 +1,13 @@
+import ink from './brushes/inky1.js';
+import pixel from './brushes/pixel1.js';
+
+const brushImage = await new Promise(async (resolve) => {
+	const image = new Image();
+	image.onload = () => resolve(image);
+	image.src = 'https://www.html5canvastutorials.com/demos/assets/wood-pattern.png';
+});
+
+
 function getOffset(obj) {
 	var offsetLeft = 0;
 	var offsetTop = 0;
@@ -49,7 +59,33 @@ const getDraw = (canvas, listen, state) => (e, eventName="") => {
 	state.prev = pos;
 };
 
-const attachDrawListener = (canvas, listen) => {
+const drawFn = (concrete, brushFn) => {
+	//const ctx = canvas.viewport.scene.context;
+	const ctx = concrete.layers[0].scene.context;
+	// const pattern = ctx.createPattern(brushImage, 'repeat');
+	// ctx.strokeStyle = pattern;
+	// ctx.fillStyle = pattern;
+
+	return ({ x1, y1, x2, y2 }) => {
+		ctx.save();
+
+		const radius = 2.5;
+		brushFn(ctx, radius, x1, y1, x2, y2);
+		ctx.restore();
+		requestAnimationFrame(() => {
+			concrete.viewport.render();
+		});
+	};
+};
+
+const brushes = {
+	ink, pixel
+};
+
+const attachDrawListener = (concrete, brush) => {
+	const brushFn = brushes[brush] || brushes.pixel;
+	const { canvas } = concrete.viewport.scene;
+
 	const state = {
 		prev: null
 	};
@@ -64,7 +100,7 @@ const attachDrawListener = (canvas, listen) => {
 		draw = null;
 	};
 	const down = () => {
-		draw = getDraw(canvas, listen, state);
+		draw = getDraw(canvas, drawFn(concrete, brushFn), state);
 		canvas.addEventListener("pointermove", draw, false);
 		canvas.addEventListener("pointerup", end, false);
 		canvas.addEventListener("pointerleave", end, false);
@@ -73,3 +109,6 @@ const attachDrawListener = (canvas, listen) => {
 };
 
 export default attachDrawListener;
+
+
+//https://github.com/Wicklets/WickBrush/tree/main/brushes
