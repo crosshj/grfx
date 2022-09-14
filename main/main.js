@@ -5,6 +5,9 @@ import loadImage from './layers/image.js';
 import './cursor.js';
 import attachDraw from './draw.js';
 
+import ink from './brushes/inky1.js';
+import pixel from './brushes/pixel1.js';
+
 const container = document.querySelector('.canvasContainer');
 let canvas;
 
@@ -14,15 +17,25 @@ const brushImage = await new Promise(async (resolve) => {
 	image.src = 'https://www.html5canvastutorials.com/demos/assets/wood-pattern.png';
 });
 
-// consider: https://github.com/disjukr/croquis.js
-const drawFn = (ctx) => ({ x1, y1, x2, y2 }) => {
-	//const pattern = ctx.createPattern(brushImage, 'repeat');
-	ctx.beginPath();
-	ctx.moveTo(x1, y1);
-	ctx.lineTo(x2, y2);
-	//ctx.strokeStyle = pattern;
-	ctx.lineWidth = 5;
-	ctx.stroke();
+const drawFn = (canvas) => {
+	//const ctx = canvas.viewport.scene.context;
+	const ctx = canvas.layers[0].scene.context;
+	// const pattern = ctx.createPattern(brushImage, 'repeat');
+	// ctx.strokeStyle = pattern;
+	// ctx.fillStyle = pattern;
+
+	return ({ x1, y1, x2, y2 }) => {
+		ctx.save();
+
+		const radius = 2.5;
+		ink(ctx, radius, x1, y1, x2, y2);
+		//pixel(ctx, radius, x1, y1, x2, y2);
+
+		ctx.restore();
+		requestAnimationFrame(() => {
+			canvas.viewport.render();
+		});
+	};
 };
 
 listen('layers-update', async ({ type, layers }) => {
@@ -40,8 +53,7 @@ listen('layers-update', async ({ type, layers }) => {
 		console.log(canvas);
 		attachDraw(
 			canvas.viewport.scene.canvas,
-			drawFn(canvas.viewport.scene.context)
-			//drawFn(canvas.layers[1].scene.context)
+			drawFn(canvas)
 		);
 		return
 	}

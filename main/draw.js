@@ -27,31 +27,35 @@ function getMousePos(canvas, evt) {
 	return { x, y };
 }
 
-const getDraw = (canvas, listen, prev) => (e) => {
+const getDraw = (canvas, listen, state) => (e) => {
 	const offset  = getOffset(canvas);
 	const pos = getMousePos(canvas, e);
-	if(prev !== null){
+	if(state.prev !== null){
 		listen({
-			x1: prev.x,
-			y1: prev.y,
+			x1: state.prev.x,
+			y1: state.prev.y,
 			x2: pos.x,
 			y2: pos.y
 		});
 	}
-	prev = pos;
+	state.prev = pos;
 };
 
 const attachDrawListener = (canvas, listen) => {
-	let prev = null;
+	const state = {
+		prev: null
+	};
+
 	let draw;
 	const end = () => {
 		canvas.removeEventListener("pointermove", draw, false);
 		canvas.removeEventListener("pointerup", end, false);
 		canvas.removeEventListener("pointerleave", end, false);
-		prev = null;
+		state.prev = null;
+		draw = null;
 	};
 	const down = () => {
-		draw = getDraw(canvas, listen, prev);
+		draw = getDraw(canvas, listen, state);
 		canvas.addEventListener("pointermove", draw, false);
 		canvas.addEventListener("pointerup", end, false);
 		canvas.addEventListener("pointerleave", end, false);
