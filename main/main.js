@@ -22,7 +22,7 @@ listen('layers-update', async ({ type, layers }) => {
 		});
 		send('update-thumbs', { thumbs: canvas.thumbs });
 		console.log(canvas);
-		attachDraw(canvas, "ink");
+		attachDraw(canvas, "airbrush");
 		return
 	}
 	if(type === "layers-update" && canvas){

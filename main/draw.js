@@ -1,12 +1,16 @@
 import ink from './brushes/inky1.js';
 import pixel from './brushes/pixel1.js';
+import airbrush from './brushes/airbrush1.js';
+
+const brushes = {
+	ink, pixel, airbrush
+};
 
 const brushImage = await new Promise(async (resolve) => {
 	const image = new Image();
 	image.onload = () => resolve(image);
 	image.src = 'https://www.html5canvastutorials.com/demos/assets/wood-pattern.png';
 });
-
 
 function getOffset(obj) {
 	var offsetLeft = 0;
@@ -76,10 +80,6 @@ const drawFn = (concrete, brushFn) => {
 			concrete.viewport.render();
 		});
 	};
-};
-
-const brushes = {
-	ink, pixel
 };
 
 const attachDrawListener = (concrete, brush) => {
