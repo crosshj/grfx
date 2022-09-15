@@ -21,14 +21,20 @@
 				<label for="file">
 					<span>File</span>
 					<select id="file" data-menu="file-menu">
-						<option>New...</option>
-						<option>Open...</option>
-						<option>Open Recent</option>
-						<option>Close</option>
-						<option>Save</option>
-						<option>Save As...</option>
-						<option>Import</option>
-						<option>Export</option>
+						<optgroup>
+							<option>New...</option>
+							<option>Open...</option>
+							<option>Open Recent</option>
+						</optgroup>
+						<optgroup>
+							<option>Close</option>
+							<option>Save</option>
+							<option>Save As...</option>
+						</optgroup>
+						<optgroup>
+							<option>Import</option>
+							<option>Export</option>
+						</optgroup>
 					</select>
 				</label>
 			</li>
@@ -36,15 +42,21 @@
 				<label for="edit">
 					<span>Edit</span>
 					<select id="edit" data-menu="edit-menu">
-						<option>Undo</option>
-						<option>Step Forward</option>
-						<option>Step Backward</option>
-						<option>Cut</option>
-						<option>Copy</option>
-						<option>Paste</option>
-						<option>Clear</option>
-						<option>Free Transform</option>
-						<option>Transform</option>
+						<optgroup>
+							<option>Undo</option>
+							<option>Step Forward</option>
+							<option>Step Backward</option>
+						</optgroup>
+						<optgroup>
+							<option>Cut</option>
+							<option>Copy</option>
+							<option>Paste</option>
+							<option>Clear</option>
+						</optgroup>
+						<optgroup>
+							<option>Free Transform</option>
+							<option>Transform</option>
+						</optgroup>
 					</select>
 				</label>
 			</li>
@@ -52,15 +64,21 @@
 				<label for="image">
 					<span>Image</span>
 					<select id="image" data-menu="image-menu">
-						<option>Auto Tone</option>
-						<option>Auto Contrast</option>
-						<option>Auto Color</option>
-						<option>Image Size...</option>
-						<option>Canvas Size...</option>
-						<option>Image Rotation</option>
-						<option>Crop</option>
-						<option>Trim</option>
-						<option>Duplicate</option>
+						<optgroup>
+							<option>Auto Tone</option>
+							<option>Auto Contrast</option>
+							<option>Auto Color</option>
+						</optgroup>
+						<optgroup>
+							<option>Image Size...</option>
+							<option>Canvas Size...</option>
+							<option>Image Rotation</option>
+							<option>Crop</option>
+							<option>Trim</option>
+						</optgroup>
+						<optgroup>
+							<option>Duplicate</option>
+						</optgroup>
 					</select>
 				</label>
 			</li>
@@ -68,15 +86,23 @@
 				<label for="layer">
 					<span>Layer</span>
 					<select id="layer" data-menu="layer-menu">
-						<option>New</option>
-						<option>Duplicate Layer</option>
-						<option>Delete</option>
-						<option>Layer Properties</option>
-						<option>Group Layers</option>
-						<option>Ungroup Layers</option>
-						<option>Hide Layers</option>
-						<option>Merge Layers</option>
-						<option>Merge Visible</option>
+						<optgroup>
+							<option>New</option>
+							<option>Duplicate Layer</option>
+							<option>Delete</option>
+						</optgroup>
+						<optgroup>
+							<option>Layer Properties</option>
+						</optgroup>
+						<optgroup>
+							<option>Group Layers</option>
+							<option>Ungroup Layers</option>
+							<option>Hide Layers</option>
+						</optgroup>
+						<optgroup>
+							<option>Merge Layers</option>
+							<option>Merge Visible</option>
+						</optgroup>	
 					</select>
 				</label>
 			</li>
@@ -92,11 +118,15 @@
 				<label for="select">
 					<span>Select</span>
 					<select id="select" data-menu="select-menu">
-						<option>All</option>
-						<option>Deselect</option>
-						<option>Inverse</option>
-						<option>Grow</option>
-						<option>Similar</option>
+						<optgroup>
+							<option>All</option>
+							<option>Deselect</option>
+							<option>Inverse</option>
+						</optgroup>
+						<optgroup>
+							<option>Grow</option>
+							<option>Similar</option>
+						</optgroup>
 					</select>
 				</label>
 			</li>
@@ -104,14 +134,20 @@
 				<label for="filter">
 					<span>Filter</span>
 					<select id="filter" data-menu="filter-menu">
-						<option>Last Filter</option>
-						<option>Liquify</option>
-						<option>Artistic</option>
-						<option>Blur</option>
-						<option>Distort</option>
-						<option>Noise</option>
-						<option>Pixelate</option>
-						<option>Sharpen</option>
+						<optgroup>
+							<option>Last Filter</option>
+						</optgroup>
+						<optgroup>
+							<option>Liquify</option>
+						</optgroup>
+						<optgroup>
+							<option>Artistic</option>
+							<option>Blur</option>
+							<option>Distort</option>
+							<option>Noise</option>
+							<option>Pixelate</option>
+							<option>Sharpen</option>
+						</optgroup>
 					</select>
 				</label>
 			</li>
@@ -119,9 +155,13 @@
 				<label for="threeDee">
 					<span>3D</span>
 					<select id="threeDee" data-menu="threeDee-menu">
-						<option>New Layer from 3D File...</option>
-						<option>Merge 3D Layer</option>
-						<option>Export 3D Layer</option>
+						<optgroup>
+							<option>New Layer from 3D File...</option>
+						</optgroup>
+						<optgroup>
+							<option>Merge 3D Layer</option>
+							<option>Export 3D Layer</option>
+						</optgroup>
 					</select>
 				</label>
 			</li>
@@ -129,14 +169,20 @@
 				<label for="view">
 					<span>View</span>
 					<select id="view" data-menu="view-menu">
-						<option>Zoom In</option>
-						<option>Zoom Out</option>
-						<option>Fit on Screen</option>
-						<option>Actual Pixels</option>
-						<option>Rulers</option>
-						<option>Snap</option>
-						<option>Snap To</option>
-						<option>Enter Fullscreen</option>
+						<optgroup>
+							<option>Zoom In</option>
+							<option>Zoom Out</option>
+							<option>Fit on Screen</option>
+							<option>Actual Pixels</option>
+						</optgroup>
+						<optgroup>						
+							<option>Rulers</option>
+							<option>Snap</option>
+							<option>Snap To</option>
+						</optgroup>
+						<optgroup>
+							<option>Enter Fullscreen</option>
+						</optgroup>	
 					</select>
 				</label>
 			</li>

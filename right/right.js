@@ -3,7 +3,11 @@ import Sidebar from './sidebar.js';
 
 let dispatch;
 
-listen('update-thumbs', ({ thumbs }) => {
+let initResolve;
+const initPromise = new Promise(r => initResolve = r);
+
+listen('update-thumbs', async ({ thumbs }) => {
+	await initPromise;
 	const action = {
 		type: "UPDATE_THUMBS",
 		payload: thumbs
@@ -15,6 +19,7 @@ listen('layers-update', ({ layers }) => {
 	if(dispatch) return;
 	Sidebar({ layers, thumbs: [] }, (store) => {
 		dispatch = store.dispatcher;
+		initResolve && initResolve();
 	});
 });
 
