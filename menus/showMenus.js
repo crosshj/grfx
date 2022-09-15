@@ -44,8 +44,8 @@ const getMenuItems = (e) => {
 		const groupChildren = Array.from(child.children)
 			.filter(x => !x.hidden);
 
-		const previous = groupChildren[Number(i)-1];
-		if(previous && previous.tagName !== "OPTGROUP" && Number(i)-1 !== 0){
+		const previous = children[Number(i)-1];
+		if(previous && previous.tagName !== "OPTGROUP" && Number(i)-1 >= 0){
 			items.push("seperator");
 		}
 		for(const groupChild of groupChildren){
@@ -55,6 +55,8 @@ const getMenuItems = (e) => {
 			});
 		}
 		if(Number(i)+1 === children.length) continue;
+		if(items[items.length-1] === "seperator")
+			continue;
 		items.push("seperator");
 	}
 	return items;
@@ -68,7 +70,7 @@ const showMenu = (e) => {
 		bubbles: true,
 		detail: {
 			x: left,
-			y: bottom,
+			y: bottom - 30,
 			list: getMenuItems(e) || [],
 			parent: "top-bar"
 		}

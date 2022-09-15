@@ -5,6 +5,12 @@ body .ContextOverlay {
 	background-color: unset !important;
 	transition: unset !important;
 	background: unset;
+	top: 30px; /* account for clicking top menu */
+}
+
+body .ContextContainer {
+	width: 100vw;
+	height: calc(100vh - 30px);
 }
 
 body .ContextMenu .menu-container:after {
