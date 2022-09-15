@@ -78,7 +78,6 @@ const drawFn = (concrete, brushFn) => {
 	};
 };
 
-//https://github.com/Wicklets/WickBrush/tree/main/brushes
 const brushes = {
 	ink, pixel
 };
