@@ -70,7 +70,8 @@ const Core = ({ host }) => {
 			message: "TODO: get data for given form"
 		}),
 		canvasSize: () => ({
-			message: "NOTE: this is just an example"
+			message: "NOTE: this is just an example",
+			anotherMsg: "added some more!"
 		}),
 	};
 	window.addEventListener('contextmenu-select', ({ detail={} }={}) => {
