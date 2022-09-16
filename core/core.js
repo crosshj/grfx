@@ -68,6 +68,9 @@ const Core = ({ host }) => {
 		imageSize: () => ({
 			message: "TODO: get data for given form"
 		}),
+		canvasSize: () => ({
+			message: "NOTE: this is just an example"
+		}),
 	};
 	window.addEventListener('contextmenu-select', ({ detail={} }={}) => {
 		const { which } = detail;
