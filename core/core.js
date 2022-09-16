@@ -61,6 +61,37 @@ const Core = ({ host }) => {
 			data: { layers },
 		});
 	});
+	const modals = {
+		'Image Size...': 'imageSize'
+	};
+	const modalData = {
+		imageSize: () => ({
+			message: "TODO: get data for given form"
+		}),
+	};
+	window.addEventListener('contextmenu-select', ({ detail={} }={}) => {
+		const { which } = detail;
+		const modal = modals[which];
+		const data = modal && modalData[modal]();
+		if(!modal) return;
+		const event = new CustomEvent('contextMenuShow', {
+			bubbles: true,
+			detail: {
+				modal,
+				list: [],
+				data,
+				parent: "core"
+			}
+		});
+		window.top.dispatchEvent(event);
+	});
+	window.addEventListener('contextmenu-select', (e) => {
+		host.broadcast({
+			eventName: 'contextmenu-select',
+			type: 'contextmenu-select',
+			data: e.detail,
+		});
+	});
 };
 
 export default Core;

@@ -1,5 +1,9 @@
 import Core from './core/core.js';
+
+import forms from './menus/forms.js';
 import Menus from './menus/menus.js';
+//import Menus from 'https://beta.fiug.dev/dist/menus.js'
+
 import Layout from './layout/layout.js';
 import { host as MessageHost } from './shared/messages.js';
 
@@ -10,12 +14,5 @@ Core({ host });
 // window.addEventListener('load', async function () {
 // });
 
-document.body.append(Menus());
-
-window.addEventListener('contextmenu-select', (e) => {
-	host.broadcast({
-		eventName: 'contextmenu-select',
-		type: 'contextmenu-select',
-		data: e.detail,
-	});
-});
+const menusDom = Menus({ forms });
+document.body.append(menusDom);

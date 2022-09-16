@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=optional');
+@import url('../colors.css');
+
 body .ContextOverlay {
 	--horiz-pad: 10px;
 	--vert-pad: 5px;
@@ -6,6 +9,9 @@ body .ContextOverlay {
 	transition: unset !important;
 	background: unset;
 	top: 30px; /* account for clicking top menu */
+	color: var(--main-text-color);
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 14px;
 }
 
 body .ContextContainer {
@@ -26,9 +32,130 @@ body .ContextMenu .menu-container:after {
 	left: -1px;
 }
 
+body .ContextOverlay.modal .menu-container:after {
+	background: var(--main-bg-color);
+	border-radius: 3px;
+}
+
 body .ContextMenu .list .item button {
 	color: var(--main-text-color);
 }
 body .ContextMenu .list .item:hover {
 	background: var(--bg-highlight-color);
+}
+
+body .ContextOverlay.modal {
+	top: 0;
+}
+
+body .ContextOverlay.modal .ContextContainer {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+body .ContextOverlay.modal .ContextMenu {
+	position: relative;
+	top: unset !important;
+	left: unset !important;
+}
+
+body .ContextOverlay.modal .menu-container {
+	padding: 1em;
+}
+
+body .ContextOverlay.modal form {
+}
+body .ContextOverlay.modal .menu-container .list {
+	display: none;
+}
+
+body .ContextOverlay.modal form label {
+	min-width: 5em;
+	display: inline-block;
+}
+
+body .ContextOverlay .row {
+	display: flex;
+	align-items: center;
+	height: 2.2em;
+}
+body .ContextOverlay .row * + * {
+	margin-left: 0.5em;
+}
+body .ContextOverlay .row.align-right {
+	justify-content: right;
+}
+
+
+body .ContextOverlay.modal .note {
+	background: var(--bg-light-color);
+	padding: 1em;
+	border: 1px solid var(--bg-lighter-color);
+	border-radius: 5px;
+	margin-bottom: 0.5em;
+	color: var(--main-text-color);
+}
+
+body .ContextOverlay.modal input[type="color"] {
+	height: 20px;
+	border: 1px solid var(--main-text-color);
+	padding: 0;
+	overflow: hidden;
+}
+body .ContextOverlay.modal input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+body .ContextOverlay.modal input[type="text"],
+body .ContextOverlay.modal input[type="number"],
+body .ContextOverlay.modal select {
+	background-color: var(--bg-light-hover-color);
+	border: 0;
+	text-transform: uppercase;
+	padding: 0.5em;
+	border-radius: 0.25em;
+	font-size: 0.8em;
+	width: -webkit-fill-available;
+}
+body .ContextOverlay.modal input[type="text"]:focus,
+body .ContextOverlay.modal input[type="number"]:focus,
+body .ContextOverlay.modal input[type="submit"]:focus,
+body .ContextOverlay.modal select:focus {
+	outline: 0;
+}
+body .ContextOverlay.modal input[type="text"]:hover,
+body .ContextOverlay.modal input[type="number"]:hover,
+body .ContextOverlay.modal select:hover {
+	background-color: var(--bg-lighter-color);
+}
+
+body .ContextOverlay.modal input[type="submit"] {
+	background-color: var(--bg-lightest-color);
+	border: 0;
+	text-transform: uppercase;
+	padding: 0.5em;
+	border-radius: 0.25em;
+	font-size: 0.8em;
+	min-width: 5em;
+}
+body .ContextOverlay.modal input[type="submit"]:hover {
+	background-color: var(--main-text-color);
+}
+
+
+body .ContextOverlay.modal select {
+	padding-right: 2.1em;
+	appearance: none;
+	background-image:
+		linear-gradient(45deg, transparent 50%, currentColor 50%),
+		linear-gradient(135deg, currentColor 50%, transparent 50%);
+	background-position:
+		calc(100% - 15px) calc(1em - 1px),
+		calc(100% - 10px) calc(1em - 1px);
+	background-size:
+		5px 5px,
+		5px 5px;
+	background-repeat: no-repeat;
 }

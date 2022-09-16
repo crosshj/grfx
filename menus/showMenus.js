@@ -1,6 +1,6 @@
+import handlebars from "https://unpkg.com/@fiug/handlebars-esm";
 let offsetLeft=0;
 let offsetTop=0;
-
 const setOffsets = (x,y) => {
 	offsetLeft = x;
 	offsetTop = y;
@@ -74,7 +74,7 @@ const showMenu = (e) => {
 			list: getMenuItems(e) || [],
 			parent: "top-bar"
 		}
-	})
+	});
 	window.selectListener = (selectEvent) => {
 		if(selectEvent.which) e.target.value = selectEvent.which;
 		window.selectListener = undefined;
