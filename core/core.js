@@ -71,7 +71,8 @@ const Core = ({ host }) => {
 		}),
 		canvasSize: () => ({
 			message: "NOTE: this is just an example",
-			anotherMsg: "added some more!"
+			anotherMsg: "added some more!",
+			moreMsg: "yay! more message!"
 		}),
 	};
 	window.addEventListener('contextmenu-select', ({ detail={} }={}) => {
