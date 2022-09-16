@@ -72,7 +72,9 @@ const Core = ({ host }) => {
 		canvasSize: () => ({
 			message: "NOTE: this is just an example",
 			anotherMsg: "added some more!",
-			moreMsg: "yay! more message!"
+			moreMsg: "yay! more message!",
+			width: 800,
+			height: 600
 		}),
 	};
 	window.addEventListener('contextmenu-select', ({ detail={} }={}) => {
