@@ -62,7 +62,8 @@ const Core = ({ host }) => {
 		});
 	});
 	const modals = {
-		'Image Size...': 'imageSize'
+		'Image Size...': 'imageSize',
+		'Canvas Size...': 'canvasSize'
 	};
 	const modalData = {
 		imageSize: () => ({
