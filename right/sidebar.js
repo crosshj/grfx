@@ -1,4 +1,5 @@
 import { send } from '../shared/messages.js';
+
 //import SidebarReady from './sidebarReady.js'
 import sidebarStart from './sidebarStart.js';
 import sidebarDef from './sidebarDef.js'
@@ -20,7 +21,7 @@ export default function renderSideBar({ layers, thumbs }, cb){
 	const definition = sidebarDef({
 		toggleLayerVisible,
 		getLayerThumb: getLayerThumb,
-		getLayerSource: dummy('getLayerSource'),
+		getLayerSource: (data) => send('show-layer-source', data),
 		changeLayerAlpha,
 		changeLayerBlendMode,
 		changeLayerOrder: dummy('changeLayerOrder'),

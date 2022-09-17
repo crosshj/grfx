@@ -1,5 +1,17 @@
 @media (prefers-color-scheme: dark) {
 	:root {
+		/*
+		--primary:
+		--secondary:
+		--tertiary:
+		--success:
+		--warning:
+		--danger:
+		--dark
+		--medium
+		--light
+		*/
+	
 		--main-bg-color: ButtonFace;
 		--main-bg-color: #2a2a2a;
 		--bg-light-color: #383838;

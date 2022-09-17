@@ -1025,34 +1025,38 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 								rect,
 								polygon,
 								editClick: () => {
-									//console.log('---TODO: edit icon click!');
 									const selectedLayer = item.layers[layersSelected[0]];
-									const selectedLayerSource = selectedLayer.getLayerSource({
+									selectedLayer.getLayerSource({
 										number: selectedLayer.number,
 									});
-									//console.log({ selectedLayerSource });
-									const name = selectedLayer.name || "";
-									const def = selectedLayerSource || "";
-									const type = selectedLayer.type || "3D Canvas";
-									constructLayer(
-										({ name, def, type }) => {
-											item.updateLayer({
-												name,
-												number: selectedLayer.number,
-												def,
-												type,
-												callback: (layer) =>
-													updateLayerItem({
-														layers: item.layers,
-														updatedLayer: Object.assign({}, layer, { type }),
-													}),
-											});
-										},
-										() => {
-											console.log("TODO: cancel layer update");
-										},
-										{ name, def, type }
-									);
+									// //console.log('---TODO: edit icon click!');
+									// const selectedLayer = item.layers[layersSelected[0]];
+									// const selectedLayerSource = selectedLayer.getLayerSource({
+									// 	number: selectedLayer.number,
+									// });
+									// //console.log({ selectedLayerSource });
+									// const name = selectedLayer.name || "";
+									// const def = selectedLayerSource || "";
+									// const type = selectedLayer.type || "3D Canvas";
+									// constructLayer(
+									// 	({ name, def, type }) => {
+									// 		item.updateLayer({
+									// 			name,
+									// 			number: selectedLayer.number,
+									// 			def,
+									// 			type,
+									// 			callback: (layer) =>
+									// 				updateLayerItem({
+									// 					layers: item.layers,
+									// 					updatedLayer: Object.assign({}, layer, { type }),
+									// 				}),
+									// 		});
+									// 	},
+									// 	() => {
+									// 		console.log("TODO: cancel layer update");
+									// 	},
+									// 	{ name, def, type }
+									// );
 								},
 							}),
 							buttonComponent({

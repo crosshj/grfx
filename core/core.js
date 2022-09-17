@@ -28,7 +28,9 @@ const layers = [{
 	image: "/indexDB/robot.jpg"
 }];
 
-const Core = ({ host }) => {
+const Core = ({ host, layout }) => {
+	//layout.showPane({ name: "editor" });
+
 	host.broadcast({
 		eventName: 'layers-update',
 		type: 'layers-update',
@@ -61,6 +63,13 @@ const Core = ({ host }) => {
 			data: { layers },
 		});
 	});
+	host.listen('show-layer-source', ({ number, alpha }) => {
+		layout.showPane({ name: "editor" })
+	});
+	host.listen('hide-layer-source', ({ number, alpha }) => {
+		layout.hidePane({ name: "editor" })
+	});
+
 	const modals = {
 		'Image Size...': 'imageSize'
 	};

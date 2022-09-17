@@ -108,16 +108,32 @@ body .ContextOverlay.modal input[type="color"] {
 body .ContextOverlay.modal input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	-webkit-text-fill-color: var(--main-text-color);
+	-webkit-box-shadow: 0 0 0px 1000px var(--main-bg-color) inset;
+}
+
 body .ContextOverlay.modal input[type="text"],
 body .ContextOverlay.modal input[type="number"],
 body .ContextOverlay.modal select {
-	background-color: var(--bg-light-hover-color);
-	border: 0;
+	background-color: transparent;
+	border: 1px solid;
+	border-color: var(--bg-lighter-color);
 	text-transform: uppercase;
 	padding: 0.5em;
 	border-radius: 0.25em;
 	font-size: 0.8em;
 	width: -webkit-fill-available;
+	color: var(--main-text-color);
 }
 body .ContextOverlay.modal input[type="text"]:focus,
 body .ContextOverlay.modal input[type="number"]:focus,
@@ -159,3 +175,36 @@ body .ContextOverlay.modal select {
 		5px 5px;
 	background-repeat: no-repeat;
 }
+
+form input[type="checkbox"],
+form input[type="radio"]{
+/*   appearance: none; */
+	color-scheme: dark light;
+	accent-color: var(--main-text-color);
+}
+fieldset {
+	border: 1px solid var(--bg-light-color);
+	border-radius: 5px;
+	margin-bottom: 1em;
+}
+
+/*
+html { 
+  --brand: hotpink;
+  scrollbar-color: hotpink Canvas;
+}
+
+:root { accent-color: var(--brand); }
+:focus-visible { outline-color: var(--brand); }
+::selection { background-color: var(--brand); }
+::marker { color: var(--brand); }
+
+:is(
+  ::-webkit-calendar-picker-indicator,
+  ::-webkit-clear-button,
+  ::-webkit-inner-spin-button, 
+  ::-webkit-outer-spin-button
+) {
+  color: var(--brand);
+}
+*/

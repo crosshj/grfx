@@ -22,6 +22,8 @@ https://philiprogers.com/svgpatterns
 }
 * { cursor: none; }
 .cursor {
+	left: -9999px;
+	top: -9999px;
 	width: var(--cursor-dim);
 	height: var(--cursor-dim);
 	border-radius: 100%;
