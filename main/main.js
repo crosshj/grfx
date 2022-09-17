@@ -21,7 +21,7 @@ listen('layers-update', async ({ type, layers }) => {
 			container
 		});
 		send('update-thumbs', { thumbs: canvas.thumbs });
-		attachDraw(canvas, "ink");
+		attachDraw(canvas, "airbrush");
 		return
 	}
 	if(type === "layers-update" && canvas){

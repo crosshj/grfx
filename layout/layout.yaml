@@ -22,13 +22,13 @@ rows:
         drop: false
       - iframe: '?'
         name: 'editor'
-        hidden: tr
+        hidden: true
         module: editor/editor.html
-        width: 600px
+        width: 800px
         drop: false
       - iframe: '?'
         module: right/index.html
-        width: 250px
+        width: 300px
         drop: false
   - iframe: '?'
     module: bottom/index.html
