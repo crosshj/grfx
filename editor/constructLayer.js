@@ -1,14 +1,15 @@
 import vertShader from './examples/vertShader.gl.js';
 import fragShader from './examples/fragShader.gl.js';
 
-import * as shiki from 'https://unpkg.com/shiki@0.9.4/dist/index.browser.mjs';
-shiki.setCDN('https://unpkg.com/shiki@0.9.4/');
+import * as shiki from 'https://unpkg.com/shiki@0.10.1/dist/index.browser.mjs';
+shiki.setCDN('https://unpkg.com/shiki@0.10.1/');
 
 const vertexShaderSource = vertShader();
 const fragmentShaderSource = fragShader();
 
 async function highlighted(code){
-	const theme = 'dark-plus';
+	// const theme = 'dark-plus';
+	const theme = 'css-variables';
 	const langs = ['js'];
 	const highlighter = await shiki.getHighlighter({ theme, langs })
 	return highlighter.codeToHtml(code, 'js');
@@ -201,7 +202,6 @@ var fragCode = \`${fragmentShaderSource}\`;
 				e.target.classList.add("active");
 				layerDef.innerHTML = await highlighted(examples[key].trim());
 				layerName.value = key;
-				//hljs.highlightElement(layerDef);
 				// TODO: also change text of layerDef and name and type !!
 			};
 			tabBar.appendChild(tabItem);

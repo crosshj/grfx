@@ -188,6 +188,10 @@ fieldset {
 	margin-bottom: 1em;
 }
 
+body .ContextMenu .list .context-seperator {
+	color: var(--bg-lighter-color);
+}
+
 /*
 html { 
   --brand: hotpink;
