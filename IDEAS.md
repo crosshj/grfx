@@ -9,3 +9,5 @@
 
 [canvas filter](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter)
 - used this for airbrush, maybe use for others
+
+[svg to canvas](https://jsfiddle.net/Wijmo5/h2L3gw88/)
