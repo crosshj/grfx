@@ -11,3 +11,5 @@
 - used this for airbrush, maybe use for others
 
 [svg to canvas](https://jsfiddle.net/Wijmo5/h2L3gw88/)
+
+[imagemagick in browser](https://github.com/cancerberoSgx/magica)
