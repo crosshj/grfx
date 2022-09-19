@@ -1,4 +1,5 @@
 import BrowserFS from 'https://cdn.skypack.dev/browserfs';
+import { blobToBase64 } from './utils.js'; 
 
 const mountConfig = {
 	fs: "MountableFileSystem",
@@ -18,40 +19,36 @@ const configure = (config) => new Promise((resolve, reject) => {
 	});
 });
 
-const writeFile = ({ fs, path, data }) => new Promise((resolve, reject) => {
-	fs.writeFile(path, data, (e) => !!e ? reject(e) : resolve());
+const writeFile = ({ fs, path, data }) => new Promise(async (resolve, reject) => {
+	const blob = data instanceof Blob
+		? data
+		: new Blob([data], {
+			type: 'text/plain'
+		});
+	const base64 = await blobToBase64(blob);
+	fs.writeFile(path, base64, (e) => !!e ? reject(e) : resolve());
 });
 
 const readdir = ({ fs, path }) => new Promise((resolve, reject) => {
 	fs.readdir(path, (e, data) => !!e ? reject(e) : resolve(data));
 });
 
-const readFile = ({ fs, path }) => new Promise((resolve, reject) => {
-	fs.readFile(path, (e, data) => !!e ? reject(e) : resolve(data));
+const readFile = ({ fs, path, encoding='base64' }) => new Promise((resolve, reject) => {
+	fs.readFile(path, (e, data) => {
+		if(e) return reject(e);
+		if(encoding === 'base64')
+			return resolve(data);
+		const decoded = atob(
+			decodeURIComponent(
+				escape(
+					String.fromCharCode(...data)
+				)
+			).split('base64,')[1]
+		);
+		resolve(decoded);
+	});
 });
 
-const blobToBinary = async (blob) => {
-	const buffer = await blob.arrayBuffer();
-	const view = new UInt8Array(buffer);
-	return [...view].map((n) => n.toString(2)).join(' ');
-};
-const binaryToDataUri = async (binary, type) => {
-	var decoder = new TextDecoder('utf8');
-	// const numbers = binary.trim().split(/\s*,\s*/g).map(x => x/1);
-	//const binstr = String.fromCharCode(...binary);
-	const b64str = btoa(decoder.decode(binary));
-	const src = `data:image/${type};base64,` + b64str;
-	return src;
-};
-const blobToBase64 = (blob) => {
-	return new Promise((resolve) => {
-		const reader = new FileReader();
-		reader.readAsDataURL(blob);
-		reader.onloadend = function () {
-			resolve(reader.result);
-		};
-	});
-};
 const walk = ({ fs, dir, callback }) => {
 	var results = [];
 	fs.readdir(dir, function(err, list) {
@@ -83,16 +80,17 @@ const walk = ({ fs, dir, callback }) => {
 
 const FileSystem = () => {};
 FileSystem.init = async ({ config: fn } = {}) => {
-	const { fs, path } = await configure(mountConfig);
+	const { fs, path, Buffer } = await configure(mountConfig);
 	FileSystem.fs = fs;
 	fs.path = path;
 	FileSystem.path = path;
+	FileSystem.Buffer = Buffer;
 	fn && await fn(FileSystem);
 };
 FileSystem.walk = (args) => walk({ ...args, fs: FileSystem.fs });;
 FileSystem.readdir = (args) => readdir({ ...args, fs: FileSystem.fs });
 FileSystem.readFile = (args) => readFile({ ...args, fs: FileSystem.fs });
 FileSystem.writeFile = (args) => writeFile({ ...args, fs: FileSystem.fs });
-FileSystem.blobToBase64 = blobToBase64;
+
 
 export default FileSystem;

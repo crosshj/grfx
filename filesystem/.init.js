@@ -1,5 +1,5 @@
-import ex from './example.js';
-console.log(ex);
+// import ex from './example.js';
+// console.log(ex);
 
 /*
 	TODO:
@@ -18,36 +18,28 @@ const examples = {
 };
 
 export default async (fs) => {
-	const { readdir, readFile, writeFile, blobToBase64, walk } = fs;
+	const { readdir, readFile, writeFile, walk } = fs;
 	let indexDBContents = await readdir({ path: '/indexDB' });
 
 	if(!indexDBContents.length){
 		for(const [name, url] of Object.entries(examples)){
 			const example = await fetch(url).then(x => x.blob());
-			name.includes('.') && console.log(example);
 			await writeFile({
 				path: name.includes('.')
 					? `/indexDB/${name}`
 					: `/indexDB/${name}.jpg`,
-				data: await blobToBase64(example)
+				data: example
 			});
 		}
 		indexDBContents = await readdir({ path: '/indexDB' });
 	}
-	const example = await readFile({ path: '/indexDB/example.js' });
-	console.log(
-		String.fromCharCode(...example)
+	const module = await import(
+		await readFile({ path: '/indexDB/example.js' })
 	);
-	console.log(
-		atob(
-			decodeURIComponent(
-				escape(
-					String.fromCharCode(...example)
-				)
-			).split('base64,')[1]
-		)
-	);
-	//console.log(indexDBContents)
+	console.log(module.default);
+
+	// const example = await readFile({ path: '/indexDB/example.js' });
+	// console.log(example);
 
 	await walk({
 		dir: '/',
