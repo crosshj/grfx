@@ -7,10 +7,12 @@ import Menus from './menus/menus.js';
 import Layout from './layout/layout.js';
 import { host as MessageHost } from './shared/messages.js';
 
-await FileSystem.init({ config: fsConfig });
+const config = await FileSystem.init({ config: fsConfig });
 
 const layout = await Layout();
 const host = MessageHost();
 
-Core({ host, layout });
+const core = Core({ host, layout });
 Menus({ forms });
+
+core.load(config);

@@ -1,41 +1,16 @@
-const layers = [{
-	number: 0,
-	visible: true,
-	selected: true,
-	// alpha: 0.5,
-	// blendMode: 'overlay',
-	blendMode: 'screen',
-	name: "Dangerous Clouds",
-	image: "/indexDB/sky.jpg"
-}, {
-	number: 1,
-	name: "Owl At Sea",
-	alpha: 0.1,
-	blendMode: 'saturation',
-	image: "/indexDB/owl.jpg"
-}, {
-	visible: false,
-	number: 2,
-	name: "Golden Boy",
-	image: "/indexDB/gold.jpg"
-}, {
-	number: 3,
-	name: "Mon*star's Sky-Runner",
-	image: "/indexDB/squid.jpg"
-}, {
-	number: 4,
-	name: "Cyberpunk Robot",
-	image: "/indexDB/robot.jpg"
-}];
+let layers;
 
-const Core = ({ host, layout }) => {
-	//layout.showPane({ name: "editor" });
+const load = ({ host, config }) => {
+	layers = config.layers;
 
 	host.broadcast({
 		eventName: 'layers-update',
 		type: 'layers-update',
 		data: { layers },
 	});
+};
+
+const Core = ({ host, layout }) => {
 	host.listen('layer-visibility', ({ number, visible }) => {
 		const l = layers.find(x => x.number === Number(number));
 		l.visible = visible;
@@ -101,6 +76,10 @@ const Core = ({ host, layout }) => {
 			data: e.detail,
 		});
 	});
+	
+	return {
+		load: (config) => load({ host, config })
+	};
 };
 
 export default Core;

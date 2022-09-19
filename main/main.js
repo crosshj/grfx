@@ -1,7 +1,7 @@
 import { listen, send } from '../shared/messages.js';
 import { sleep } from '../shared/utils.js';
 import Canvas from './canvas.js';
-import loadImage from './layers/image.js';
+import layerDef from './layers/layerDef.js';
 import './cursor.js';
 import attachDraw from './draw.js';
 
@@ -16,7 +16,7 @@ listen('layers-update', async ({ type, layers }) => {
 			height: 1080,
 			layers: layers.reverse().map(layer => ({
 				...layer,
-				render: loadImage(layer.image)
+				render: layerDef(layer)
 			})),
 			container
 		});

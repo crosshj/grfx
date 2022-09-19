@@ -85,7 +85,7 @@ FileSystem.init = async ({ config: fn } = {}) => {
 	fs.path = path;
 	FileSystem.path = path;
 	FileSystem.Buffer = Buffer;
-	fn && await fn(FileSystem);
+	return fn && await fn(FileSystem);
 };
 FileSystem.walk = (args) => walk({ ...args, fs: FileSystem.fs });;
 FileSystem.readdir = (args) => readdir({ ...args, fs: FileSystem.fs });

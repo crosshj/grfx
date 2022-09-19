@@ -7,37 +7,72 @@ const examples = {
 	sky: "https://images.nightcafe.studio/jobs/lheEUAmhcoUn9fsxXGZP/lheEUAmhcoUn9fsxXGZP_6.9444x.jpg",
 };
 
+const local = Object.keys(examples)
+	.reduce((all, key) => ({
+		...all,
+		[key]: `/indexDB/${key}.jpg`
+	}), {});
+
 export default {
 	zoom: 0.6,
 	width: 2880,
 	height: 2160,
 	layers: [{
 		number: 0,
+		alpha: 0.6,
+		blendMode: 'multiply',
+		name: "Basic Canvas Ops",
+		def: `
+			const { width, height } = getDims();
+			const radius = 300;
+			const Xcenter = width/2;
+			const Ycenter = height/2;
+			ctx.fillStyle = '#008';
+			ctx.arc(Xcenter, Ycenter, radius, 0, 2*Math.PI, false);
+			ctx.fill();
+		`
+	}, {
+		number: 1,
 		visible: true,
 		selected: true,
 		// alpha: 0.5,
 		// blendMode: 'overlay',
 		blendMode: 'screen',
 		name: "Dangerous Clouds",
-		def: `loadImage("${examples.sky}");`
+		def: `
+			const image = await loadImage("${local.sky}");
+			ctx.drawImage(image, ...getDims(image));
+		`
 	}, {
-		number: 1,
+		number: 2,
 		name: "Owl At Sea",
 		alpha: 0.1,
 		blendMode: 'saturation',
-		def: `loadImage("${examples.owl}");`
+		def: `
+			const image = await loadImage("${local.owl}");
+			ctx.drawImage(image, ...getDims(image));
+		`
 	}, {
 		visible: false,
-		number: 2,
-		name: "Golden Boy",
-		def: `loadImage("${examples.gold}");`
-	}, {
 		number: 3,
-		name: "Mon*star's Sky-Runner",
-		def: `loadImage("${examples.squid}");`
+		name: "Golden Boy",
+		def: `
+			const image = await loadImage("${local.gold}");
+			ctx.drawImage(image, ...getDims(image));
+		`
 	}, {
 		number: 4,
+		name: "Mon*star's Sky-Runner",
+		def: `
+			const image = await loadImage("${local.squid}");
+			ctx.drawImage(image, ...getDims(image));
+		`
+	}, {
+		number: 5,
 		name: "Cyberpunk Robot",
-		def: `loadImage("${examples.robot}");`
+		def: `
+			const image = await loadImage("${local.robot}");
+			ctx.drawImage(image, ...getDims(image));
+		`
 	}]
 };

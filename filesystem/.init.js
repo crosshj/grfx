@@ -19,9 +19,8 @@ const examples = {
 
 export default async (fs) => {
 	const { readdir, readFile, writeFile, walk } = fs;
-	let indexDBContents = await readdir({ path: '/indexDB' });
-
-	if(!indexDBContents.length){
+	// let indexDBContents = await readdir({ path: '/indexDB' });
+	// if(!indexDBContents.length){
 		for(const [name, url] of Object.entries(examples)){
 			const example = await fetch(url).then(x => x.blob());
 			await writeFile({
@@ -31,21 +30,22 @@ export default async (fs) => {
 				data: example
 			});
 		}
-		indexDBContents = await readdir({ path: '/indexDB' });
-	}
+	//	indexDBContents = await readdir({ path: '/indexDB' });
+	// }
 	const module = await import(
 		await readFile({ path: '/indexDB/example.js' })
 	);
-	console.log(module.default);
 
 	// const example = await readFile({ path: '/indexDB/example.js' });
 	// console.log(example);
 
-	await walk({
-		dir: '/',
-		callback: (err, results) => {
-			if (err) throw err;
-			console.log(results);
-		}
-	});
+	// await walk({
+	// 	dir: '/',
+	// 	callback: (err, results) => {
+	// 		if (err) throw err;
+	// 		console.log(results);
+	// 	}
+	// });
+
+	return module.default;
 };
