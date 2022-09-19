@@ -7,11 +7,51 @@ const examples = {
 	sky: "https://images.nightcafe.studio/jobs/lheEUAmhcoUn9fsxXGZP/lheEUAmhcoUn9fsxXGZP_6.9444x.jpg",
 };
 
-const local = Object.keys(examples)
-	.reduce((all, key) => ({
-		...all,
-		[key]: `/indexDB/${key}.jpg`
-	}), {});
+const basicCanvas = `
+	const { width, height } = getDims();
+	const radius = 300;
+	const Xcenter = width/2;
+	const Ycenter = height/2 - 60;
+	ctx.fillStyle = '#e0a';
+	ctx.arc(Xcenter, Ycenter, radius, 0, 2*Math.PI, false);
+	ctx.fill();
+
+
+
+
+	const omg = ' ꙭꙮ꙯꙰꙱꙲꙳ꙴꙵꙶꙷꙸꙹꙺꙻ꙼꙽꙾ꙿ';
+	const kanji = ' 丳 临 丵 丧 乶 不 擄 ㍼ 书';
+	const braille = "⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿⡀⡁⡂⡃⡄⡅⡆⡇⡈⡉⡊⡋⡌⡍⡎⡏⡐⡑⡒⡓⡔⡕⡖⡗⡘⡙⡚⡛⡜⡝⡞⡟⡠⡡⡢⡣⡤⡥⡦⡧⡨⡩⡪⡫⡬⡭";
+	const indic = 'ﶝﶞﶟﶢﶣﶤﶥﶩﶯ';
+	const blocks ='▒▓▒▒▓▒▒▒▓▒▒▒▓▒▓▒▒▒▓▒▒▒▓▒▒▒▒▒';
+	const cool = ' ☫〄〠☬ 〯☫㉲☬༖☫☬☫☬';
+	const tibetan = 'ༀ ༁ ༂ ༃ ༄ ༅ ༆ ༇ ༈ ༉ ༊ ་ ༌ ། ༎ ༏ ༐ ༑ ༒ ༓ ༔ ༕ ༖ ༗ ༘ ༙ ༚ ༛ ༜ ༝ ༞ ༟ ༠ ༡ ༢ ༣ ༤ ༥ ༦ ༧ ༨ ༩ ༪ ༫ ༬ ༭ ༮ ༯ ༰ ༱ ༲ ༳ ༴ ༵ ༶ ༷ ༸ ༹ ༺ ༻ ༼ ༽ ༾ ༿ ཀ ཁ ག གྷ ང ཅ ཆ ཇ ཉ ཊ ཋ ཌ ཌྷ ཎ ཏ ཐ ད དྷ ན པ ཕ བ བྷ མ ཙ ཚ ཛ ཛྷ ཝ ཞ ཟ འ ཡ ར ལ ཤ ཥ ས ཧ ཨ ཀྵ ཱ ི ཱི ུ ཱུ ྲྀ ཷ ླྀ ཹ ེ ཻ ོ ཽ ཾ ཿ ྀ ཱྀ ྂ ྃ ྄ ྅ ྆ ྇ ';
+	const tamil = 'ஂ ஃ அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ க ங ச ஜ ஞ ட ண த ந ன ப ம ய ர ற ல ள ழ வ ஷ ஸ ஹ ா ி ீ ு ூ ெ ே ை ொ ோ ௌ ் ௗ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯ ௰ ௱ ௲';
+
+	function RNG(seed) {
+		var m_as_number = 2**53 - 111
+		var m = 2n**53n - 111n
+		var a = 5667072534355537n
+		var s = BigInt(seed) % m
+		return function () {
+			return Number(s = s * a % m) / m_as_number
+		}
+	}
+	// var val = Date.now();
+	// console.log(val);
+	//1663621046135
+	//1663621109690
+	//1663621152890
+	//1663621172223
+	const pseudoRandom = RNG(1663621172223);
+
+	const random = (source) => () => source.split(' ').sort(() => 0.5 - pseudoRandom())[0];
+	const getRandom = (number, lang) => [...Array(number)].map(random(lang)).join('');
+
+	ctx.fillStyle = '#992b99';
+	ctx.font = 'bold 120px sans-serif';
+	ctx.fillText(getRandom(26, tibetan), 0, height-80, width);
+`;
 
 export default {
 	zoom: 0.6,
@@ -22,15 +62,7 @@ export default {
 		alpha: 0.6,
 		blendMode: 'multiply',
 		name: "Basic Canvas Ops",
-		def: `
-			const { width, height } = getDims();
-			const radius = 300;
-			const Xcenter = width/2;
-			const Ycenter = height/2;
-			ctx.fillStyle = '#008';
-			ctx.arc(Xcenter, Ycenter, radius, 0, 2*Math.PI, false);
-			ctx.fill();
-		`
+		def: basicCanvas
 	}, {
 		number: 1,
 		visible: true,
@@ -40,7 +72,7 @@ export default {
 		blendMode: 'screen',
 		name: "Dangerous Clouds",
 		def: `
-			const image = await loadImage("${local.sky}");
+			const image = await loadImage("${examples.sky}");
 			ctx.drawImage(image, ...getDims(image));
 		`
 	}, {
@@ -49,7 +81,7 @@ export default {
 		alpha: 0.1,
 		blendMode: 'saturation',
 		def: `
-			const image = await loadImage("${local.owl}");
+			const image = await loadImage("${examples.owl}");
 			ctx.drawImage(image, ...getDims(image));
 		`
 	}, {
@@ -57,21 +89,21 @@ export default {
 		number: 3,
 		name: "Golden Boy",
 		def: `
-			const image = await loadImage("${local.gold}");
+			const image = await loadImage("${examples.gold}");
 			ctx.drawImage(image, ...getDims(image));
 		`
 	}, {
 		number: 4,
 		name: "Mon*star's Sky-Runner",
 		def: `
-			const image = await loadImage("${local.squid}");
+			const image = await loadImage("${examples.squid}");
 			ctx.drawImage(image, ...getDims(image));
 		`
 	}, {
 		number: 5,
 		name: "Cyberpunk Robot",
 		def: `
-			const image = await loadImage("${local.robot}");
+			const image = await loadImage("${examples.robot}");
 			ctx.drawImage(image, ...getDims(image));
 		`
 	}]

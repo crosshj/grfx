@@ -1,12 +1,17 @@
 import fs from '../../shared/fs.js';
 const init = fs.init();
 
-const loadImage = (path) => new Promise(async (resolve) => {
+const loadImage = (url) => new Promise(async (resolve) => {
+	const path = `/indexDB/downloads/${url.split('/').pop()}`;
+	const fileExists = await fs.exists({ path });
+	if(!fileExists){
+		console.log('file did not exist, will fetch: ' + path)
+		const data = await fetch(url).then(x => x.blob());
+		await fs.writeFile({ path, data });
+	}
 	const image = new Image();
 	image.onload = () => resolve(image);
-	image.src = path.includes('http')
-		? path
-		: await fs.readFile({ path });
+	image.src = await fs.readFile({ path });
 });
 
 const getDims = (width, height) => (i) => {
@@ -26,7 +31,12 @@ const getDims = (width, height) => (i) => {
 
 const processDef = (layer) => {
 	const AsyncFunction = (async function () {}).constructor;
-	const renderFn = new AsyncFunction('loadImage', 'ctx', 'getDims', layer.def);
+	const def = `
+		ctx.save();
+		${layer.def}
+		ctx.restore();
+	`;
+	const renderFn = new AsyncFunction('loadImage', 'ctx', 'getDims', def);
 
 	return async function drawImage({ ctx, width, height }){
 		await init;

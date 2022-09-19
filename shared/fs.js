@@ -49,6 +49,14 @@ const readFile = ({ fs, path, encoding='base64' }) => new Promise((resolve, reje
 	});
 });
 
+const exists = ({ fs, path }) => new Promise((resolve) => {
+	fs.stat(path, (e, stat) => resolve(!e));
+});
+
+const mkdir = ({ fs, path }) => new Promise((resolve) => {
+	fs.mkdir(path, (e, stat) => resolve(!e));
+});
+
 const walk = ({ fs, dir, callback }) => {
 	var results = [];
 	fs.readdir(dir, function(err, list) {
@@ -91,6 +99,7 @@ FileSystem.walk = (args) => walk({ ...args, fs: FileSystem.fs });;
 FileSystem.readdir = (args) => readdir({ ...args, fs: FileSystem.fs });
 FileSystem.readFile = (args) => readFile({ ...args, fs: FileSystem.fs });
 FileSystem.writeFile = (args) => writeFile({ ...args, fs: FileSystem.fs });
-
+FileSystem.exists = (args) => exists({ ...args, fs: FileSystem.fs });
+FileSystem.mkdir = (args) => mkdir({ ...args, fs: FileSystem.fs });
 
 export default FileSystem;
