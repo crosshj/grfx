@@ -1,14 +1,4 @@
-//import * as filer from 'https://unpkg.com/filer';
 import BrowserFS from 'https://cdn.skypack.dev/browserfs';
-
-const examples = {
-	dunno: "https://raw.githubusercontent.com/crosshj/graphics-editor/main/assets/feedforward.png",
-	robot: "https://images.nightcafe.studio/jobs/wJMbnnlCfS9WEVur80Qx/wJMbnnlCfS9WEVur80Qx_8.9286x.jpg",
-	squid: "https://images.nightcafe.studio/jobs/gZVKddsDrWb2odrM3vsY/gZVKddsDrWb2odrM3vsY--2--Y98HJ.jpg",
-	gold: "https://images.nightcafe.studio/jobs/7OXU5TcnbVF71K1zN79N/7OXU5TcnbVF71K1zN79N--3--5TQRK.jpg",
-	owl: "https://images.nightcafe.studio/jobs/5freDC2naZa9EQrIUOQY/5freDC2naZa9EQrIUOQY.jpg",
-	sky: "https://images.nightcafe.studio/jobs/lheEUAmhcoUn9fsxXGZP/lheEUAmhcoUn9fsxXGZP_6.9444x.jpg",
-};
 
 const mountConfig = {
 	fs: "MountableFileSystem",
@@ -17,7 +7,7 @@ const mountConfig = {
 		'/indexDB': { fs: "IndexedDB", options: { storeName: 'graphics-editor' } }
 	}
 };
-//console.log(browserfs);
+
 const configure = (config) => new Promise((resolve, reject) => {
 	BrowserFS.configure(mountConfig, function(e) {
 		if(e) reject(e);
@@ -28,31 +18,16 @@ const configure = (config) => new Promise((resolve, reject) => {
 	});
 });
 
-const writeFile = ({ fs, path, data }) => {
-	return new Promise((resolve, reject) => {
-		fs.writeFile(
-			path,
-			data,
-			(e) => {
-				if(e) reject(e);
-				resolve();
-			}
-		);
-	});
-};
+const writeFile = ({ fs, path, data }) => new Promise((resolve, reject) => {
+	fs.writeFile(path, data, (e) => !!e ? reject(e) : resolve());
+});
 
 const readdir = ({ fs, path }) => new Promise((resolve, reject) => {
-	fs.readdir(path, (e, data) => {
-		if(e) reject(e);
-		resolve(data);
-	});
+	fs.readdir(path, (e, data) => !!e ? reject(e) : resolve(data));
 });
 
 const readFile = ({ fs, path }) => new Promise((resolve, reject) => {
-	fs.readFile(path, (e, data) => {
-		if(e) reject(e);
-		resolve(data);
-	});
+	fs.readFile(path, (e, data) => !!e ? reject(e) : resolve(data));
 });
 
 const blobToBinary = async (blob) => {
@@ -77,24 +52,25 @@ const blobToBase64 = (blob) => {
 		};
 	});
 };
-
-const { fs, path, Buffer } = await configure(mountConfig);
-
-var walk = function(dir, done) {
+const walk = ({ fs, dir, callback }) => {
 	var results = [];
 	fs.readdir(dir, function(err, list) {
-		if (err) return done(err);
+		if (err) return callback(err);
 		var i = 0;
 		(function next() {
 			var file = list[i++];
-			if (!file) return done(null, results);
-			file = path.resolve(dir, file);
+			if (!file) return callback(null, results);
+			file = fs.path.resolve(dir, file);
 			//console.log(file)
 			fs.stat(file, function(err, stat) {
 				if (stat && stat.isDirectory()) {
-					walk(file, function(err, res) {
-						results = results.concat(res);
-						next();
+					walk({
+						fs,
+						dir: file,
+						callback: (err, res) => {
+							results = results.concat(res);
+							next();
+						}
 					});
 				} else {
 					results.push(file);
@@ -105,30 +81,18 @@ var walk = function(dir, done) {
 	});
 };
 
-let indexDBContents = await readdir({ fs, path: '/indexDB' });
-if(!indexDBContents.length){
-	for(const [name, url] of Object.entries(examples)){
-		const example = await fetch(url).then(x => x.blob());
-		await writeFile({
-			fs,
-			path: `/indexDB/${name}.jpg`,
-			data: await blobToBase64(example)
-		});
-	}
-	indexDBContents = await readdir({ fs, path: '/indexDB' });
-}
-//console.log(indexDBContents)
-
-// walk('/', function(err, results) {
-// 	if (err) throw err;
-// 	console.log(results);
-// });
-
-
 const FileSystem = () => {};
-FileSystem.readImage = async (path) => {
-	const file = await readFile({ fs, path });
-	return file;
-	//return binaryToDataUri(file, 'png');
+FileSystem.init = async ({ config: fn } = {}) => {
+	const { fs, path } = await configure(mountConfig);
+	FileSystem.fs = fs;
+	fs.path = path;
+	FileSystem.path = path;
+	fn && await fn(FileSystem);
 };
+FileSystem.walk = (args) => walk({ ...args, fs: FileSystem.fs });;
+FileSystem.readdir = (args) => readdir({ ...args, fs: FileSystem.fs });
+FileSystem.readFile = (args) => readFile({ ...args, fs: FileSystem.fs });
+FileSystem.writeFile = (args) => writeFile({ ...args, fs: FileSystem.fs });
+FileSystem.blobToBase64 = blobToBase64;
+
 export default FileSystem;
