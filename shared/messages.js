@@ -2,7 +2,7 @@
 const resolve = {};
 const online = {};
 if(window.top === window){
-	const clients = ['main', 'right', 'top-bar'];
+	const clients = ['main', 'right', 'top-bar', 'editor'];
 	for(const client of clients){
 		online[client] = new Promise(r => resolve[client] = r);
 	}
@@ -36,6 +36,9 @@ export const host = () => {
 		if(eventName === "ping" && source.includes('grfx/top-bar')){
 			return resolve['top-bar']();
 		}
+		if(eventName === "ping" && source.includes('grfx/editor')){
+			return resolve['editor']();
+		}
 		if(listeners[eventName]){
 			for(const listener of listeners[eventName]){
 				listener({ source, ...event.data.data });
@@ -46,14 +49,26 @@ export const host = () => {
 	return { broadcast, listen };
 };
 
+// CLIENT LISTEN
+let listeners = {};
 export const listen = (eventName, handler) => {
-	window.addEventListener("message", (event) => {
+	const isListening = Object.keys(listeners).length;
+	listeners[eventName] = listeners[eventName] || [];
+	listeners[eventName].push(handler);
+
+	if(isListening) return;
+
+	window.addEventListener("message", async (event) => {
 		const { eventName: messageEventName, data, ...rest } = event.data;
-		if(messageEventName !== eventName) return;
-		handler({ ...data, ...rest });
+		const eventHandlers = listeners[messageEventName];
+		if(!eventHandlers) return;
+		for(const handle of eventHandlers){
+			await handle({ ...data, ...rest });
+		}
 	});
 };
 
+// CLIENT SEND (maybe can be used by host as well)
 export const send = (eventName, data) => {
 	window.top.postMessage({ eventName, data });
 };

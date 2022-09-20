@@ -29,6 +29,9 @@ const sidebarDef = ({
 	const layersHidden = layers
 		.map((x,i) => x.visible === false ? i : undefined)
 		.filter(x => x !== undefined);
+	const layersSelected = layers
+		.map((x,i) => x.selected === true ? i : undefined)
+		.filter(x => x !== undefined);
 	const defin = {
 		title: "Sidebar Demo",
 		pinHandler,
@@ -44,6 +47,7 @@ const sidebarDef = ({
 						updateLayer,
 						removeLayers,
 						layersHidden,
+						layersSelected,
 						layers: layersSorted
 					},
 				],

@@ -1,47 +1,58 @@
-let layers;
+let currentFile;
 
-const load = ({ host, config }) => {
-	layers = config.layers;
-
-	host.broadcast({
-		eventName: 'layers-update',
-		type: 'layers-update',
-		data: { layers },
+const update = async ({ host }) => {
+	await host.broadcast({
+		eventName: 'file-update',
+		type: 'file-update',
+		data: currentFile,
 	});
+	//DEPRECATE
+	// await host.broadcast({
+	// 	eventName: 'layers-update',
+	// 	type: 'layers-update',
+	// 	data: currentFile,
+	// });
+};
+const load = ({ host, config }) => {
+	currentFile = config;
+	update({ host });
 };
 
 const Core = ({ host, layout }) => {
+	host.listen('layer-select', ({ number }) => {
+		const { layers } = currentFile;
+		for(const layer of layers){
+			layer.selected = undefined;
+			if(layer.number !== number) continue;
+			layer.selected = true;
+		}
+		update({ host });
+	});
 	host.listen('layer-visibility', ({ number, visible }) => {
+		const { layers } = currentFile;
 		const l = layers.find(x => x.number === Number(number));
 		l.visible = visible;
-		host.broadcast({
-			eventName: 'layers-update',
-			type: 'layers-update',
-			data: { layers },
-		});
+		update({ host });
 	});
 	host.listen('layer-alpha', ({ number, alpha }) => {
+		const { layers } = currentFile;
 		const l = layers.find(x => x.number === Number(number));
 		l.alpha = alpha;
-		host.broadcast({
-			eventName: 'layers-update',
-			type: 'layers-update',
-			data: { layers },
-		});
+		update({ host });
 	});
 	host.listen('layer-blend-mode', ({ number, mode }) => {
+		const { layers } = currentFile;
 		const l = layers.find(x => x.number === Number(number));
 		l.blendMode = mode;
-		host.broadcast({
-			eventName: 'layers-update',
-			type: 'layers-update',
-			data: { layers },
-		});
+		update({ host });
 	});
-	host.listen('show-layer-source', ({ number, alpha }) => {
+	host.listen('layer-new', () => {
 		layout.showPane({ name: "editor" })
 	});
-	host.listen('hide-layer-source', ({ number, alpha }) => {
+	host.listen('show-layer-source', () => {
+		layout.showPane({ name: "editor" })
+	});
+	host.listen('hide-layer-source', () => {
 		layout.hidePane({ name: "editor" })
 	});
 

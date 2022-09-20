@@ -2,7 +2,7 @@ import rxReact from './rxReact.js';
 import { isNumeric, clone } from '../shared/utils.js';
 import constructLayer from './constructLayer.js';
 
-export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
+export default function sidebarStart({ sidebarDef, thumbs, listener }, startCallback) {
 	const getRoot = (components, dispatcher) => {
 		const {
 			div,
@@ -90,6 +90,12 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 			return dispatcher({
 				type: "REORDER_LAYERS",
 				payload: { order },
+			});
+		};
+
+		const newLayerItem = (payload) => {
+			return dispatcher({
+				type: "NEW_LAYER_ITEM"
 			});
 		};
 
@@ -1065,25 +1071,7 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 								section,
 								item: {
 									name: "+",
-									onClick: () =>
-										constructLayer(
-											({ name, def, type }) => {
-												item.addLayer({
-													name,
-													def,
-													type,
-													callback: (layer) =>
-														addLayerItem({
-															layers: item.layers,
-															newLayer: Object.assign({}, layer, { type }),
-															layerOrder: layerOrder.length ? layerOrder : null,
-														}),
-												});
-											},
-											() => {
-												console.log("TODO: cancel layer add");
-											}
-										),
+									onClick: newLayerItem,
 								},
 							}),
 							buttonComponent({
@@ -1220,7 +1208,8 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 			.layersHidden,
 		globalState: [],
 		layersProperties: [],
-		layersSelected: [0],
+		layersSelected: sidebarDef.sections[0].items.find((x) => x.type === "layers")
+			.layersSelected,
 		layerOrder: undefined, //TODO:
 		pinned: undefined, //TODO:
 		hidden: undefined, //TODO:
@@ -1230,10 +1219,10 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 	// reducer should be built with respect to sidebar definition
 	const getReducer = () => {
 		const reducer = (state, action) => {
-			//console.log(action.type)
 			var newState = clone(state);
 
 			function updateSelectedLayers(state, layersSelected) {
+			
 				const found = (state.layersProperties || []).find((x) =>
 					layersSelected.includes(x.number)
 				);
@@ -1422,6 +1411,8 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 					break;
 				}
 			}
+
+			listener({ action, prev: state, next: newState });
 			return newState;
 		};
 		return reducer;

@@ -8,6 +8,7 @@ body {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 14px;
 	position: relative;
+	tab-size: 4;
 }
 
 @import url('../colors.css');
@@ -25,6 +26,8 @@ body {
 		color: var(--text-secondary-color);
 }
 
+
+/*
 ::-webkit-scrollbar {
 		width: 6px;
 }
@@ -38,18 +41,13 @@ body {
 		border-radius: 0px;
 		background: var(--bg-light-color);
 }
-
-
-
 div.scrollContainer {
 		padding-left: 6px;
 		padding-right: 2px;
 		overflow-y: auto;
 		overflow-x: hidden;
-/*     height: calc(100% - 20px); */
-	height: 100%;
+		height: 100%;
 		box-sizing: border-box;
-/*     margin-top: 20px; */
 		padding-bottom: 20px;
 }
 div.scrollContainer > div {
@@ -58,6 +56,7 @@ div.scrollContainer > div {
 		justify-content: space-between;
 		margin-top: 5px;
 }
+*/
 span.label {
 		display: inline-block;
 		min-width: 84px;
@@ -477,21 +476,29 @@ div#layer-create select:focus {
 }
 
 div#layer-create label {
-		display: block;
+	display: block;
 }
 
 div#layer-create #layerDef {
 	position: relative;
-	margin: 0 5px;
+	height: 100%;
+	width: 100%;
+	overflow: scroll;
+}
+div#layer-create #layerDefContainer {
+	position: relative;
+	margin: 1.5em 5px;
 	box-sizing: border-box;
 	padding: 15px;
 	color: var(--main-text-color);
 	height: 85%;
-	overflow: auto;
+	overflow: hidden;
 	border-radius: 3px;
 	box-shadow: inset 0 0 5px 0px var(--bg-dark-color);
+	flex-grow: 1;
 }
-div#layer-create #layerDef:before {
+
+div#layer-create #layerDefContainer:before {
 	content: '';
 	position: absolute;
 	left: 0;
@@ -509,10 +516,10 @@ div#layer-create #layerDef:before {
 	margin: 0;
 }
 
-div#layer-create #layerDef.full {
+/* div#layer-create #layerDef.full {
 	height: 95%;
 	max-height: 95%;
-}
+} */
 
 div#layer-create #topBar, div#layer-create #bottomBar {
 		display: flex;
@@ -550,6 +557,7 @@ div#layer-create #topBar > *, div#layer-create #bottomBar > *{
 	display: flex;
 	box-sizing: border-box;
 	padding: 0px 5px;
+	margin-top: 1em;
 }
 
 .tab {

@@ -22,7 +22,7 @@ rows:
         drop: false
       - iframe: '?'
         name: 'editor'
-        hidden: true
+        hidden: false
         module: editor/editor.html
         width: 800px
         drop: false

@@ -11,7 +11,7 @@ const basicCanvas = `
 	const { width, height } = getDims();
 	const radius = 300;
 	const Xcenter = width/2;
-	const Ycenter = height/2 - 60;
+	const Ycenter = height/2 - 70;
 	ctx.fillStyle = '#e0a';
 	ctx.arc(Xcenter, Ycenter, radius, 0, 2*Math.PI, false);
 	ctx.fill();
@@ -49,62 +49,69 @@ const basicCanvas = `
 	const getRandom = (number, lang) => [...Array(number)].map(random(lang)).join('');
 
 	ctx.fillStyle = '#992b99';
-	ctx.font = 'bold 120px sans-serif';
-	ctx.fillText(getRandom(26, tibetan), 0, height-80, width);
-`;
+	ctx.font = '120px sans-serif';
+	ctx.fillText(getRandom(26, tibetan), 0, height-90, width);
+`.replace(/^\t/gm, '');
 
 export default {
 	zoom: 0.6,
-	width: 2880,
-	height: 2160,
+	width: 1440,
+	height: 1080,
+	tool: "airbrush",
 	layers: [{
 		number: 0,
+		name: "Basic Canvas Ops",
+		selected: true,
 		alpha: 0.6,
 		blendMode: 'multiply',
-		name: "Basic Canvas Ops",
+		type: '2d',
 		def: basicCanvas
 	}, {
 		number: 1,
+		name: "Dangerous Clouds",
 		visible: true,
-		selected: true,
 		// alpha: 0.5,
 		// blendMode: 'overlay',
 		blendMode: 'screen',
-		name: "Dangerous Clouds",
+		type: '2d',
 		def: `
 			const image = await loadImage("${examples.sky}");
 			ctx.drawImage(image, ...getDims(image));
-		`
+		`.replace(/^\t\t\t/gm, '')
 	}, {
 		number: 2,
 		name: "Owl At Sea",
 		alpha: 0.1,
 		blendMode: 'saturation',
+		type: '2d',
 		def: `
 			const image = await loadImage("${examples.owl}");
 			ctx.drawImage(image, ...getDims(image));
-		`
+		`.replace(/^\t\t\t/gm, '')
 	}, {
-		visible: false,
 		number: 3,
 		name: "Golden Boy",
+		visible: false,
+		type: '2d',
 		def: `
 			const image = await loadImage("${examples.gold}");
 			ctx.drawImage(image, ...getDims(image));
-		`
+		`.replace(/^\t\t\t/gm, '')
 	}, {
 		number: 4,
 		name: "Mon*star's Sky-Runner",
+		type: '2d',
 		def: `
 			const image = await loadImage("${examples.squid}");
 			ctx.drawImage(image, ...getDims(image));
-		`
+		`.replace(/^\t\t\t/gm, '')
 	}, {
 		number: 5,
 		name: "Cyberpunk Robot",
+		type: '2d',
 		def: `
 			const image = await loadImage("${examples.robot}");
 			ctx.drawImage(image, ...getDims(image));
-		`
+		`.replace(/^\t\t\t/gm, '')
 	}]
 };
