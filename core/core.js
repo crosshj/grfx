@@ -49,6 +49,16 @@ const Core = ({ host, layout }) => {
 	host.listen('layer-new', () => {
 		layout.showPane({ name: "editor" })
 	});
+	host.listen('layer-update', async (layer) => {
+		const { layers } = currentFile;
+		const l = layers.find(x => x.number === Number(layer.number));
+		if(!l) return console.error('could not find layer to update');
+		layer.def && (l.def = layer.def);
+		layer.name && (l.name = layer.name);
+		l.dirty = true;
+		await update({ host });
+		l.dirty = undefined;
+	});
 	host.listen('show-layer-source', () => {
 		layout.showPane({ name: "editor" })
 	});

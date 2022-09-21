@@ -24,7 +24,7 @@ rows:
         name: 'editor'
         hidden: false
         module: editor/editor.html
-        width: 800px
+        width: 650px
         drop: false
       - iframe: '?'
         module: right/index.html

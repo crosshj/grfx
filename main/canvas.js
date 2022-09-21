@@ -40,6 +40,22 @@ const initLayer = async (args) => {
 	return { layer, render };
 };
 
+const updateLayer = async (args) => {
+	const { viewport, layerDef, layer } = args;
+
+	if(typeof layerDef.visible !== "undefined"){
+		layer.visible = layerDef.visible;
+	}
+	if(typeof layerDef.blendMode !== "undefined"){
+		layer.blendMode = layerDef.blendMode.toLowerCase();
+	}
+
+	const render = getRender({ layerDef, layer, ...args });
+	await render();
+
+	return { render };
+};
+
 async function Canvas(args) {
 	const { width, height, layers:layerDefs } = args;
 	const viewport = new Concrete.Viewport(args);
@@ -52,7 +68,18 @@ async function Canvas(args) {
 			viewport, width, height, layerDef
 		});
 		layers[layerDef.number] = res.layer;
+
+		const updateRenderFn = async (layerDef) => {
+			const res = await updateLayer({
+				viewport, width, height, layerDef,
+				layer: layers[layerDef.number]
+			});
+			renderFns[layerDef.number] = res.render;
+			renderFns[layerDef.number].update = updateRenderFn;
+		};
+
 		renderFns[layerDef.number] = res.render;
+		renderFns[layerDef.number].update = updateRenderFn;
 	}
 	viewport.render();
 

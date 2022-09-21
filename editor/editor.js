@@ -3,9 +3,9 @@ import constructLayer from './constructLayer.js';
 
 let config;
 
-const goFn = (args) => {
-	console.log(args)
-	send('hide-layer-source');
+const goFn = (action, layer) => {
+	send(action, layer);
+	//send('hide-layer-source');
 };
 const cancelFn = () => {
 	send('hide-layer-source');

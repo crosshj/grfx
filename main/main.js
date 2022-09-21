@@ -59,6 +59,13 @@ listen('file-update', async (args) => {
 
 	//right/sidebarReady.js:51
 	for(const layer of layers){
+		if(layer.dirty){
+			console.log('layer is dirty')
+			await canvas.renderFns[layer.number].update({
+				...layer,
+				render: layerDef(layer)
+			});
+		}
 		const canvasLayer = canvas.layers[layer.number];
 		const render = canvas.renderFns[layer.number];
 		if(!canvasLayer) continue;
@@ -68,8 +75,8 @@ listen('file-update', async (args) => {
 		if(layer.blendMode !== undefined){
 			canvasLayer.blendMode = layer.blendMode;
 		}
-		if(layer.alpha !== undefined)
-			await render(layer);
+
+		await render(layer);
 	}
 	canvas.viewport.render();
 	send('update-thumbs', { thumbs: canvas.thumbs });

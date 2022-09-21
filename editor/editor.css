@@ -485,6 +485,9 @@ div#layer-create #layerDef {
 	width: 100%;
 	overflow: scroll;
 }
+div#layerDef:focus {
+	outline: 0;
+}
 div#layer-create #layerDefContainer {
 	position: relative;
 	margin: 1.5em 5px;

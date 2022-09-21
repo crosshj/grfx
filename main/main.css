@@ -59,7 +59,7 @@ body {
 }
 .canvasContainer {
 	box-shadow: 0 0 10px black;
-	transform: scale(0.6);
+	transform: scale(0);
 }
 .canvasContainer canvas {
 	background: var(--bg-medium-color);
