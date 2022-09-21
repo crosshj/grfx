@@ -55,7 +55,7 @@ listen('file-update', async (args) => {
 		container
 	});
 	attachDraw(canvas, tool);
-	setScale(zoom);
+	!scale && setScale(zoom);
 
 	//right/sidebarReady.js:51
 	for(const layer of layers){

@@ -2,6 +2,7 @@ import vertShader from './vertShader.gl.js';
 import fragShader from './fragShader.gl.js';
 
 const smiley = `
+const { width, height } = getDims();
 var centerX = width / 2;
 var centerY = height / 2;
 var radius = 70;
@@ -37,6 +38,7 @@ ctx.stroke();
 const colors = ["red", "orange", "yellow", "green", "indigo", "violet"];
 
 const getNgonCode = (sides) => `
+const { width, height } = getDims();
 const numberOfSides = ${sides};
 const size = 200;
 const Xcenter = width / 2;
@@ -70,6 +72,7 @@ const square = getNgonCode(4);
 const octagon = getNgonCode(8);
 
 const text = `
+const { width, height } = getDims();
 const canvasText = 'hello GRFX!';
 ctx.font = 'bold 120px sans-serif';
 ctx.fillStyle = '${colors[Math.floor(Math.random() * colors.length)]}';
@@ -77,6 +80,7 @@ ctx.fillText(canvasText, 20, height/2, width);
 `.trim();
 
 const circle = `
+const { width, height } = getDims();
 const radius = 300;
 const Xcenter = width/2;
 const Ycenter = height/2;
@@ -91,6 +95,7 @@ const webgl = `
 // https://www.tutorialspoint.com/webgl/webgl_sample_application.htm
 // see also https://webglfundamentals.org/webgl/lessons/webgl-shadertoy.html
 
+const { width, height } = getDims();
 var gl = ctx;
 
 var vertices = [-0.5, 0.5, -0.5, -0.5, 0.0, -0.5,];
