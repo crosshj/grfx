@@ -89,6 +89,7 @@ ctx.fill();
 const webgl = `
 // example modded from:
 // https://www.tutorialspoint.com/webgl/webgl_sample_application.htm
+// see also https://webglfundamentals.org/webgl/lessons/webgl-shadertoy.html
 
 var gl = ctx;
 
