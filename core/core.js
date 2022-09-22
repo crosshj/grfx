@@ -39,80 +39,22 @@ const Core = ({ host, layout }) => {
 		host.listen(actionName, doAction(handler));
 	}
 
-	host.listen('layers-order',async ({ order }) => {
-		const { layers } = currentFile;
-		for(const [i, o] of Object.entries(order)){
-			layers[o].number = Number(i);
-		}
-		currentFile.layers = currentFile.layers.sort((a,b) => a.number-b.number);
-		currentFile.dirty = true;
-		await update({ host });
-		currentFile.dirty = undefined;
-	});
-	host.listen('layer-update', async (layer) => {
-		const { layers } = currentFile;
-		const l = layers.find(x => x.number === Number(layer.number));
-		if(!l) return console.error('could not find layer to update');
-		layer.def && (l.def = layer.def);
-		layer.name && (l.name = layer.name);
-		l.dirty = true;
-		await update({ host });
-		l.dirty = undefined;
-	});
-
-	const modals = {
-		imageSize: () => ({
-			message: "TODO: get data for given form"
-		}),
-	};
-
 	window.addEventListener('contextmenu-select', async ({ detail={} }={}) => {
 		const { which, key } = detail;
-		const modal = modals[key||which];
-		const action = actions[key||which];
-
-		if(!modal && !action) return;
-
-		/*
-			given a context menu was selected, one the following occurs:
-				- a modal pops up
-				- a message is sent and handled
-			in both cases, relevant data must be sent, for example
-				- what is current selected layer
-				- what are dims of current file
-		*/
-
-		if(modal){
-			const event = new CustomEvent('contextMenuShow', {
-				bubbles: true,
-				detail: {
-					modal: key||which,
-					list: [],
-					data: modal(),
-					parent: "core"
-				}
-			});
-			window.top.dispatchEvent(event);
-			return;
-		}
-		if(action){
-			await host.broadcast({
-				eventName: key||which,
-				type: key||which,
-				data: {},
-			});
-			await doAction(action)();
-			return;
-		}
+		const name = key || which;
+		const action = actions["menu-" + name] || actions[name];
+		if(!action) return;
+		await doAction(action)();
 	});
-	window.addEventListener('contextmenu-select', (e) => {
-		host.broadcast({
-			eventName: 'contextmenu-select',
-			type: 'contextmenu-select',
-			data: e.detail,
-		});
-	});
-	
+
+	// window.addEventListener('contextmenu-select', (e) => {
+	// 	host.broadcast({
+	// 		eventName: 'contextmenu-select',
+	// 		type: 'contextmenu-select',
+	// 		data: e.detail,
+	// 	});
+	// });
+
 	return {
 		load: (config) => load({ host, config })
 	};

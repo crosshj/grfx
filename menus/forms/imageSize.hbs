@@ -1,7 +1,9 @@
 <form action="resizeImage">
-	<div class="note">
-		{{ message }}
-	</div>
+	{{#if message}}
+		<div class="note">
+			{{ message }}
+		</div>
+	{{/if}}
 	<fieldset>
 		<legend>Resize</legend>
 
@@ -12,15 +14,15 @@
 			<input type="radio" id="percentage" name="resize-units" value="pixels">
 			<label for="percentage">Percentage</label>
 		</div>
-		
+
 		<div class="row">
 			<label for="resize-horizontal">Horizontal:</label>
-			<input type="text" id="resize-horizontal" name="resize-horizontal" autocomplete="off">
+			<input type="text" id="resize-horizontal" name="resize-horizontal" autocomplete="off" value="{{width}}">
 		</div>
 
 		<div class="row">
 			<label for="resize-vertical">Vertical:</label>
-			<input type="text" id="resize-vertical" name="resize-vertical" autocomplete="off">
+			<input type="text" id="resize-vertical" name="resize-vertical" autocomplete="off" value="{{height}}">
 		</div>
 
 		<div class="row">

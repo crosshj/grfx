@@ -618,8 +618,6 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 				const hideDragGhost = true;
 				if (e.dataTransfer && hideDragGhost) {
 					e.dataTransfer.setDragImage(dragimage, 0, 0)
-					console.log('attempt to hide ghost')
-				
 					e.dataTransfer.dropEffect = "none";
 					e.dataTransfer.effectAllowed = "none";
 					// var img = new Image();
