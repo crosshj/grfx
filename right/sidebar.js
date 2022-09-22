@@ -23,6 +23,9 @@ const listener = ({ action, prev, next }) => {
 	if(action.type === "NEW_LAYER_ITEM"){
 		return send('layer-new')
 	}
+	if(action.type === "REORDER_LAYERS"){
+		return send('layers-order', action.payload);
+	}
 };
 
 export default function renderSideBar({ layers, thumbs }, cb){
@@ -33,7 +36,7 @@ export default function renderSideBar({ layers, thumbs }, cb){
 		getLayerSource: (data) => send('show-layer-source', data),
 		changeLayerAlpha,
 		changeLayerBlendMode,
-		changeLayerOrder: dummy('changeLayerOrder'),
+		//changeLayerOrder: () => {},
 		addLayer: dummy('addLayer'),
 		updateLayer: dummy('updateLayer'),
 		removeLayers: dummy('removeLayers'),

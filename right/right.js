@@ -22,6 +22,7 @@ listen('file-update', (args) => {
 	if(dirty){
 		dispatch = undefined;
 		initPromise = new Promise(r => initResolve = r);
+		document.getElementById('sidebar').remove();
 	}
 	if(dispatch) return; // updateThumbs(args); (should be UPDATE_LAYERS or something like that)
 

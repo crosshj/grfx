@@ -2,6 +2,12 @@ import rxReact from './rxReact.js';
 import { isNumeric, clone } from '../shared/utils.js';
 import constructLayer from './constructLayer.js';
 
+var dragimage = document.createElement('img')
+dragimage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+dragimage.style.opacity = 0;
+dragimage.id = "layer-drag-image-helper";
+document.body.appendChild(dragimage);
+
 export default function sidebarStart({ sidebarDef, thumbs, listener }, startCallback) {
 	const getRoot = (components, dispatcher) => {
 		const {
@@ -487,10 +493,10 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 						order.filter((x) => x !== actualDragged)
 					);
 					//console.log(`Dragged item ${actualDragged} to position BEFORE 0 (moveToTop)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveToTop",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveToTop",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -501,10 +507,10 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 						.filter((x) => x !== actualDragged)
 						.concat([actualDragged]);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveToBottom)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveToBottom",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveToBottom",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -521,10 +527,10 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveUp)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveUp",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveUp",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -541,10 +547,10 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveDown)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveDown",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveDown",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -561,11 +567,11 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveDown X ${droppedPosition - draggedPosition})`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveDown",
-						repeat: droppedPosition - draggedPosition,
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveDown",
+					// 	repeat: droppedPosition - draggedPosition,
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -582,11 +588,11 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveUp X ${draggedPosition - droppedPosition - 1})`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveUp",
-						repeat: draggedPosition - droppedPosition - 1,
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveUp",
+					// 	repeat: draggedPosition - droppedPosition - 1,
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -605,17 +611,20 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 			function dragStartHandler(layersIndex, e) {
 				//console.log(`started dragging ${layersIndex}`)
 
-				document.querySelector(".layers ul").classList.add("contains-dragging");
-				e.target.classList.add("dragging");
+				//document.body.classList.add("contains-dragging");
+				//e.target.classList.add("dragging");
+				//e.target.classList.add("contains-dragging");
 				window.draggedIndex = layersIndex;
 				const hideDragGhost = true;
 				if (e.dataTransfer && hideDragGhost) {
+					e.dataTransfer.setDragImage(dragimage, 0, 0)
+					console.log('attempt to hide ghost')
+				
 					e.dataTransfer.dropEffect = "none";
 					e.dataTransfer.effectAllowed = "none";
-					var img = new Image();
-					img.src =
-						'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
-					e.dataTransfer.setDragImage(img, 10, 10);
+					// var img = new Image();
+					// img.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
+					// e.dataTransfer.setDragImage(img, 10, 10);
 				}
 			}
 
@@ -670,12 +679,12 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 			}
 
 			function dragEndHandler(layersIndex, layers, e) {
-				document
-					.querySelector(".contains-dragging")
-					.classList.remove("contains-dragging");
-				document
-					.querySelectorAll(".dragging")
-					.forEach((node) => node.classList.remove("dragging"));
+				// document
+				// 	.querySelector(".contains-dragging")
+				// 	.classList.remove("contains-dragging");
+				// document
+				// 	.querySelectorAll(".dragging")
+				// 	.forEach((node) => node.classList.remove("dragging"));
 
 				if (!window.dropText) {
 					window.enterTarget = null;

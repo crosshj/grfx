@@ -314,11 +314,11 @@ select:focus {
 		flex-wrap: inherit;
 }
 
-.layers .contains-dragging {
-		cursor: move;
-		cursor: -webkit-grabbing;
-		cursor: -moz-grabbing;
-		cursor: grabbing;
+.contains-dragging {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
 }
 
 .layers li.dragging {

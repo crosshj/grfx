@@ -1,9 +1,9 @@
 export default `
-var gl = ctx;
+const gl = ctx;
 
-let mouseX = 2500;
-let mouseY = 500;
-let time = 100;
+const mouseX = 4000;
+const mouseY = 2000;
+const time = 700.6;
 
 const vertices = [
 	-1, -1,  // first triangle
@@ -14,14 +14,14 @@ const vertices = [
 	 1,  1,
 ]
 
-var vertex_buffer = gl.createBuffer();
+const vertex_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
 gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-var vertCode = \`
+const vertCode = \`
 	attribute vec4 a_position;
 
 	void main() {
@@ -29,11 +29,11 @@ var vertCode = \`
 	}
 \`;
 
-var vertShader = gl.createShader(gl.VERTEX_SHADER);
+const vertShader = gl.createShader(gl.VERTEX_SHADER);
 gl.shaderSource(vertShader, vertCode);
 gl.compileShader(vertShader);
 
-var fragCode = \`
+const fragCode = \`
 precision highp float;
 
 uniform vec2 iResolution;
@@ -160,11 +160,11 @@ void main() {
 }
 \`;
 
-var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+const fragShader = gl.createShader(gl.FRAGMENT_SHADER);
 gl.shaderSource(fragShader, fragCode);
 gl.compileShader(fragShader);
 
-var program = gl.createProgram();
+const program = gl.createProgram();
 gl.attachShader(program, vertShader); 
 gl.attachShader(program, fragShader);
 gl.linkProgram(program);

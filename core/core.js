@@ -65,6 +65,16 @@ const Core = ({ host, layout }) => {
 		await update({ host });
 		currentFile.dirty = undefined;
 	});
+	host.listen('layers-order',async ({ order }) => {
+		const { layers } = currentFile;
+		for(const [i, o] of Object.entries(order)){
+			layers[o].number = Number(i);
+		}
+		currentFile.layers = currentFile.layers.sort((a,b) => a.number-b.number);
+		currentFile.dirty = true;
+		await update({ host });
+		currentFile.dirty = undefined;
+	});
 	host.listen('layer-update', async (layer) => {
 		const { layers } = currentFile;
 		const l = layers.find(x => x.number === Number(layer.number));

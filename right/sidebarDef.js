@@ -19,7 +19,7 @@ const sidebarDef = ({
 	getLayerSource,
 	changeLayerAlpha,
 	changeLayerBlendMode,
-	changeLayerOrder,
+	//changeLayerOrder,
 	addLayer,
 	updateLayer,
 	removeLayers,
@@ -72,7 +72,7 @@ const sidebarDef = ({
 				lay.getThumb = getLayerThumb;
 				lay.changeLayerAlpha = changeLayerAlpha;
 				lay.changeLayerBlendMode = changeLayerBlendMode;
-				lay.changeLayerOrder = changeLayerOrder;
+				//lay.changeLayerOrder = changeLayerOrder;
 			});
 		});
 	});
