@@ -3,7 +3,7 @@ import { sleep } from '../shared/utils.js';
 import Canvas from './canvas.js';
 import layerDef from './layers/layerDef.js';
 import './cursor.js';
-import attachDraw from './draw.js';
+import { attachDraw, detachDraw } from './draw.js';
 
 const container = document.querySelector('.canvasContainer');
 let canvas;
@@ -43,15 +43,24 @@ document.body.addEventListener('wheel', (ev) => {
 
 
 listen('file-update', async (args) => {
-	const { layers, width, height, zoom, tool } = args;
+	const { layers, width, height, zoom, tool, dirty } = args;
+
+	if(dirty){
+		detachDraw(canvas);
+		canvas.viewport.destroy();
+		canvas = undefined;
+	}
 
 	canvas = canvas || await Canvas({
 		width,
 		height,
-		layers: layers.reverse().map(layer => ({
+		layers: layers
+			.sort((a,b) => b.number-a.number)
+			.map(layer => ({
 			...layer,
 			render: layerDef(layer)
-		})),
+			})
+		),
 		container
 	});
 	attachDraw(canvas, tool);

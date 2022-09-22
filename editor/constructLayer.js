@@ -38,7 +38,12 @@ export default async function constructLayer({ number, goFn, cancelFn, name, def
 			<div id="topBar">
 				<div>
 					<label>Name</label>
-					<input type="text" id="layerName" placeHolder="Enter Layer Name"/>
+					<input 
+						type="text"
+						id="layerName"
+						placeHolder="Enter Layer Name"
+						${isEditing ? "disabled" : ""}
+					/>
 				</div>
 				<div>
 					<label>Type</label>

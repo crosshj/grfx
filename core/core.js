@@ -49,6 +49,22 @@ const Core = ({ host, layout }) => {
 	host.listen('layer-new', () => {
 		layout.showPane({ name: "editor" })
 	});
+	host.listen('layer-add', async (args) => {
+		const { def, name, type } = args;
+		const { layers } = currentFile;
+		layers.forEach(x => {
+			x.number+=1;
+			x.selected = false;
+		});
+		currentFile.dirty = true;
+		layers.push({
+			def, name, type,
+			number: 0,
+			selected: true
+		});
+		await update({ host });
+		currentFile.dirty = undefined;
+	});
 	host.listen('layer-update', async (layer) => {
 		const { layers } = currentFile;
 		const l = layers.find(x => x.number === Number(layer.number));

@@ -69,6 +69,9 @@ span.label, input, select {
 		font-size: 8px;
 		line-height: 17px;
 }
+input:disabled {
+	opacity: 0.7;
+}
 input {
 		width: 100%;
 		margin: 0px;

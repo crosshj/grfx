@@ -20,7 +20,7 @@ const cancelFn = () => {
 
 const updateEditor = async ({ number, name, type }) => {
 	const layer = config && typeof number !== "undefined"
-		? config.layers[number]
+		? config.layers.sort((a,b) => a.number-b.number)[number]
 		: { name, type };
 	const editor = await constructLayer({
 		goFn, cancelFn,

@@ -1419,6 +1419,9 @@ export default function sidebarStart({ sidebarDef, thumbs, listener }, startCall
 	};
 
 	function rxReactReady(err, { components, dispatcher, start, React } = {}) {
+		if(err && err.includes('already inited')){
+			return;
+		}
 		if (err) {
 			console.error(`Error in rxReactReady: ${err}`);
 			return;

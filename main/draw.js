@@ -83,7 +83,7 @@ const drawFn = (concrete, brushFn) => {
 };
 
 let attached;
-const attachDrawListener = (concrete, brush) => {
+export const attachDraw = (concrete, brush) => {
 	if(attached) return;
 
 	const brushFn = brushes[brush] || brushes.pixel;
@@ -109,8 +109,13 @@ const attachDrawListener = (concrete, brush) => {
 		canvas.addEventListener("pointerleave", end, false);
 	};
 	canvas.addEventListener("pointerdown", down, false);
-	attached = true;
+	attached = down;
 };
 
-export default attachDrawListener;
+export const detachDraw = (concrete) => {
+	const { canvas } = concrete.viewport.scene;
+	canvas.removeEventListener("pointerdown", attached, false);
+	attached = undefined;
+};
+
 
