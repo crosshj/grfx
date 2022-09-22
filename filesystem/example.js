@@ -52,6 +52,7 @@ const basicCanvas = `
 	ctx.fillText(getRandom(26, tibetan), 0, height-90, width);
 `.replace(/^\t/gm, '');
 
+
 export default {
 	zoom: 0.3,
 	width: 1440,

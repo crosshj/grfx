@@ -1,5 +1,6 @@
 import vertShader from './vertShader.gl.js';
 import fragShader from './fragShader.gl.js';
+import glAdvanced from './webgl-advanced.js';
 
 const smiley = `
 const { width, height } = getDims();
@@ -95,19 +96,28 @@ const webgl = `
 // https://www.tutorialspoint.com/webgl/webgl_sample_application.htm
 // see also https://webglfundamentals.org/webgl/lessons/webgl-shadertoy.html
 
-const { width, height } = getDims();
 var gl = ctx;
 
-var vertices = [-0.5, 0.5, -0.5, -0.5, 0.0, -0.5,];
+const vertices = [
+	-1, -1,  // first triangle
+	 1, -1,
+	-1,  1,
+	-1,  1,  // second triangle
+	 1, -1,
+	 1,  1,
+]
+
 var vertex_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
+gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
 var vertCode = \`
-	attribute vec2 coordinates; 
+	attribute vec4 a_position;
 	void main(void) {
-		gl_Position = vec4(coordinates,0.0, 1.0);
+		gl_Position = a_position;
 	}
 \`;
 var vertShader = gl.createShader(gl.VERTEX_SHADER);
@@ -115,8 +125,12 @@ gl.shaderSource(vertShader, vertCode);
 gl.compileShader(vertShader);
 
 var fragCode = \`
+	precision highp float;
+	uniform vec2 u_resolution;
+
 	void main(void) {
-		gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);
+		//gl_FragColor = vec4(fract(gl_FragCoord.xy / 600.0), 0, \${alpha});
+		gl_FragColor = vec4(fract(gl_FragCoord.xy / u_resolution), 0, \${alpha});
 	}
 \`;
 var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -131,24 +145,18 @@ gl.useProgram(shaderProgram);
 
 gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
-var coord = gl.getAttribLocation(shaderProgram, "coordinates");
+var coord = gl.getAttribLocation(shaderProgram, "a_position");
 gl.vertexAttribPointer(coord, 2, gl.FLOAT, false, 0, 0);
-
 gl.enableVertexAttribArray(coord);
-gl.clearColor(0.5, 0.5, 0.5, 0.9);
 
-gl.enable(gl.DEPTH_TEST); 
-gl.clear(gl.COLOR_BUFFER_BIT);
+const resolutionLocation = gl.getUniformLocation(shaderProgram, "u_resolution");
+gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
 
-gl.viewport(0,0, width, height);
-gl.drawArrays(gl.TRIANGLES, 0, 3);
+//gl.clearColor(0.0, 0.0, 0.0, 0.0);
+//gl.enable(gl.DEPTH_TEST);
+//gl.clear(gl.COLOR_BUFFER_BIT);
 
-
-/*
-var vertCode = \`${vertShader()}\`;
-
-var fragCode = \`${fragShader()}\`;
-*/
+gl.drawArrays(gl.TRIANGLES, 0, vertices.length/2);
 `;
 	//.concat(document.getElementById("gl-function").text);
 
@@ -160,4 +168,5 @@ export default () => ({
 	text,
 	triangle,
 	webgl,
+	webgl2: glAdvanced
 });

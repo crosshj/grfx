@@ -31,16 +31,21 @@ const getDims = (width, height) => (i) => {
 
 const processDef = (layer) => {
 	const AsyncFunction = (async function () {}).constructor;
-	const def = `
+	const def = layer.type === '2d'
+	? `
 		ctx.save();
 		${layer.def}
 		ctx.restore();
-	`;
-	const renderFn = new AsyncFunction('loadImage', 'ctx', 'getDims', def);
+	`
+	: layer.def;
+	const renderFn = new AsyncFunction('loadImage', 'ctx', 'getDims', 'alpha', def);
 
-	return async function drawImage({ ctx, width, height }){
+	return async function drawImage({ ctx, width, height, layer }){
 		await init;
-		await renderFn(loadImage, ctx, getDims(width, height));
+		const alpha = typeof layer.alpha !== "undefined"
+			? layer.alpha
+			: 1;
+		await renderFn(loadImage, ctx, getDims(width, height), alpha);
 	};
 }
 

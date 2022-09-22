@@ -122,13 +122,13 @@ export default async function constructLayer({ number, goFn, cancelFn, name, def
 				e.target.classList.add("active");
 				await editorHTML(examples[key]);
 				layerName.value = key;
-				layerType.value = key === 'webgl'
+				layerType.value = key.includes('webgl')
 					? 'webgl'
 					: '2d';
 			};
 			tabBar.appendChild(tabItem);
 		});
-	layerType.value = type === 'webgl' || defaultExample === 'webgl'
+	layerType.value = type.includes('webgl') || defaultExample === 'webgl'
 		? 'webgl'
 		: '2d';
 

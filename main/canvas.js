@@ -13,9 +13,12 @@ function thumbnail(image) {
 const getRender = ({ layer, width, height, layerDef }) => async (args={}) => {
 	const { number, render } = layerDef;
 	const ctx = layer.scene.context;
-	ctx.clearRect(0, 0, width, height);
-	ctx.globalAlpha = args.alpha || layerDef.alpha || 1;
-	await render({ ctx, width, height });
+	
+	if(layerDef.type === "2d"){
+		ctx.clearRect(0, 0, width, height);
+		ctx.globalAlpha = args.alpha || layerDef.alpha || 1;
+	}
+	await render({ ctx, width, height, layer: { ...layerDef, ...args } });
 	thumbs[number] = thumbnail(layer.scene.canvas);
 };
 
