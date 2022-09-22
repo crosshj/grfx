@@ -11,12 +11,6 @@ const cancelFn = () => {
 	send('hide-layer-source');
 };
 
-// const name = undefined;
-// const def = undefined;
-// const type = undefined;
-
-// const editor = await constructLayer({ goFn, cancelFn, name, def, type });
-// document.body.append(editor);
 
 const updateEditor = async ({ number, name, type }) => {
 	const layer = config && typeof number !== "undefined"

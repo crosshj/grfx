@@ -45,3 +45,6 @@ export const blobToBuffer = (fs, blob) => {
 		};
 	});
 };
+
+export const dashedToCamel = x => x.replace(/-./g, (m) => m[1].toUpperCase());
+export const camelToDashed = x => x.replace(/[A-Z]/g, (match, offset) => (offset > 0 ? '-' : '') + match.toLowerCase());

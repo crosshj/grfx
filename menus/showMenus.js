@@ -32,12 +32,17 @@ const getMenuItems = (e) => {
 			if(groupChildren.length) return true;
 			return false;
 		});
+	const MenuItem = (el, { disabled }={}) => ({
+		name: el.textContent,
+		key: el.value,
+		disabled: el.disabled || disabled
+	});
 
 	for(const [i, child] of Object.entries(children)){
 		const { disabled } = child;
 
 		if(child.tagName !== "OPTGROUP"){
-			items.push({ name: child.textContent, disabled });
+			items.push(MenuItem(child, { disabled }));
 			continue;
 		}
 
@@ -49,10 +54,7 @@ const getMenuItems = (e) => {
 			items.push("seperator");
 		}
 		for(const groupChild of groupChildren){
-			items.push({
-				name: groupChild.textContent,
-				disabled: groupChild.disabled || disabled
-			});
+			items.push(MenuItem(groupChild, { disabled }));
 		}
 		if(Number(i)+1 === children.length) continue;
 		if(items[items.length-1] === "seperator")
@@ -76,7 +78,9 @@ const showMenu = (e) => {
 		}
 	});
 	window.selectListener = (selectEvent) => {
-		if(selectEvent.which) e.target.value = selectEvent.which;
+		if(selectEvent.which){
+			e.target.value = selectEvent.which;
+		}
 		window.selectListener = undefined;
 	};
 	window.top.dispatchEvent(event);

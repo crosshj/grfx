@@ -1,4 +1,13 @@
+import actions from './actions.js';
 let currentFile;
+
+const context = {
+	host: undefined,
+	layout: undefined,
+	currentFile: undefined,
+	update: undefined,
+	load: undefined,
+};
 
 const update = async ({ host }) => {
 	await host.broadcast({
@@ -15,56 +24,21 @@ const update = async ({ host }) => {
 };
 const load = ({ host, config }) => {
 	currentFile = config;
+	context.currentFile = config;
 	update({ host });
 };
 
 const Core = ({ host, layout }) => {
-	host.listen('layer-select', ({ number }) => {
-		const { layers } = currentFile;
-		for(const layer of layers){
-			layer.selected = undefined;
-			if(layer.number !== number) continue;
-			layer.selected = true;
-		}
-		update({ host });
-	});
-	host.listen('layer-visibility', ({ number, visible }) => {
-		const { layers } = currentFile;
-		const l = layers.find(x => x.number === Number(number));
-		l.visible = visible;
-		update({ host });
-	});
-	host.listen('layer-alpha', ({ number, alpha }) => {
-		const { layers } = currentFile;
-		const l = layers.find(x => x.number === Number(number));
-		l.alpha = alpha;
-		update({ host });
-	});
-	host.listen('layer-blend-mode', ({ number, mode }) => {
-		const { layers } = currentFile;
-		const l = layers.find(x => x.number === Number(number));
-		l.blendMode = mode;
-		update({ host });
-	});
-	host.listen('layer-new', () => {
-		layout.showPane({ name: "editor" })
-	});
-	host.listen('layer-add', async (args) => {
-		const { def, name, type } = args;
-		const { layers } = currentFile;
-		layers.forEach(x => {
-			x.number+=1;
-			x.selected = false;
-		});
-		currentFile.dirty = true;
-		layers.push({
-			def, name, type,
-			number: 0,
-			selected: true
-		});
-		await update({ host });
-		currentFile.dirty = undefined;
-	});
+	context.host = host;
+	context.layout = layout;
+	context.load = load;
+	context.update = () => update({ host });
+
+	const doAction = (fn) => (args) => fn(context, args);
+	for(const [actionName, handler] of Object.entries(actions)){
+		host.listen(actionName, doAction(handler));
+	}
+
 	host.listen('layers-order',async ({ order }) => {
 		const { layers } = currentFile;
 		for(const [i, o] of Object.entries(order)){
@@ -85,36 +59,51 @@ const Core = ({ host, layout }) => {
 		await update({ host });
 		l.dirty = undefined;
 	});
-	host.listen('show-layer-source', () => {
-		layout.showPane({ name: "editor" })
-	});
-	host.listen('hide-layer-source', () => {
-		layout.hidePane({ name: "editor" })
-	});
 
 	const modals = {
-		'Image Size...': 'imageSize'
-	};
-	const modalData = {
 		imageSize: () => ({
 			message: "TODO: get data for given form"
 		}),
 	};
-	window.addEventListener('contextmenu-select', ({ detail={} }={}) => {
-		const { which } = detail;
-		const modal = modals[which];
-		const data = modal && modalData[modal]();
-		if(!modal) return;
-		const event = new CustomEvent('contextMenuShow', {
-			bubbles: true,
-			detail: {
-				modal,
-				list: [],
-				data,
-				parent: "core"
-			}
-		});
-		window.top.dispatchEvent(event);
+
+	window.addEventListener('contextmenu-select', async ({ detail={} }={}) => {
+		const { which, key } = detail;
+		const modal = modals[key||which];
+		const action = actions[key||which];
+
+		if(!modal && !action) return;
+
+		/*
+			given a context menu was selected, one the following occurs:
+				- a modal pops up
+				- a message is sent and handled
+			in both cases, relevant data must be sent, for example
+				- what is current selected layer
+				- what are dims of current file
+		*/
+
+		if(modal){
+			const event = new CustomEvent('contextMenuShow', {
+				bubbles: true,
+				detail: {
+					modal: key||which,
+					list: [],
+					data: modal(),
+					parent: "core"
+				}
+			});
+			window.top.dispatchEvent(event);
+			return;
+		}
+		if(action){
+			await host.broadcast({
+				eventName: key||which,
+				type: key||which,
+				data: {},
+			});
+			await doAction(action)();
+			return;
+		}
 	});
 	window.addEventListener('contextmenu-select', (e) => {
 		host.broadcast({
