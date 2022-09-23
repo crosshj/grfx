@@ -62,7 +62,7 @@ const threejs = `
 	const ImageTexture = (args) => {
 		const tex = new THREE.Texture(args.pattern);
 		tex.needsUpdate = true;
-		tex.anisotropy = 32;
+		tex.anisotropy = 64;
 		tex.center = new THREE.Vector2(0.5, 0.5);
 		tex.repeat.set(args.scale,args.scale);
 		// tex.rotation = 1.68;
@@ -77,7 +77,7 @@ const threejs = `
 	const hatchPat = await loadImage("${hatchUri}");
 
 	const groundMat = new THREE.MeshStandardMaterial({
-		color: 0xffffff
+		color: 0x66aa77
 	});
 	const hatchTex = ImageTexture({
 		pattern: hatchPat,
@@ -103,7 +103,7 @@ const threejs = `
 		scale: 6
 	});
 	const leavesMat = new THREE.MeshPhongMaterial({
-		//color: 0x8899dd,
+		color: 0x88ccaa,
 		//specular: 0x8bc34a,
 		//shininess: 0,
 		map: leavesTex
@@ -115,9 +115,9 @@ const threejs = `
 		scale: 15
 	});
 	const barkMat = new THREE.MeshPhongMaterial({
-		//color: 0x654321,
-		//specular: 0xdcc19c,
-		//shininess: 0,
+		color: 0xffcc21,
+		specular: 0xdcc19c,
+		shininess: 0,
 		map: stoneTex
 	});
 	barkMat.overdraw = 1;
@@ -153,7 +153,7 @@ const threejs = `
 			child.castShadow = true;
 			child.receiveShadow = true;
 		});
-		var bunnyScaleDim = 3;
+		var bunnyScaleDim = 4;
 		bunny.scale.set(bunnyScaleDim, bunnyScaleDim, bunnyScaleDim);
 		bunny.position.x = 0;
 		bunny.position.y = -20;
@@ -206,9 +206,9 @@ const threejs = `
 
 		const bush2ScaleDim = 3;
 		bush2.scale.set(bush2ScaleDim, bush2ScaleDim, bush2ScaleDim);
-		bush2.position.x = 83;
-		bush2.position.y = -55;
-		bush2.position.z = 50;
+		bush2.position.x = 82;
+		bush2.position.y = -58;
+		bush2.position.z = 80;
 		bush2.rotation.y = (-90 * Math.PI)/180;
 		scene.add(bush2);
 
@@ -229,7 +229,7 @@ const background = `
 	const { width, height } = getDims();
 	ctx.beginPath();
 	ctx.rect(0, 0, width, height);
-	ctx.fillStyle = "#140e00";
+	ctx.fillStyle = "#0a1420";
 	ctx.fill();
 `.replace(/^\t/gm, '');
 
