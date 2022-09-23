@@ -2,6 +2,12 @@ import fs from '../../shared/fs.js';
 const init = fs.init();
 
 const loadImage = (url) => new Promise(async (resolve) => {
+	if(url.startsWith('data:')){
+		const image = new Image();
+		image.onload = () => resolve(image);
+		image.src = url;
+		return;
+	}
 	const path = `/indexDB/downloads/${url.split('/').pop()}`;
 	const fileExists = await fs.exists({ path });
 	if(!fileExists){
