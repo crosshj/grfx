@@ -1,5 +1,14 @@
 import { send, listen } from '../shared/messages.js';
 import constructLayer from './constructLayer.js';
+import { client as Hotkeys } from '../shared/hotkeys.js';
+
+
+const skip = (e) => {
+	const withModifier = () => [e.altKey, e.shiftKey, e.metaKey, e.ctrlKey].some(x => x);
+	if(e.target.id === "layerDef" && !withModifier()) return true;
+	//console.log(e.target);
+};
+Hotkeys({ skip });
 
 let config;
 

@@ -4,6 +4,8 @@ import Canvas from './canvas.js';
 import layerDef from './layers/layerDef.js';
 import './cursor.js';
 import { attachDraw, detachDraw } from './draw.js';
+import { client as Hotkeys } from '../shared/hotkeys.js';
+Hotkeys();
 
 const container = document.querySelector('.canvasContainer');
 let canvas;

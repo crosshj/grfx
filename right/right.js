@@ -1,5 +1,7 @@
 import { listen, send } from '../shared/messages.js';
 import Sidebar from './sidebar.js';
+import { client as Hotkeys } from '../shared/hotkeys.js';
+Hotkeys();
 
 let dispatch;
 
