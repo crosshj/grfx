@@ -14,6 +14,8 @@ const loadImage = (url) => new Promise(async (resolve) => {
 	image.src = await fs.readFile({ path });
 });
 
+const loadFile = (path) => fs.readFile({ path: `/indexDB/${path}`, encoding: 'utf8' });
+
 const getDims = (width, height) => (i) => {
 	if(!i) return { width, height };
 	const sx = 0;
@@ -38,14 +40,14 @@ const processDef = (layer) => {
 		ctx.restore();
 	`
 	: layer.def;
-	const renderFn = new AsyncFunction('loadImage', 'ctx', 'getDims', 'alpha', def);
+	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', 'alpha', def);
 
 	return async function drawImage({ ctx, width, height, layer }){
 		await init;
 		const alpha = typeof layer.alpha !== "undefined"
 			? layer.alpha
 			: 1;
-		await renderFn(loadImage, ctx, getDims(width, height), alpha);
+		await renderFn(loadImage, loadFile, ctx, getDims(width, height), alpha);
 	};
 }
 

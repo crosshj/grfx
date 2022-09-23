@@ -33,19 +33,31 @@ const readdir = ({ fs, path }) => new Promise((resolve, reject) => {
 	fs.readdir(path, (e, data) => !!e ? reject(e) : resolve(data));
 });
 
+const uint8ArrToString = (uint8arr) => new Promise((resolve) => {
+	var bb = new Blob([uint8arr]);
+	var f = new FileReader();
+	f.onload = function(e) {
+			resolve(e.target.result);
+	};
+	f.readAsText(bb);
+});
+
 const readFile = ({ fs, path, encoding='base64' }) => new Promise((resolve, reject) => {
-	fs.readFile(path, (e, data) => {
+	fs.readFile(path, async (e, data) => {
 		if(e) return reject(e);
 		if(encoding === 'base64')
 			return resolve(data);
-		const decoded = atob(
-			decodeURIComponent(
-				escape(
-					String.fromCharCode(...data)
-				)
-			).split('base64,')[1]
-		);
-		resolve(decoded);
+		if(encoding === "utf8"){
+			const decoded = atob(
+				decodeURIComponent(
+					escape(
+						await uint8ArrToString(data)
+					)
+				).split('base64,')[1]
+			);
+			return resolve(decoded);
+		}
+		resolve(data);
 	});
 });
 
