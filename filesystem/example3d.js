@@ -12,8 +12,8 @@ const threejs = `
 	const gl = ctx;
 	const canvas = gl.canvas;
 	const { width, height } = canvas;
-	const THREE = await import('https://cdn.skypack.dev/three');
-	const { OBJLoader } = await import('../../shared/OBJLoader.js');
+	const THREE = await import('three');
+	const { OBJLoader } = await import('../../vendor/OBJLoader.js');
 	const loader = new OBJLoader(THREE);
 
 	const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
@@ -106,8 +106,8 @@ const threejs = `
 	const leavesMat = new THREE.MeshPhongMaterial({
 		color: 0x88ccaa,
 		//specular: 0x8bc34a,
-		//shininess: 0,
-		map: leavesTex
+		shininess: 0,
+		map: leavesTex,
 	});
 	leavesMat.overdraw = 1;
 
@@ -119,7 +119,7 @@ const threejs = `
 		color: 0xffcc21,
 		specular: 0xdcc19c,
 		shininess: 0,
-		map: stoneTex
+		map: stoneTex,
 	});
 	barkMat.overdraw = 1;
 	const woopsMat = new THREE.MeshStandardMaterial({

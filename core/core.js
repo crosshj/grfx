@@ -1,3 +1,4 @@
+import history from './history.js';
 import actions from './actions.js';
 let currentFile;
 
@@ -15,12 +16,6 @@ const update = async ({ host }) => {
 		type: 'file-update',
 		data: currentFile,
 	});
-	//DEPRECATE
-	// await host.broadcast({
-	// 	eventName: 'layers-update',
-	// 	type: 'layers-update',
-	// 	data: currentFile,
-	// });
 };
 const load = ({ host, config }) => {
 	currentFile = config;
