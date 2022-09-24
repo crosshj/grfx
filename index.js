@@ -1,5 +1,5 @@
 import FileSystem from './shared/fs.js';
-import fsConfig from './filesystem/_init.js';
+import fsConfig from './filesystem/init.js';
 import Core from './core/core.js';
 import forms from './menus/forms.js';
 import Menus from './menus/menus.js';
