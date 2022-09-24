@@ -181,46 +181,51 @@ const threejs = `
 		const bush2 = bush.clone();
 		const tree3 = tree.clone();
 
-		var treeScaleDim = 3;
+		// far tree
+		var treeScaleDim = 1.8;
 		tree.scale.set(treeScaleDim, treeScaleDim, treeScaleDim);
-		tree.position.x = 65;
+		tree.position.x = 50;
 		tree.position.y = -20;
 		tree.position.z = -55;
 		tree.rotation.y = (-45 * Math.PI)/180;
 		scene.add(tree);
 
+		// mid tree
 		const tree2ScaleDim = 3.7;
 		tree2.scale.set(tree2ScaleDim, tree2ScaleDim, tree2ScaleDim);
-		tree2.position.x = -50;
+		tree2.position.x = -33;
 		tree2.position.y = -20;
 		tree2.position.z = -20;
-		tree2.rotation.y = (150 * Math.PI)/180;
+		tree2.rotation.y = (205 * Math.PI)/180;
 		scene.add(tree2);
 
-		const bushScaleDim = 2.7;
-		bush.scale.set(bushScaleDim, bushScaleDim, bushScaleDim);
-		bush.position.x = -88;
-		bush.position.y = -65;
-		bush.position.z = 30;
-		bush.rotation.y = (-80 * Math.PI)/180;
-		scene.add(bush);
-
-		const bush2ScaleDim = 3;
-		bush2.scale.set(bush2ScaleDim, bush2ScaleDim, bush2ScaleDim);
-		bush2.position.x = 82;
-		bush2.position.y = -58;
-		bush2.position.z = 80;
-		bush2.rotation.y = (-90 * Math.PI)/180;
-		scene.add(bush2);
-
-		// FRONT TREE
-		const tree3ScaleDim = 4;
+		// front tree
+		const tree3ScaleDim = 5.5;
 		tree3.scale.set(tree3ScaleDim, tree3ScaleDim, tree3ScaleDim);
-		tree3.position.x = -106;
+		tree3.position.x = -120;
 		tree3.position.y = -20;
 		tree3.position.z = 75;
 		tree3.rotation.y = (220 * Math.PI)/180;
 		scene.add(tree3);
+
+		const bushScaleDim = 2.7;
+		bush.scale.set(bushScaleDim, bushScaleDim, bushScaleDim);
+		bush.position.x = -83;
+		bush.position.y = -65;
+		bush.position.z = 40;
+		bush.rotation.y = (-125 * Math.PI)/180;
+		scene.add(bush);
+
+		// right bush
+		const bush2ScaleDim = 5;
+		bush2.scale.set(bush2ScaleDim, bush2ScaleDim, bush2ScaleDim);
+		bush2.position.x = 90;
+		bush2.position.y = -93;
+		bush2.position.z = 80;
+		bush2.rotation.y = (-90 * Math.PI)/180;
+		scene.add(bush2);
+
+
 	}
 
 	renderer.render(scene, camera);
@@ -230,9 +235,27 @@ const background = `
 	const { width, height } = getDims();
 	ctx.beginPath();
 	ctx.rect(0, 0, width, height);
-	ctx.fillStyle = "#0a1420";
+	var grd = ctx.createLinearGradient(0, 0, 0, 0.66*height);
+	grd.addColorStop(0, "#04070c");
+	grd.addColorStop(1, "#0a1420");
+	ctx.fillStyle = grd;
+	//ctx.fillStyle = "#0a1420";
 	ctx.fill();
 `.replace(/^\t/gm, '');
+
+const moon = `
+	const { width, height } = getDims();
+	const grd = ctx.createRadialGradient(
+		width*0.8-20, height*0.2+20, 5,
+		width*0.8+20, height*0.2+20, 100
+	);
+	grd.addColorStop(0, "#ffffff18");
+	grd.addColorStop(1, "#ffffff06");
+	ctx.fillStyle = grd;
+
+	ctx.arc(width*0.8, height*0.2, 60, 0, 2*Math.PI, false);
+	ctx.fill();
+`;
 
 export default {
 	zoom: 0.3,
@@ -241,13 +264,18 @@ export default {
 	tool: "airbrush",
 	layers: [{
 		number: 0,
+		name: "moon",
+		type: '2d',
+		def: moon
+	}, {
+		number: 1,
 		name: "threejs",
 		selected: true,
 		type: 'webgl2',
 		def: threejs
 	}, {
-		number: 1,
-		name: "Background",
+		number: 2,
+		name: "background",
 		type: '2d',
 		def: background
 	}]
