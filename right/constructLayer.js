@@ -7,6 +7,7 @@ function createElementFromHTML(htmlString) {
 }
 
 export default function constructLayer(goFn, cancelFn, { name, def, type } = {}) {
+	//debugger
 	return alert('WIP');
 	const isEditing = Boolean(name && type && typeof def === "string");
 	const container = createElementFromHTML(`

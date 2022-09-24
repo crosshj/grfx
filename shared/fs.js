@@ -1,14 +1,5 @@
-//import * as filer from 'https://unpkg.com/filer';
 import BrowserFS from 'https://cdn.skypack.dev/browserfs';
-
-const examples = {
-	dunno: "https://raw.githubusercontent.com/crosshj/graphics-editor/main/assets/feedforward.png",
-	robot: "https://images.nightcafe.studio/jobs/wJMbnnlCfS9WEVur80Qx/wJMbnnlCfS9WEVur80Qx_8.9286x.jpg",
-	squid: "https://images.nightcafe.studio/jobs/gZVKddsDrWb2odrM3vsY/gZVKddsDrWb2odrM3vsY--2--Y98HJ.jpg",
-	gold: "https://images.nightcafe.studio/jobs/7OXU5TcnbVF71K1zN79N/7OXU5TcnbVF71K1zN79N--3--5TQRK.jpg",
-	owl: "https://images.nightcafe.studio/jobs/5freDC2naZa9EQrIUOQY/5freDC2naZa9EQrIUOQY.jpg",
-	sky: "https://images.nightcafe.studio/jobs/lheEUAmhcoUn9fsxXGZP/lheEUAmhcoUn9fsxXGZP_6.9444x.jpg",
-};
+import { blobToBase64 } from './utils.js'; 
 
 const mountConfig = {
 	fs: "MountableFileSystem",
@@ -17,7 +8,7 @@ const mountConfig = {
 		'/indexDB': { fs: "IndexedDB", options: { storeName: 'graphics-editor' } }
 	}
 };
-//console.log(browserfs);
+
 const configure = (config) => new Promise((resolve, reject) => {
 	BrowserFS.configure(mountConfig, function(e) {
 		if(e) reject(e);
@@ -28,73 +19,75 @@ const configure = (config) => new Promise((resolve, reject) => {
 	});
 });
 
-const writeFile = ({ fs, path, data }) => {
-	return new Promise((resolve, reject) => {
-		fs.writeFile(
-			path,
-			data,
-			(e) => {
-				if(e) reject(e);
-				resolve();
-			}
-		);
-	});
-};
+const writeFile = ({ fs, path, data }) => new Promise(async (resolve, reject) => {
+	const blob = data instanceof Blob
+		? data
+		: new Blob([data], {
+			type: 'text/plain'
+		});
+	const base64 = await blobToBase64(blob);
+	fs.writeFile(path, base64, (e) => !!e ? reject(e) : resolve());
+});
 
 const readdir = ({ fs, path }) => new Promise((resolve, reject) => {
-	fs.readdir(path, (e, data) => {
-		if(e) reject(e);
+	fs.readdir(path, (e, data) => !!e ? reject(e) : resolve(data));
+});
+
+const uint8ArrToString = (uint8arr) => new Promise((resolve) => {
+	var bb = new Blob([uint8arr]);
+	var f = new FileReader();
+	f.onload = function(e) {
+			resolve(e.target.result);
+	};
+	f.readAsText(bb);
+});
+
+const readFile = ({ fs, path, encoding='base64' }) => new Promise((resolve, reject) => {
+	fs.readFile(path, async (e, data) => {
+		if(e) return reject(e);
+		if(encoding === 'base64')
+			return resolve(data);
+		if(encoding === "utf8"){
+			const decoded = atob(
+				decodeURIComponent(
+					escape(
+						await uint8ArrToString(data)
+					)
+				).split('base64,')[1]
+			);
+			return resolve(decoded);
+		}
 		resolve(data);
 	});
 });
 
-const readFile = ({ fs, path }) => new Promise((resolve, reject) => {
-	fs.readFile(path, (e, data) => {
-		if(e) reject(e);
-		resolve(data);
-	});
+const exists = ({ fs, path }) => new Promise((resolve) => {
+	fs.stat(path, (e, stat) => resolve(!e));
 });
 
-const blobToBinary = async (blob) => {
-	const buffer = await blob.arrayBuffer();
-	const view = new UInt8Array(buffer);
-	return [...view].map((n) => n.toString(2)).join(' ');
-};
-const binaryToDataUri = async (binary, type) => {
-	var decoder = new TextDecoder('utf8');
-	// const numbers = binary.trim().split(/\s*,\s*/g).map(x => x/1);
-	//const binstr = String.fromCharCode(...binary);
-	const b64str = btoa(decoder.decode(binary));
-	const src = `data:image/${type};base64,` + b64str;
-	return src;
-};
-const blobToBase64 = (blob) => {
-	return new Promise((resolve) => {
-		const reader = new FileReader();
-		reader.readAsDataURL(blob);
-		reader.onloadend = function () {
-			resolve(reader.result);
-		};
-	});
-};
+const mkdir = ({ fs, path }) => new Promise((resolve) => {
+	fs.mkdir(path, (e, stat) => resolve(!e));
+});
 
-const { fs, path, Buffer } = await configure(mountConfig);
-
-var walk = function(dir, done) {
+const walk = ({ fs, dir, callback }) => {
 	var results = [];
 	fs.readdir(dir, function(err, list) {
-		if (err) return done(err);
+		if (err) return callback(err);
 		var i = 0;
 		(function next() {
 			var file = list[i++];
-			if (!file) return done(null, results);
-			file = path.resolve(dir, file);
+			if (!file) return callback(null, results);
+			file = fs.path.resolve(dir, file);
 			//console.log(file)
 			fs.stat(file, function(err, stat) {
 				if (stat && stat.isDirectory()) {
-					walk(file, function(err, res) {
-						results = results.concat(res);
-						next();
+					walk({
+						fs,
+						dir: file,
+						callback: (err, res) => {
+							results = results.concat(res);
+							next();
+						}
 					});
 				} else {
 					results.push(file);
@@ -105,30 +98,20 @@ var walk = function(dir, done) {
 	});
 };
 
-let indexDBContents = await readdir({ fs, path: '/indexDB' });
-if(!indexDBContents.length){
-	for(const [name, url] of Object.entries(examples)){
-		const example = await fetch(url).then(x => x.blob());
-		await writeFile({
-			fs,
-			path: `/indexDB/${name}.jpg`,
-			data: await blobToBase64(example)
-		});
-	}
-	indexDBContents = await readdir({ fs, path: '/indexDB' });
-}
-//console.log(indexDBContents)
-
-// walk('/', function(err, results) {
-// 	if (err) throw err;
-// 	console.log(results);
-// });
-
-
 const FileSystem = () => {};
-FileSystem.readImage = async (path) => {
-	const file = await readFile({ fs, path });
-	return file;
-	//return binaryToDataUri(file, 'png');
+FileSystem.init = async ({ config: fn } = {}) => {
+	const { fs, path, Buffer } = await configure(mountConfig);
+	FileSystem.fs = fs;
+	fs.path = path;
+	FileSystem.path = path;
+	FileSystem.Buffer = Buffer;
+	return fn && await fn(FileSystem);
 };
+FileSystem.walk = (args) => walk({ ...args, fs: FileSystem.fs });;
+FileSystem.readdir = (args) => readdir({ ...args, fs: FileSystem.fs });
+FileSystem.readFile = (args) => readFile({ ...args, fs: FileSystem.fs });
+FileSystem.writeFile = (args) => writeFile({ ...args, fs: FileSystem.fs });
+FileSystem.exists = (args) => exists({ ...args, fs: FileSystem.fs });
+FileSystem.mkdir = (args) => mkdir({ ...args, fs: FileSystem.fs });
+
 export default FileSystem;

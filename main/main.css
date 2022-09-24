@@ -22,6 +22,8 @@ https://philiprogers.com/svgpatterns
 }
 * { cursor: none; }
 .cursor {
+	left: -9999px;
+	top: -9999px;
 	width: var(--cursor-dim);
 	height: var(--cursor-dim);
 	border-radius: 100%;
@@ -57,7 +59,7 @@ body {
 }
 .canvasContainer {
 	box-shadow: 0 0 10px black;
-	transform: scale(0.6);
+	transform: scale(0);
 }
 .canvasContainer canvas {
 	background: var(--bg-medium-color);

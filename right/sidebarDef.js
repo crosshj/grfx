@@ -19,7 +19,7 @@ const sidebarDef = ({
 	getLayerSource,
 	changeLayerAlpha,
 	changeLayerBlendMode,
-	changeLayerOrder,
+	//changeLayerOrder,
 	addLayer,
 	updateLayer,
 	removeLayers,
@@ -28,6 +28,9 @@ const sidebarDef = ({
 	const layersSorted = layers.sort((a,b) => a.number - b.number);
 	const layersHidden = layers
 		.map((x,i) => x.visible === false ? i : undefined)
+		.filter(x => x !== undefined);
+	const layersSelected = layers
+		.map((x,i) => x.selected === true ? i : undefined)
 		.filter(x => x !== undefined);
 	const defin = {
 		title: "Sidebar Demo",
@@ -44,6 +47,7 @@ const sidebarDef = ({
 						updateLayer,
 						removeLayers,
 						layersHidden,
+						layersSelected,
 						layers: layersSorted
 					},
 				],
@@ -68,7 +72,7 @@ const sidebarDef = ({
 				lay.getThumb = getLayerThumb;
 				lay.changeLayerAlpha = changeLayerAlpha;
 				lay.changeLayerBlendMode = changeLayerBlendMode;
-				lay.changeLayerOrder = changeLayerOrder;
+				//lay.changeLayerOrder = changeLayerOrder;
 			});
 		});
 	});

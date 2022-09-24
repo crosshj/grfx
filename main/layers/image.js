@@ -1,18 +1,19 @@
 import fs from '../../shared/fs.js';
+const init = fs.init();
 
 const images = {};
 
-const loadImage = (url) => {
-	const src = fs.readImage(url);
-	const image = new Promise(async (resolve) => {
-		const image = new Image();
-		image.onload = () => resolve(image);
-		image.src = await src;
-	});
-
+const loadImage = (path) => {
 	return async function drawImage({ ctx, width, height }){
-		images[url] = images[url] || await image;
-		const i = images[url];
+		await init;
+
+		const image = new Promise(async (resolve) => {
+			const image = new Image();
+			image.onload = () => resolve(image);
+			image.src = await fs.readFile({ path });
+		});
+		images[path] = images[path] || await image;
+		const i = images[path];
 		const sx = 0;
 		const sy = 0;
 		const sWidth = i.width;

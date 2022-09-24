@@ -1,105 +1,63 @@
-const layers = [{
-	number: 0,
-	visible: true,
-	selected: true,
-	// alpha: 0.5,
-	// blendMode: 'overlay',
-	blendMode: 'screen',
-	name: "Dangerous Clouds",
-	image: "/indexDB/sky.jpg"
-}, {
-	number: 1,
-	name: "Owl At Sea",
-	alpha: 0.1,
-	blendMode: 'saturation',
-	image: "/indexDB/owl.jpg"
-}, {
-	visible: false,
-	number: 2,
-	name: "Golden Boy",
-	image: "/indexDB/gold.jpg"
-}, {
-	number: 3,
-	name: "Mon*star's Sky-Runner",
-	image: "/indexDB/squid.jpg"
-}, {
-	number: 4,
-	name: "Cyberpunk Robot",
-	image: "/indexDB/robot.jpg"
-}];
+import actions from './actions.js';
+let currentFile;
 
-const Core = ({ host }) => {
-	host.broadcast({
-		eventName: 'layers-update',
-		type: 'layers-update',
-		data: { layers },
+const context = {
+	host: undefined,
+	layout: undefined,
+	currentFile: undefined,
+	update: undefined,
+	load: undefined,
+};
+
+const update = async ({ host }) => {
+	await host.broadcast({
+		eventName: 'file-update',
+		type: 'file-update',
+		data: currentFile,
 	});
-	host.listen('layer-visibility', ({ number, visible }) => {
-		const l = layers.find(x => x.number === Number(number));
-		l.visible = visible;
-		host.broadcast({
-			eventName: 'layers-update',
-			type: 'layers-update',
-			data: { layers },
-		});
+	//DEPRECATE
+	// await host.broadcast({
+	// 	eventName: 'layers-update',
+	// 	type: 'layers-update',
+	// 	data: currentFile,
+	// });
+};
+const load = ({ host, config }) => {
+	currentFile = config;
+	context.currentFile = config;
+	update({ host });
+};
+
+const Core = ({ host, layout }) => {
+	context.host = host;
+	context.layout = layout;
+	context.load = load;
+	context.update = () => update({ host });
+
+	const doAction = (fn) => (args) => fn(context, args);
+	for(const [actionName, handler] of Object.entries(actions)){
+		host.listen(actionName, doAction(handler));
+	}
+
+	window.addEventListener('contextmenu-select', async ({ detail={} }={}) => {
+		const { which, key } = detail;
+		const name = key || which;
+		const action = actions["menu-" + name] || actions[name];
+		if(!action) return;
+		await doAction(action)();
 	});
-	host.listen('layer-alpha', ({ number, alpha }) => {
-		const l = layers.find(x => x.number === Number(number));
-		l.alpha = alpha;
-		host.broadcast({
-			eventName: 'layers-update',
-			type: 'layers-update',
-			data: { layers },
-		});
-	});
-	host.listen('layer-blend-mode', ({ number, mode }) => {
-		const l = layers.find(x => x.number === Number(number));
-		l.blendMode = mode;
-		host.broadcast({
-			eventName: 'layers-update',
-			type: 'layers-update',
-			data: { layers },
-		});
-	});
-	const modals = {
-		'Image Size...': 'imageSize',
-		'Canvas Size...': 'canvasSize'
+
+	// window.addEventListener('contextmenu-select', (e) => {
+	// 	host.broadcast({
+	// 		eventName: 'contextmenu-select',
+	// 		type: 'contextmenu-select',
+	// 		data: e.detail,
+	// 	});
+	// });
+
+	return {
+		load: (config) => load({ host, config })
 	};
-	const modalData = {
-		imageSize: () => ({
-			message: "TODO: get data for given form"
-		}),
-		canvasSize: () => ({
-			message: "NOTE: this is just an example",
-			anotherMsg: "added some more!",
-			moreMsg: "yay! more message!",
-			width: 800,
-			height: 600
-		}),
-	};
-	window.addEventListener('contextmenu-select', ({ detail={} }={}) => {
-		const { which } = detail;
-		const modal = modals[which];
-		const data = modal && modalData[modal]();
-		if(!modal) return;
-		const event = new CustomEvent('contextMenuShow', {
-			bubbles: true,
-			detail: {
-				modal,
-				list: [],
-				data,
-				parent: "core"
-			}
-		});
-		window.top.dispatchEvent(event);
-	});
-	window.addEventListener('contextmenu-select', (e) => {
-		host.broadcast({
-			eventName: 'contextmenu-select',
-			type: 'contextmenu-select',
-			data: e.detail,
-		});
-	});
 };
 
 export default Core;

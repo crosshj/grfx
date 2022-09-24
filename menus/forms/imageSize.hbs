@@ -1,7 +1,9 @@
 <form action="resizeImage">
-	<div class="note">
-		{{ message }}
-	</div>
+	{{#if message}}
+		<div class="note">
+			{{ message }}
+		</div>
+	{{/if}}
 	<fieldset>
 		<legend>Resize</legend>
 
@@ -12,15 +14,15 @@
 			<input type="radio" id="percentage" name="resize-units" value="pixels">
 			<label for="percentage">Percentage</label>
 		</div>
-		
+
 		<div class="row">
 			<label for="resize-horizontal">Horizontal:</label>
-			<input type="text" id="resize-horizontal" name="resize-horizontal">
+			<input type="text" id="resize-horizontal" name="resize-horizontal" autocomplete="off" value="{{width}}">
 		</div>
 
 		<div class="row">
 			<label for="resize-vertical">Vertical:</label>
-			<input type="text" id="resize-vertical" name="resize-vertical">
+			<input type="text" id="resize-vertical" name="resize-vertical" autocomplete="off" value="{{height}}">
 		</div>
 
 		<div class="row">
@@ -34,17 +36,17 @@
 
 		<div class="row">
 			<label for="skew-horizontal">Horizontal:</label>
-			<input type="text" id="skew-horizontal" name="skew-horizontal">
+			<input type="text" id="skew-horizontal" name="skew-horizontal" autocomplete="off">
 		</div>
 
 		<div class="row">
 			<label for="skew-vertical">Vertical:</label>
-			<input type="text" id="skew-vertical" name="skew-vertical">
+			<input type="text" id="skew-vertical" name="skew-vertical" autocomplete="off">
 		</div>
 	</fieldset>
 
 	<div class="row align-right">
-		<input type="submit" value="OK">
 		<input type="submit" value="Cancel">
+		<input type="submit" value="OK">
 	</div>
 </form>

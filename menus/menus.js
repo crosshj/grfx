@@ -1,6 +1,6 @@
 /*!
 	fiug menus component
-	Version 0.4.6 ( 2022-09-16T00:00:22.833Z )
+	Version 0.4.6 ( 2022-09-22T17:34:50.841Z )
 	https://github.com/fiugd/fiug/menus
 	(c) 2020-2021 Harrison Cross, MIT License
 */
@@ -6174,7 +6174,7 @@ function ContextPane({forms: forms = {}} = {}) {
     contextPane.classList.add("ContextOverlay");
     contextPane.innerHTML = `\n<style>\nul { list-style: none; padding: 0; margin: 0; }\n\n:root {\n\t/* --main-theme-color: #47414a; */\n\t--main-theme-color: #1e1e1e;\n\n\t/* --main-theme-highlight-color: #40f7ac; */\n\t/* --main-theme-highlight-color: #026292; */\n\t/* --main-theme-highlight-color: #2b5046; */\n\t/* --main-theme-highlight-color: 20, 160, 210; */\n\t--main-theme-highlight-color: 60, 180, 190;\n\n\t/* --main-theme-highlight-color: 20, 201, 210; */\n\t/* --main-theme-highlight-color: 64, 210, 20; */\n\t--main-theme-highlight-color-FOR-PICKER: rgb(60, 180, 190);\n\t/* --main-theme-background-color: #363238; */\n\t/* --main-theme-background-color: #3b3b3b; */\n\t--main-theme-background-color: #363636; /* #2d2d2d */\n\t--main-theme-background-dark-color: #29252b;\n\t--main-theme-text-color-dark: green;\n\t/* --main-theme-text-color: #d8d8d8; */\n\t--main-theme-text-color: #c2c2c2;\n\t/* --main-theme-text-invert-color: #d0c0d8; */\n\t--main-theme-text-invert-color: #818181;\n\t/* --theme-subdued-color: #483f48; */\n\t--theme-subdued-color: #262626;\n\t--theme-text-color: black;\n\t--theme-text-selected: #82e3ae;\n\t--tree-selected: #094771;\n\t--tree-hover: #333;\n\t--code-line-selected: orange;\n}\n\n.ContextOverlay {\n\t--horiz-pad: 20px;\n\t--vert-pad: 10px;\n\t--sep-height: 10px;\n}\n.ContextOverlay {\n\tposition: absolute;\n\tleft: 0; top: 0;\n\tz-index: 999;\n\tvisibility: hidden;\n\tpointer-events: none;\n\tbackground-color: transparent;\n\ttransition: background-color 0.5s ease;\n}\n.ContextContainer {\n\tposition: relative;\n\twidth: 100vw;\n\theight: 100vh;\n}\n.ContextMenu {\n\tposition: absolute;\n\tbackground: transparent;\n\tvisibility: hidden;\n}\n.ContextMenu .menu-container {\n\tposition: relative;\n}\n.ContextMenu .menu-container:after {\n\tcontent: '';\n\tposition: absolute;\n\tbackground: var(--main-theme-background-color);\n\tborder: 1px solid #777;\n\tbox-shadow: 3px 2px 5px black;\n\tborder-radius: 3px;\n\topacity: 0.9;\n\twidth: 100%;\n\theight: 100%;\n\tbackdrop-filter: blur(5px);\n\tz-index: -1;\n\ttop: 0;\n}\n.ContextMenu.open {\n\tvisibility: visible;\n\tpointer-events: all;\n}\n.ContextMenu ul.list {\n\tmargin: 0; padding: var(--vert-pad) 0;\n\tmin-width: 185px;\n\tuser-select: none;\n}\n.ContextMenu .list .item button {\n\tbackground: transparent;\n\tborder: 0;\n\tcolor: white;\n\tpadding: 2px var(--horiz-pad);\n\twidth: 100%;\n\ttext-align: left;\n\tpointer-events: none; /* so clicks are never registered on this element */\n}\n.ContextMenu .list .item:hover {\n\tbackground: rgb(var(--main-theme-highlight-color));\n}\n.ContextMenu .list .item {\n\tline-height: 0;\n}\n.ContextMenu .list .item.disabled {\n\t\tuser-select: none;\n\t\tpointer-events: none;\n\t\topacity: 0.4;\n}\n.ContextMenu .list .context-seperator {\n\tmargin: calc(var(--sep-height) / 2) 0px;\n\tcolor: #4a4a4a;\n\tborder-bottom: 1px solid;\n}\n\n</style>\n\t`;
     contextPane.innerHTML += `\n<div class="ContextContainer">\n\t<div class="ContextMenu">\n\t\t<div class="menu-container">\n\t\t\t<ul class="list">\n\t\t\t</ul>\n\t\t</div>\n\t</div>\n</div>\n\t`;
-    const menuItem = item => item === "seperator" ? `<li class="context-seperator"></li>` : `\n\t\t<li class="item${item.disabled ? " disabled" : ""}" data-text="${item.name}" data-modal="${item.modal || ""}">\n\t\t\t<button name="${item.name}" class="">\n\t\t\t\t<div class="linkContent">\n\t\t\t\t\t<span class="itemText">${item.name}</span>\n\t\t\t\t</div>\n\t\t\t</button>\n\t\t</li>\n\t`;
+    const menuItem = item => item === "seperator" ? `<li class="context-seperator"></li>` : `\n\t\t<li class="item${item.disabled ? " disabled" : ""}"\n\t\t\t${item.key ? `data-key="${item.key}"` : ""}\n\t\t\t${item.modal ? `data-modal="${item.modal}"` : ""}\n\t\t\tdata-text="${item.name || ""}"\n\t\t>\n\t\t\t<button name="${item.name || ""}" class="">\n\t\t\t\t<div class="linkContent">\n\t\t\t\t\t<span class="itemText">${item.name}</span>\n\t\t\t\t</div>\n\t\t\t</button>\n\t\t</li>\n\t`;
     contextPane.show = () => {
         contextPane.style.visibility = "visible";
         contextPane.style.pointerEvents = "all";
@@ -6267,7 +6267,7 @@ function ContextPane({forms: forms = {}} = {}) {
             if (menuWasClicked && event.target.tagName !== "LI") {
                 return;
             }
-            hideMenu();
+            !contextPane.classList.contains("modal") && hideMenu();
             document.body.removeEventListener("click", menuClickListener, false);
             if (!menuWasClicked) {
                 return;
@@ -6276,6 +6276,7 @@ function ContextPane({forms: forms = {}} = {}) {
                 detail: {
                     which: event.target.dataset.text,
                     modal: event.target.dataset.modal,
+                    ...event.target.dataset,
                     parent: parent,
                     data: data
                 }

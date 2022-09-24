@@ -1,5 +1,21 @@
+/*
+https://joshuatz.com/posts/2021/common-css-color-variables-properties-theming/
+*/
+
 @media (prefers-color-scheme: dark) {
 	:root {
+		/*
+		--primary:
+		--secondary:
+		--tertiary:
+		--success:
+		--warning:
+		--danger:
+		--dark
+		--medium
+		--light
+		*/
+	
 		--main-bg-color: ButtonFace;
 		--main-bg-color: #2a2a2a;
 		--bg-light-color: #383838;
@@ -13,22 +29,48 @@
 		--light-text-color: #bbb;
 		--disabled-text-color: #777;
 		--bg-highlight-color: #525a44;
+
+		--shiki-color-text: #acc6d2; /**/
+		--shiki-color-background: transparent;
+		--shiki-token-constant: #9cdcfe; /**/
+		--shiki-token-string: #ce9178; /**/
+		--shiki-token-comment: #6A9955; /**/
+		--shiki-token-keyword: #569cd6; /**/
+		--shiki-token-parameter: #9CDCFE; /**/
+		--shiki-token-function: #DCDCAA; /**/
+		--shiki-token-string-expression: #dc8867; /**/
+		--shiki-token-punctuation: #569cd6; /**/
+		--shiki-token-link: #EE0000;
 	}
 }
 
 @media (prefers-color-scheme: light) {
 	:root {
 		--main-bg-color: #eee;
-		--bg-light-color: #ccc;
+		--bg-light-color: #d8d8d8;
 		--bg-light-hover-color: #bbb;
-		--bg-lighter-color: #9d9d9d;
-		--bg-lightest-color: #999;
-		--bg-dark-color: #777;
-		--bg-medium-color: #aba8a8;
-		--main-text-color: #403f3f;
+		--bg-lighter-color: #bebebe;
+		--bg-lightest-color: #b4b4b4;
+		--bg-dark-color: #7b7b7b;
+		--bg-medium-color: #e3e3e3;
+		--main-text-color: #434343;
+
 		--text-secondary-color: #191919;
 		--light-text-color: #bbb;
 		--disabled-text-color: #777;
 		--bg-highlight-color: #c8d5b0;
+
+		--shiki-color-text: #403f3f;
+		--shiki-color-background: transparent;
+		--shiki-token-constant: #001080; /**/
+		--shiki-token-string: #403f3f;
+		--shiki-token-comment: #008000; /**/
+		--shiki-token-keyword: #000000; /**/
+		--shiki-token-parameter: #403f3f;
+		--shiki-token-function: #795e26; /**/
+		--shiki-token-string-expression: #a31515; /**/
+		--shiki-token-punctuation: #000000; /**/
+		--shiki-token-link: #403f3f;
+
 	}
 }

@@ -2,7 +2,13 @@ import rxReact from './rxReact.js';
 import { isNumeric, clone } from '../shared/utils.js';
 import constructLayer from './constructLayer.js';
 
-export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
+var dragimage = document.createElement('img')
+dragimage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+dragimage.style.opacity = 0;
+dragimage.id = "layer-drag-image-helper";
+document.body.appendChild(dragimage);
+
+export default function sidebarStart({ sidebarDef, thumbs, listener }, startCallback) {
 	const getRoot = (components, dispatcher) => {
 		const {
 			div,
@@ -90,6 +96,12 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 			return dispatcher({
 				type: "REORDER_LAYERS",
 				payload: { order },
+			});
+		};
+
+		const newLayerItem = (payload) => {
+			return dispatcher({
+				type: "NEW_LAYER_ITEM"
 			});
 		};
 
@@ -481,10 +493,10 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 						order.filter((x) => x !== actualDragged)
 					);
 					//console.log(`Dragged item ${actualDragged} to position BEFORE 0 (moveToTop)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveToTop",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveToTop",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -495,10 +507,10 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 						.filter((x) => x !== actualDragged)
 						.concat([actualDragged]);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveToBottom)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveToBottom",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveToBottom",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -515,10 +527,10 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveUp)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveUp",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveUp",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -535,10 +547,10 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveDown)`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveDown",
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveDown",
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -555,11 +567,11 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveDown X ${droppedPosition - draggedPosition})`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveDown",
-						repeat: droppedPosition - draggedPosition,
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveDown",
+					// 	repeat: droppedPosition - draggedPosition,
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -576,11 +588,11 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 						return all;
 					}, []);
 					//console.log(`Dragged item ${actualDragged} to position AFTER ${actualDropped} (moveUp X ${draggedPosition - droppedPosition - 1})`);
-					layer.changeLayerOrder({
-						number: layer.number,
-						operation: "moveUp",
-						repeat: draggedPosition - droppedPosition - 1,
-					});
+					// layer.changeLayerOrder({
+					// 	number: layer.number,
+					// 	operation: "moveUp",
+					// 	repeat: draggedPosition - droppedPosition - 1,
+					// });
 					//console.log(`New order: ${order}`);
 					reorderLayers(order);
 					return;
@@ -599,17 +611,18 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 			function dragStartHandler(layersIndex, e) {
 				//console.log(`started dragging ${layersIndex}`)
 
-				document.querySelector(".layers ul").classList.add("contains-dragging");
-				e.target.classList.add("dragging");
+				//document.body.classList.add("contains-dragging");
+				//e.target.classList.add("dragging");
+				//e.target.classList.add("contains-dragging");
 				window.draggedIndex = layersIndex;
 				const hideDragGhost = true;
 				if (e.dataTransfer && hideDragGhost) {
+					e.dataTransfer.setDragImage(dragimage, 0, 0)
 					e.dataTransfer.dropEffect = "none";
 					e.dataTransfer.effectAllowed = "none";
-					var img = new Image();
-					img.src =
-						'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
-					e.dataTransfer.setDragImage(img, 10, 10);
+					// var img = new Image();
+					// img.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
+					// e.dataTransfer.setDragImage(img, 10, 10);
 				}
 			}
 
@@ -664,12 +677,12 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 			}
 
 			function dragEndHandler(layersIndex, layers, e) {
-				document
-					.querySelector(".contains-dragging")
-					.classList.remove("contains-dragging");
-				document
-					.querySelectorAll(".dragging")
-					.forEach((node) => node.classList.remove("dragging"));
+				// document
+				// 	.querySelector(".contains-dragging")
+				// 	.classList.remove("contains-dragging");
+				// document
+				// 	.querySelectorAll(".dragging")
+				// 	.forEach((node) => node.classList.remove("dragging"));
 
 				if (!window.dropText) {
 					window.enterTarget = null;
@@ -1025,34 +1038,38 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 								rect,
 								polygon,
 								editClick: () => {
-									//console.log('---TODO: edit icon click!');
 									const selectedLayer = item.layers[layersSelected[0]];
-									const selectedLayerSource = selectedLayer.getLayerSource({
+									selectedLayer.getLayerSource({
 										number: selectedLayer.number,
 									});
-									//console.log({ selectedLayerSource });
-									const name = selectedLayer.name || "";
-									const def = selectedLayerSource || "";
-									const type = selectedLayer.type || "3D Canvas";
-									constructLayer(
-										({ name, def, type }) => {
-											item.updateLayer({
-												name,
-												number: selectedLayer.number,
-												def,
-												type,
-												callback: (layer) =>
-													updateLayerItem({
-														layers: item.layers,
-														updatedLayer: Object.assign({}, layer, { type }),
-													}),
-											});
-										},
-										() => {
-											console.log("TODO: cancel layer update");
-										},
-										{ name, def, type }
-									);
+									// //console.log('---TODO: edit icon click!');
+									// const selectedLayer = item.layers[layersSelected[0]];
+									// const selectedLayerSource = selectedLayer.getLayerSource({
+									// 	number: selectedLayer.number,
+									// });
+									// //console.log({ selectedLayerSource });
+									// const name = selectedLayer.name || "";
+									// const def = selectedLayerSource || "";
+									// const type = selectedLayer.type || "3D Canvas";
+									// constructLayer(
+									// 	({ name, def, type }) => {
+									// 		item.updateLayer({
+									// 			name,
+									// 			number: selectedLayer.number,
+									// 			def,
+									// 			type,
+									// 			callback: (layer) =>
+									// 				updateLayerItem({
+									// 					layers: item.layers,
+									// 					updatedLayer: Object.assign({}, layer, { type }),
+									// 				}),
+									// 		});
+									// 	},
+									// 	() => {
+									// 		console.log("TODO: cancel layer update");
+									// 	},
+									// 	{ name, def, type }
+									// );
 								},
 							}),
 							buttonComponent({
@@ -1061,25 +1078,7 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 								section,
 								item: {
 									name: "+",
-									onClick: () =>
-										constructLayer(
-											({ name, def, type }) => {
-												item.addLayer({
-													name,
-													def,
-													type,
-													callback: (layer) =>
-														addLayerItem({
-															layers: item.layers,
-															newLayer: Object.assign({}, layer, { type }),
-															layerOrder: layerOrder.length ? layerOrder : null,
-														}),
-												});
-											},
-											() => {
-												console.log("TODO: cancel layer add");
-											}
-										),
+									onClick: newLayerItem,
 								},
 							}),
 							buttonComponent({
@@ -1216,7 +1215,8 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 			.layersHidden,
 		globalState: [],
 		layersProperties: [],
-		layersSelected: [0],
+		layersSelected: sidebarDef.sections[0].items.find((x) => x.type === "layers")
+			.layersSelected,
 		layerOrder: undefined, //TODO:
 		pinned: undefined, //TODO:
 		hidden: undefined, //TODO:
@@ -1226,10 +1226,10 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 	// reducer should be built with respect to sidebar definition
 	const getReducer = () => {
 		const reducer = (state, action) => {
-			//console.log(action.type)
 			var newState = clone(state);
 
 			function updateSelectedLayers(state, layersSelected) {
+			
 				const found = (state.layersProperties || []).find((x) =>
 					layersSelected.includes(x.number)
 				);
@@ -1418,12 +1418,17 @@ export default function sidebarStart({ sidebarDef, thumbs }, startCallback) {
 					break;
 				}
 			}
+
+			listener({ action, prev: state, next: newState });
 			return newState;
 		};
 		return reducer;
 	};
 
 	function rxReactReady(err, { components, dispatcher, start, React } = {}) {
+		if(err && err.includes('already inited')){
+			return;
+		}
 		if (err) {
 			console.error(`Error in rxReactReady: ${err}`);
 			return;
