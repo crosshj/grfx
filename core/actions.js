@@ -128,6 +128,11 @@ const menuImageSize = async (context) => {
 	const { width, height } = currentFile;
 	ShowModal('imageSize', { width, height });
 };
+const menuCanvasSize = async (context) => {
+	const { currentFile } = context;
+	const { width, height } = currentFile;
+	ShowModal('canvasSize', { width, height });
+};
 
 const actions = {
 	layerAlpha,
@@ -141,9 +146,10 @@ const actions = {
 	hideLayerSource,
 	layersOrder,
 
-	menuLayerNew,
-	menuShowLayerSource,
-	menuImageSize,
+	menuLayerNew, //menu-layer-new
+	menuShowLayerSource, // menu-show-layer-source
+	menuImageSize, // menu-image-size
+	menuCanvasSize, // menu-canvas-size
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
