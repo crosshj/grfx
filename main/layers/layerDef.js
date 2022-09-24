@@ -8,6 +8,14 @@ const loadImage = (url) => new Promise(async (resolve) => {
 		image.src = url;
 		return;
 	}
+	if(url.startsWith('images/')){
+		const image = new Image();
+		image.onload = () => resolve(image);
+		image.src = await fs.readFile({
+			path: "/indexDB/" + url
+		});
+		return;
+	}
 	const path = `/indexDB/downloads/${url.split('/').pop()}`;
 	const fileExists = await fs.exists({ path });
 	if(!fileExists){
