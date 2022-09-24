@@ -265,12 +265,12 @@ export default {
 	layers: [{
 		number: 0,
 		name: "moon",
+		selected: true,
 		type: '2d',
 		def: moon
 	}, {
 		number: 1,
 		name: "threejs",
-		selected: true,
 		type: 'webgl2',
 		def: threejs
 	}, {
