@@ -1,12 +1,15 @@
 const examples = {
 	'example.js': "./filesystem/example.js",
 	'example3d.js': "./filesystem/example3d.js",
+
 	'models/bunny.obj': "./filesystem/models/bunny.obj",
 	'models/tree.obj': './filesystem/models/tree.obj',
+
 	'images/hatch.png': './filesystem/images/hatch.png',
 	'images/leaves.png': './filesystem/images/leaves.png',
 	'images/needles.png': './filesystem/images/needles.png',
 	'images/stones.png': './filesystem/images/stones.png',
+	'images/feedforward.png': './filesystem/images/feedforward.png',
 };
 
 export default async (fs) => {
