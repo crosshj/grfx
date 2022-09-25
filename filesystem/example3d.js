@@ -297,8 +297,8 @@ const moon = `
 
 export default {
 	zoom: 0.3,
-	width: 1440,
-	height: 1080,
+	width: 2880,
+	height: 2160,
 	tool: "airbrush",
 	layers: [{
 		number: 0,

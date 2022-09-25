@@ -60,8 +60,10 @@ const updateLayer = async (args) => {
 };
 
 async function Canvas(args) {
-	const { width, height, layers:layerDefs } = args;
+	const { width, height, layers:layerDefs, container } = args;
 	const viewport = new Concrete.Viewport(args);
+	container.style.width = width + "px";
+	container.style.height = height + "px";
 
 	const layers = {};
 	const renderFns = {};

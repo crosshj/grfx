@@ -1,6 +1,7 @@
 const examples = {
 	'example.js': "./filesystem/example.js",
 	'example3d.js': "./filesystem/example3d.js",
+	'example3d2.js': "./filesystem/example3d2.js",
 
 	'models/bunny.obj': "./filesystem/models/bunny.obj",
 	'models/tree.obj': './filesystem/models/tree.obj',
@@ -24,7 +25,7 @@ export default async (fs) => {
 		await writeFile({ path, data });
 	}
 	const module = await import(
-		await readFile({ path: '/indexDB/example3d.js' })
+		await readFile({ path: '/indexDB/example3d2.js' })
 	);
 
 	await walk({
