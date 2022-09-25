@@ -9,7 +9,7 @@ const examples = {
 
 const basicCanvas = `
 	const { width, height } = getDims();
-	const radius = 300;
+	const radius = width*.2;
 	const Xcenter = width/2;
 	const Ycenter = height/2 - 70;
 	ctx.fillStyle = '#e0a';
@@ -48,15 +48,15 @@ const basicCanvas = `
 	const getRandom = (number, lang) => [...Array(number)].map(random(lang)).join('');
 
 	ctx.fillStyle = '#992b99';
-	ctx.font = '120px sans-serif';
-	ctx.fillText(getRandom(26, tibetan), 0, height-90, width);
+	ctx.font = width*0.1 + 'px sans-serif';
+	ctx.fillText(getRandom(26, tibetan), 0, height-(width*0.06), width);
 `.replace(/^\t/gm, '');
 
 
 export default {
 	zoom: 0.3,
-	width: 1440,
-	height: 1080,
+	width: 1024,
+	height: 768,
 	tool: "airbrush",
 	layers: [{
 		number: 0,

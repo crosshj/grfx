@@ -249,21 +249,21 @@ const background = `
 const moon = `
 	const { width, height } = getDims();
 	const grd = ctx.createRadialGradient(
-		width*0.8-20, height*0.2-20, 5,
-		width*0.8-20, height*0.2-20, 120
+		0.7930555555555555*width, height*0.19074074074074074, 0,
+		0.7930555555555555*width, height*0.19074074074074074, width*0.041666666666666664
 	);
 	grd.addColorStop(0, "#ffffff1f");
 	grd.addColorStop(1, "#3333331f");
 	ctx.fillStyle = grd;
 
-	ctx.arc(width*0.8, height*0.2, 120, 0, 2*Math.PI, false);
+	ctx.arc(width*0.8, height*0.2, width*0.041666666666666664, 0, 2*Math.PI, false);
 	ctx.fill();
 `;
 
 export default {
-	zoom: 0.3,
-	width: 2880,
-	height: 2160,
+	zoom: 0.6,
+	width: 800,
+	height: 600,
 	tool: "airbrush",
 	layers: [{
 		number: 0,
