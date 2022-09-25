@@ -6,14 +6,17 @@ const images = {
 };
 
 const threejs = `
+	const THREE = await import('three');
+	const { OBJLoader } = await import('three-objloader');
+	const { LoopSubdivision } = await import('three-subdivide');
+
 	const bunnySrc = await loadFile('models/bunny.obj');
 	const treeSrc = await loadFile('models/tree.obj');
 
 	const gl = ctx;
 	const canvas = gl.canvas;
 	const { width, height } = canvas;
-	const THREE = await import('three');
-	const { OBJLoader } = await import('../../vendor/OBJLoader.js');
+
 	const loader = new OBJLoader(THREE);
 
 	const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
@@ -86,18 +89,24 @@ const threejs = `
 	});
 	const needlesTex = ImageTexture({
 		pattern: needlesPat,
-		scale: 0.5
+		scale: 1
 	});
 	const bunnyMat = new THREE.MeshPhongMaterial( {
 		color: 0xffffff,
 		specular: 0xffffff,
 		shininess: 0,
-		emissive: 0x333333,
-		map: hatchTex
+		emissive: 0x202020,
+		//map: hatchTex
 	});
 	// bunnyMat.side = THREE.DoubleSide;
 	bunnyMat.side = THREE.BackSide;
-	bunnyMat.overdraw = 1;
+	const blackBunnyMat = new THREE.MeshPhongMaterial( {
+		color: 0x000000,
+		specular: 0xffffff,
+		shininess: 1,
+		emissive: 0x0d0d0d,
+	});
+	blackBunnyMat.side = THREE.BackSide;
 
 	const leavesTex = ImageTexture({
 		pattern: leavesPat,
@@ -109,7 +118,6 @@ const threejs = `
 		shininess: 0,
 		map: leavesTex,
 	});
-	leavesMat.overdraw = 1;
 
 	const stoneTex = ImageTexture({
 		pattern: stonesPat,
@@ -121,11 +129,17 @@ const threejs = `
 		shininess: 0,
 		map: stoneTex,
 	});
-	barkMat.overdraw = 1;
+
 	const woopsMat = new THREE.MeshStandardMaterial({
 		color: 0xff00ff
 	});
 
+	//var helper = new THREE.CameraHelper( light.shadow.camera );
+	//scene.add( helper );
+	var camhelper = new THREE.CameraHelper( camera );
+	//scene.add( camhelper );
+	var axesHelper = new THREE.AxesHelper( 5 );
+	//scene.add( axesHelper );
 
 	const groundGeom = new THREE.PlaneGeometry(1000, 1000, 4, 4);
 	const groundMesh = new THREE.Mesh(groundGeom, groundMat);
@@ -136,37 +150,63 @@ const threejs = `
 	groundMesh.castShadow = true;
 	scene.add(groundMesh);
 
-	//var helper = new THREE.CameraHelper( light.shadow.camera );
-	//scene.add( helper );
-
-	var camhelper = new THREE.CameraHelper( camera );
-	//scene.add( camhelper );
-
-	var axesHelper = new THREE.AxesHelper( 5 );
-	//scene.add( axesHelper );
+	const SubdivideFlat = (inGeometry) => {
+		const iterations = 1;
+		const params = {
+			split:          true,       // optional, default: true
+			uvSmooth:       true,      // optional, default: false
+			preserveEdges:  false,      // optional, default: false
+			flatOnly:       true,      // optional, default: false
+			maxTriangles:   Infinity,   // optional, default: Infinity
+		};
+		const geometry = LoopSubdivision.modify(
+			inGeometry,
+			iterations,
+			params.split,
+			params.uvSmooth,
+			params.flatOnly,
+			params.maxTriangles
+		);
+		console.log(geometry, inGeometry)
+		return geometry;
+	};
 
 
 	if(bunnySrc){
 		const bunny = loader.parse(bunnySrc);
 		bunny.traverse( function ( child ) {
 			if ( !(child instanceof THREE.Mesh) ) return;
+			//child.geometry = SubdivideFlat(child.geometry);
 			child.material = bunnyMat;
 			child.castShadow = true;
 			child.receiveShadow = true;
 		});
-		var bunnyScaleDim = 4;
+		const bunnyScaleDim = 4;
 		bunny.scale.set(bunnyScaleDim, bunnyScaleDim, bunnyScaleDim);
-		bunny.position.x = 0;
+		bunny.position.x = 33;
 		bunny.position.y = -20;
-		bunny.position.z = 40;
+		bunny.position.z = 35;
 		bunny.rotateY((-50 * Math.PI)/180);
 		scene.add(bunny);
+
+		const blackBunny = bunny.clone();
+		const bigger = 1.2;
+		blackBunny.scale.set(bunnyScaleDim*bigger, bunnyScaleDim*bigger, bunnyScaleDim*bigger);
+		blackBunny.position.x = 0;
+		blackBunny.position.y = -20;
+		blackBunny.position.z = 43;
+		blackBunny.rotateY((110 * Math.PI)/180);
+		blackBunny.traverse( function ( child ) {
+			child.material = blackBunnyMat;
+		});
+		scene.add(blackBunny);
 	}
 
 	if(treeSrc){
 		const tree = loader.parse(treeSrc);
 		tree.traverse( function ( child ) {
 			if ( !(child instanceof THREE.Mesh) ) return;
+			//child.geometry = SubdivideFlat(child.geometry);
 			child.material = child.material.map(material => {
 				if(material.name === 'Bark') return barkMat;
 				if(material.name === 'Tree') return leavesMat;
@@ -182,20 +222,20 @@ const threejs = `
 		const tree3 = tree.clone();
 
 		// far tree
-		var treeScaleDim = 1.8;
+		var treeScaleDim = 1.6;
 		tree.scale.set(treeScaleDim, treeScaleDim, treeScaleDim);
-		tree.position.x = 50;
+		tree.position.x = 30;
 		tree.position.y = -20;
-		tree.position.z = -55;
+		tree.position.z = -65;
 		tree.rotation.y = (-45 * Math.PI)/180;
 		scene.add(tree);
 
 		// mid tree
 		const tree2ScaleDim = 3.7;
 		tree2.scale.set(tree2ScaleDim, tree2ScaleDim, tree2ScaleDim);
-		tree2.position.x = -33;
+		tree2.position.x = -40;
 		tree2.position.y = -20;
-		tree2.position.z = -20;
+		tree2.position.z = -15;
 		tree2.rotation.y = (205 * Math.PI)/180;
 		scene.add(tree2);
 
@@ -219,13 +259,11 @@ const threejs = `
 		// right bush
 		const bush2ScaleDim = 5;
 		bush2.scale.set(bush2ScaleDim, bush2ScaleDim, bush2ScaleDim);
-		bush2.position.x = 90;
+		bush2.position.x = 100;
 		bush2.position.y = -93;
 		bush2.position.z = 80;
 		bush2.rotation.y = (-90 * Math.PI)/180;
 		scene.add(bush2);
-
-
 	}
 
 	renderer.render(scene, camera);
