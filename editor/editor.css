@@ -261,6 +261,9 @@ select {
 	background-repeat: no-repeat;
 	background-color: var(--bg-light-color);
 }
+select[disabled] {
+	background-image: none;
+}
 input[type="text"],
 input[type="number"],
 select {

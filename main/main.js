@@ -1,3 +1,4 @@
+import { timer } from "footils";
 import { listen, send } from '../shared/messages.js';
 import { sleep } from '../shared/utils.js';
 import Canvas from './canvas.js';
@@ -45,6 +46,9 @@ document.body.addEventListener('wheel', (ev) => {
 
 
 listen('file-update', async (args) => {
+	const timerLabel = 'main: file-update [' + Date.now() + "]";
+	timer.start(timerLabel);
+
 	const { layers, width, height, zoom, tool, dirty } = args;
 
 	if(dirty){
@@ -91,8 +95,9 @@ listen('file-update', async (args) => {
 	}
 	canvas.viewport.render();
 	send('update-thumbs', { thumbs: canvas.thumbs });
-	return;
 
+	timer.log(timerLabel);
+	return;
 });
 
 send('ping', 'main');

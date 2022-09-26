@@ -16,8 +16,9 @@ const dummy = (name) => (...args) => {
 };
 
 const listener = ({ action, prev, next }) => {
-	console.log(action.type);
+	//console.log(action.type);
 	if(action.type === "LAYER_SELECTION_CHANGED"){
+		if(prev.layersSelected+'' === next.layersSelected+'') return;
 		return send('layer-select', { number: action.payload })
 	}
 	if(action.type === "NEW_LAYER_ITEM"){

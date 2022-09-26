@@ -5,12 +5,16 @@ export default (target) => {
 	const subscribe = (path, fn) => {
 		let prev = store.getStateAtPath("doc", "/" + path);
 		fn(prev);
-		store.subscribe(() => {
+		const unsubscribe = store.subscribe(() => {
 			const current = store.getStateAtPath("doc", "/" + path);
 			if(prev === current) return;
 			prev = current;
 			fn(current);
 		});
+		return () => {
+			prev = undefined;
+			unsubscribe();
+		}
 	}
 	const setter = (path) => {
 		const [,setter] = store.useDoc("/" + path);
