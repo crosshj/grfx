@@ -160,9 +160,9 @@ const threejs = `
 
 	const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);
 	camera.position.x = 0;
-	camera.position.y = 50;
+	camera.position.y = 100;
 	camera.position.z = 160;
-	camera.lookAt(new THREE.Vector3(0, 35, 5));
+	camera.lookAt(new THREE.Vector3(0, 35, -10));
 
 	${lights}
 
@@ -199,8 +199,8 @@ const threejs = `
 		//emissive: 0x202020,
 		//map: subbyTex,
 		displacementMap: subbyTex,
-		displacementScale: 125,
-		displacementBias: -30
+		displacementScale: 180,
+		displacementBias: -55
 	});
 	//subbyMat.side = THREE.DoubleSide;
 	subbyMat.needsUpdate = true;
@@ -210,9 +210,23 @@ const threejs = `
 	groundMesh.rotation.x = -Math.PI / 2;
 	groundMesh.position.y = -20;
 	groundMesh.position.z = 400;
-	//groundMesh.receiveShadow = true;
-	//groundMesh.castShadow = true;
 	scene.add(groundMesh);
+
+	const groundMat2 =  new THREE.MeshPhongMaterial( {
+		color: 0xff0055,
+		//specular: 0x00ff00,
+		//shininess: 0.1,
+		//emissive: 0x02021a,
+	});
+
+	const groundGeom2 = new THREE.PlaneGeometry(1000, 1000, 800, 600);
+	const groundMesh2 = new THREE.Mesh(groundGeom2, groundMat2);
+	groundMesh2.rotation.x = -Math.PI / 2;
+	groundMesh2.position.y = -1;
+	groundMesh2.position.z = 400;
+	//groundMesh2.receiveShadow = true;
+	//groundMesh2.castShadow = true;
+	scene.add(groundMesh2);
 
 	renderer.render(scene, camera);
 `.replace(/^\t/gm, '');
