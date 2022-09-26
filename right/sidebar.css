@@ -1,5 +1,9 @@
 @import url('../colors.css');
 
+body {
+	background: var(--main-bg-color);
+}
+
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
 		color: var(--text-secondary-color);
 }
