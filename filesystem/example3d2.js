@@ -213,10 +213,10 @@ const threejs = `
 	scene.add(groundMesh);
 
 	const groundMat2 =  new THREE.MeshPhongMaterial( {
-		color: 0xff0055,
-		//specular: 0x00ff00,
-		//shininess: 0.1,
-		//emissive: 0x02021a,
+		color: 0x553388,
+		specular: 0x5501ff,
+		shininess: 1,
+		emissive: 0x02021a,
 	});
 
 	const groundGeom2 = new THREE.PlaneGeometry(1000, 1000, 800, 600);
