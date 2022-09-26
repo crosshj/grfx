@@ -217,6 +217,7 @@ const threejs = `
 		specular: 0x5501ff,
 		shininess: 1,
 		emissive: 0x02021a,
+		// color: 0x00aaff,
 	});
 
 	const groundGeom2 = new THREE.PlaneGeometry(1000, 1000, 800, 600);
@@ -276,8 +277,8 @@ const moon = `
 
 export default {
 	zoom: 0.6,
-	width: 800,
-	height: 600,
+	width: 1024,
+	height: 768,
 	tool: "airbrush",
 	layers: [{
 		number: 0,
