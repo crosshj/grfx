@@ -1,4 +1,5 @@
 const imports = (base) => ({
+	"@fiug/layout": "https://unpkg.com/@fiug/layout@0.1.0",
 	"@grfx/components": `${base}/shared/components.js`,
 	"@grfx/fs": `${base}/shared/fs.js`,
 	"@grfx/hotkeys": `${base}/shared/hotkeys.js`,
@@ -17,7 +18,8 @@ const imports = (base) => ({
 	"rxjs": `${base}/vendor/rxjs.umd.min.js`,
 	"three": "https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.module.js",
 	"three-objloader": "https://cdn.jsdelivr.net/npm/three@0.144.0/examples/jsm/loaders/OBJLoader.js",
-	"three-subdivide": "https://unpkg.com/three-subdivide@1.0.2/build/index.module.js"
+	"three-subdivide": "https://unpkg.com/three-subdivide@1.0.2/build/index.module.js",
+	"yaml": "https://cdn.skypack.dev/yaml",
 });
 
 const scripturl = document.currentScript.src.split('?')[0].split('/').slice(0, -1).join('/')+'/';

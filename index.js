@@ -1,8 +1,9 @@
 import { host as MessageHost } from '@grfx/messages';
+import { host as Hotkeys } from '@grfx/hotkeys';
 import FileSystem from '@grfx/fs';
 
+import hotkeyConfig from './config/hotkeys.config.js';
 import fsConfig from './filesystem/.init.js';
-import Hotkeys from './hotkeys/hotkeys.js';
 import Core from './core/core.js';
 import forms from './menus/forms.js';
 import Layout from './layout/layout.js';
@@ -14,7 +15,11 @@ const config = await FileSystem.init({ config: fsConfig });
 
 const layout = await Layout();
 const host = MessageHost();
-Hotkeys({ host });
+
+const onKey = (result) => {
+	console.log(result.name)
+};
+Hotkeys({ host, onKey, config: hotkeyConfig });
 
 const core = Core({ host, layout });
 Menus({ forms });

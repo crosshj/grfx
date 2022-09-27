@@ -1,3 +1,8 @@
+/*
+	TODO:
+	functional notation is difficult to parse
+	create (or find) a function that parses a simpler syntax and returns a function
+*/
 export default {
 	moveTool: (k) => [ k.code === "KeyV" ],
 	transformTool: (k) => [ k.code === "KeyT", k.altKey, k.ctrlKey || k.metaKey ],
