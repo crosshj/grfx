@@ -1,11 +1,14 @@
 import { timer } from "footils";
-import { listen, send } from '../shared/messages.js';
-import { sleep } from '../shared/utils.js';
+import { listen, send } from '@grfx/messages';
+import { sleep } from '@grfx/utils';
+import Menus from '@grfx/menus';
+import { client as Hotkeys } from '@grfx/hotkeys';
+
 import Canvas from './canvas.js';
 import layerDef from './layers/layerDef.js';
 import './cursor.js';
 import { attachDraw, detachDraw } from './draw.js';
-import { client as Hotkeys } from '../shared/hotkeys.js';
+
 Hotkeys();
 
 const container = document.querySelector('.canvasContainer');

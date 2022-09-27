@@ -1,7 +1,6 @@
-import { send, listen } from '../shared/messages.js';
+import { send, listen } from '@grfx/messages';
+import { client as Hotkeys } from '@grfx/hotkeys';
 import constructLayer from './constructLayer.js';
-import { client as Hotkeys } from '../shared/hotkeys.js';
-
 
 const skip = (e) => {
 	const withModifier = () => [e.altKey, e.shiftKey, e.metaKey, e.ctrlKey].some(x => x);

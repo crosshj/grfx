@@ -1,4 +1,4 @@
-import Concrete from "./concrete.js";
+import Concrete from "concretejs";
 
 const thumbs = {};
 

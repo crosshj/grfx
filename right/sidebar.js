@@ -1,4 +1,4 @@
-import { send } from '../shared/messages.js';
+import { send } from '@grfx/messages';
 
 //import SidebarReady from './sidebarReady.js'
 import sidebarStart from './sidebarStart.js';

@@ -1,6 +1,7 @@
-import { listen } from '../shared/messages.js';
-import Menus from '../menus/showMenus.js';
-import { client as Hotkeys } from '../shared/hotkeys.js';
+import { listen, send } from '@grfx/messages';
+import Menus from '@grfx/menus';
+import { client as Hotkeys } from '@grfx/hotkeys';
+
 Hotkeys();
 
 Menus.setOffsets(0, 0);

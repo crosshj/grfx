@@ -1,5 +1,5 @@
-import { host as Hotkeys } from '../shared/hotkeys.js';
-import config from './hotkeys-config.js';
+import { host as Hotkeys } from '@grfx/hotkeys';
+import config from '../config/hotkeys.config.js';
 
 const onKey = (key) => {
 	let result;
