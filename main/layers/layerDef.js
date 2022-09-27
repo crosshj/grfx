@@ -52,7 +52,6 @@ const processDef = (layer) => {
 		ctx.save();
 		ctx.clearRect(0, 0, getDims().width, getDims().height);
 		ctx.beginPath();
-		console.log('this does get called');
 		${layer.def}
 		ctx.restore();
 	`
