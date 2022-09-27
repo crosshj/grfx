@@ -5,6 +5,7 @@ const examples = {
 
 	'models/bunny.obj': "./filesystem/models/bunny.obj",
 	'models/tree.obj': './filesystem/models/tree.obj',
+	'models/cube.obj': './filesystem/models/cube.obj',
 
 	'images/hatch.png': './filesystem/images/hatch.png',
 	'images/leaves.png': './filesystem/images/leaves.png',
@@ -28,13 +29,13 @@ export default async (fs) => {
 		await readFile({ path: '/indexDB/example3d2.js' })
 	);
 
-	await walk({
-		dir: '/',
-		callback: (err, results) => {
-			if (err) throw err;
-			console.log(results);
-		}
-	});
+	// await walk({
+	// 	dir: '/',
+	// 	callback: (err, results) => {
+	// 		if (err) throw err;
+	// 		console.log(results);
+	// 	}
+	// });
 
 	return module.default;
 };

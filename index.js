@@ -17,7 +17,8 @@ const layout = await Layout();
 const host = MessageHost();
 
 const onKey = (result) => {
-	console.log(result.name)
+	// TODO: connect this to a message firer
+	console.log('HOTKEY: ' + result.name)
 };
 Hotkeys({ host, onKey, config: hotkeyConfig });
 

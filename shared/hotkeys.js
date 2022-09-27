@@ -15,7 +15,7 @@ export const client = ({ skip }={}) => {
 	document.body.addEventListener('keydown', logKey);
 };
 
-const keyEventHandler = (cb, config) => (event) => {
+const keyEventHandler = (cb, config) => (e) => {
 	const key = KeyEvent(e);
 	let result;
 	for(const [name, test] of Object.entries(config)){
@@ -24,7 +24,7 @@ const keyEventHandler = (cb, config) => (event) => {
 		if(thisResult.length <= result?.length) continue;
 		result = { name, length: thisResult.length };
 	}
-	cb(result);
+	result && cb(result);
 };
 
 export const host = ({ host: pageHost, onKey, config }) => {
