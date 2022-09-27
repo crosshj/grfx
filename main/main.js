@@ -86,7 +86,6 @@ listen('file-update', async (args) => {
 		const blendChange = Boolean(layer.blendMode !== undefined && canvasLayer.blendMode !== layer.blendMode);
 		const alphaChange = Boolean(layer.alpha !== undefined && canvasLayer.alphaMode !== layer.alpha);
 		const defChange =  !(visChange || blendChange || alphaChange);
-		console.log({ defChange, alphaChange });
 
 		if(visChange)
 			canvasLayer.visible = layer.visible;
