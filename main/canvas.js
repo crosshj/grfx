@@ -17,6 +17,10 @@ function thumbnail(image) {
 	return canvas.toDataURL('image/png');
 }
 
+const updateLayerThumb = (number, layer) => {
+	thumbs[number] = thumbnail(layer.scene.canvas);
+};
+
 const getRender = ({ layer, width, height, layerDef }) => async (args={}) => {
 	const { number, render } = layerDef;
 	const ctx = layer.scene.context;
@@ -30,6 +34,7 @@ const initLayer = async (args) => {
 	const layer = new Concrete.Layer(layerDef);
 	layer.number = layerDef.number;
 	layer.alpha = layerDef.alpha !== undefined ? layerDef.alpha : 1;
+	layer.selected = layerDef.selected !== undefined ? layerDef.selected : false;
 	viewport.add(layer);
 
 	if(typeof layerDef.visible !== "undefined"){
@@ -93,6 +98,7 @@ async function Canvas(args) {
 
 	return {
 		thumbs,
+		updateLayerThumb,
 		viewport,
 		layers,
 		renderFns

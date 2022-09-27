@@ -232,7 +232,7 @@ export default {
 	zoom: 0.6,
 	width: 1024,
 	height: 768,
-	tool: "airbrush",
+	tool: "ink",
 	layers: [{
 		number: 0,
 		name: "moon",

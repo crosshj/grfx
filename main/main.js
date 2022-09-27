@@ -66,17 +66,23 @@ listen('file-update', async (args) => {
 		layers: layers
 			.sort((a,b) => b.number-a.number)
 			.map(layer => ({
-			...layer,
-			render: layerDef(layer)
+				...layer,
+				render: layerDef(layer)
 			})
 		),
 		container
 	});
-	attachDraw(canvas, tool);
+	attachDraw(canvas, tool, (number, layer) => {
+		//TODO: should update layer def here (perhaps)
+		canvas.updateLayerThumb(number, layer);
+		send('update-thumbs', { thumbs: canvas.thumbs })
+	});
 	!scale && setScale(zoom);
 
 	//right/sidebarReady.js:51
+	let incomingSelected;
 	for(const layer of layers){
+		if(layer.selected) incomingSelected = layer.number;
 		if(!layer.dirty) continue;
 
 		const canvasLayer = canvas.layers[layer.number];
@@ -103,6 +109,10 @@ listen('file-update', async (args) => {
 	}
 	if(!canvasIsNew){
 		canvas.viewport.render();
+		for(const [number, layer] of Object.entries(canvas.layers)){
+			layer.selected = false;
+		}
+		canvas.layers[incomingSelected] && (canvas.layers[incomingSelected].selected = true);
 	}
 	send('update-thumbs', { thumbs: canvas.thumbs });
 
