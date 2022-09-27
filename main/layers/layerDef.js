@@ -47,14 +47,17 @@ const getDims = (width, height) => (i) => {
 
 const processDef = (layer) => {
 	const AsyncFunction = (async function () {}).constructor;
-	// const def = layer.type === '2d'
-	// ? `
-	// 	ctx.save();
-	// 	${layer.def}
-	// 	ctx.restore();
-	// `
-	// : layer.def;
-	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', layer.def);
+	const def = layer.type === '2d'
+	? `
+		ctx.save();
+		ctx.clearRect(0, 0, getDims().width, getDims().height);
+		ctx.beginPath();
+		console.log('this does get called');
+		${layer.def}
+		ctx.restore();
+	`
+	: layer.def;
+	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', def);
 
 	return async function drawImage({ ctx, width, height, layer }){
 		await init;
