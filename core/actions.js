@@ -1,4 +1,4 @@
-import { camelToDashed } from '../shared/utils.js';
+import { camelToDashed, clone } from '../shared/utils.js';
 
 const ShowModal = (modal, data) => {
 	const event = new CustomEvent('contextMenuShow', {
@@ -12,6 +12,13 @@ const ShowModal = (modal, data) => {
 	});
 	window.top.dispatchEvent(event);
 };
+
+const SelectedLayer = (context) => {
+	const { host, currentFile } = context;
+	const { layers } = currentFile;
+	const selectedLayer = layers.find(x => x.selected);
+	return selectedLayer;
+}
 
 const layerAlpha = async (context, args) => {
 	const { update, currentFile } = context;
@@ -78,6 +85,39 @@ const layerAdd = async (context, args) => {
 	l.dirty = undefined;
 	currentFile.dirty = undefined;
 };
+const layerDelete = async (context, args) => {
+	const { update, currentFile } = context;
+	const { number } = args;
+	currentFile.layers = currentFile.layers
+		.filter(x => x.number !== number)
+		.sort((a,b) => a.number-b.number)
+		.map((o,i) => {
+			o.selected = false;
+			o.number = i;
+			return o;
+		});
+	currentFile.layers[0].selected = true;
+	currentFile.dirty = true;
+	await update();
+	currentFile.dirty = undefined;
+};
+const layerDuplicate = async (context, args) => {
+	const { update, currentFile } = context;
+	const clonedLayer = clone(args);
+	clonedLayer.selected = false;
+	clonedLayer.name += ' (copy)';
+	clonedLayer.number += -0.1;
+	currentFile.layers.push(clonedLayer);
+	currentFile.layers = currentFile.layers
+		.sort((a,b) => a.number-b.number)
+		.map((o,i) => {
+			o.number = i;
+			return o;
+		});
+	currentFile.dirty = true;
+	await update();
+	currentFile.dirty = undefined;
+};
 const layerUpdate = async (context, args) => {
 	const layer = args;
 	const { update, currentFile } = context;
@@ -122,9 +162,7 @@ const menuLayerNew = async (context) => {
 	await layerNew(context, newLayer);
 };
 const menuShowLayerSource = async (context) => {
-	const { host, currentFile } = context;
-	const { layers } = currentFile;
-	const selectedLayer = layers.find(x => x.selected);
+	const selectedLayer = SelectedLayer(context);
 	await host.broadcast({
 		eventName: 'show-layer-source',
 		type: 'show-layer-source',
@@ -136,6 +174,14 @@ const menuImageSize = async (context) => {
 	const { currentFile } = context;
 	const { width, height } = currentFile;
 	ShowModal('imageSize', { width, height });
+};
+const menuLayerDuplicate = async (context) => {
+	const selectedLayer = SelectedLayer(context);
+	await layerDuplicate(context, selectedLayer);
+};
+const menuLayerDelete = async (context) => {
+	const selectedLayer = SelectedLayer(context);
+	await layerDelete(context, selectedLayer);
 };
 
 const actions = {
@@ -153,6 +199,8 @@ const actions = {
 	menuLayerNew,
 	menuShowLayerSource,
 	menuImageSize,
+	menuLayerDuplicate,
+	menuLayerDelete,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
