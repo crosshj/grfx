@@ -1,5 +1,12 @@
 import Concrete from "concretejs";
 
+/*
+IDEA: build another multi-layered canvas solution
+partly like concretejs and https://github.com/federicojacobi/layeredCanvas/blob/master/layeredCanvas.js
+except use canvases stacked in the DOM instead of one canvas combined
+only combine when saving image to file
+*/
+
 const thumbs = {};
 
 function thumbnail(image) {
