@@ -8,6 +8,7 @@ const imports = (base) => ({
 	"@grfx/utils": `${base}/shared/utils.js`,
 	"@syncstate/core": `${base}/vendor/syncstate.js`,
 	"@syncstate/history": "https://cdn.skypack.dev/-/@syncstate/history@v0.7.1-psbtWeyoL0b7NkoElJDM/dist=es2019,mode=imports/optimized/@syncstate/history.js",
+	"browserfs": "https://cdn.skypack.dev/browserfs",
 	"concretejs": `${base}/vendor/concrete.js`,
 	//"concretejs": "https://cdn.skypack.dev/concretejs",
 	"footils": "https://cdn.skypack.dev/footils",

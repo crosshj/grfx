@@ -1,7 +1,7 @@
 import { send } from '@grfx/messages';
 import { client as Hotkeys } from '@grfx/hotkeys';
+// import { InlineSVG } from '@grfx/utils.js';
 
-// import { InlineSVG } from './utils.js';
 // await InlineSVG('./icons.svg', "svg-icons");
 
 Hotkeys();

@@ -3,7 +3,8 @@ import { host as Hotkeys } from '@grfx/hotkeys';
 import FileSystem from '@grfx/fs';
 
 import hotkeyConfig from './config/hotkeys.config.js';
-import fsConfig from './filesystem/.init.js';
+import fsConfig from './config/fs.config.js';
+
 import Core from './core/core.js';
 import forms from './menus/forms.js';
 import Layout from './layout/layout.js';

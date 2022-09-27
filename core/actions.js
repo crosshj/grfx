@@ -19,7 +19,9 @@ const layerAlpha = async (context, args) => {
 	const { layers } = currentFile;
 	const l = layers.find(x => x.number === Number(number));
 	l.alpha = alpha;
-	update();
+	l.dirty = true;
+	await update();
+	l.dirty = undefined;
 };
 const layerBlendMode = async (context, args) => {
 	const { update, currentFile } = context;
@@ -27,7 +29,9 @@ const layerBlendMode = async (context, args) => {
 	const { layers } = currentFile;
 	const l = layers.find(x => x.number === Number(number));
 	l.blendMode = mode;
-	update();
+	l.dirty = true;
+	await update();
+	l.dirty = undefined;
 };
 const layerSelect = async (context, args) => {
 	const { update, currentFile } = context;
@@ -46,7 +50,9 @@ const layerVisibility = async (context, args) => {
 	const { layers } = currentFile;
 	const l = layers.find(x => x.number === Number(number));
 	l.visible = visible;
+	l.dirty = true;
 	await update();
+	l.dirty = undefined;
 };
 const layerNew = async (context, args) => {
 	const { layout } = context;
@@ -61,12 +67,15 @@ const layerAdd = async (context, args) => {
 		x.selected = false;
 	});
 	currentFile.dirty = true;
-	layers.push({
+	const l = {
 		def, name, type,
 		number: 0,
 		selected: true
-	});
+	};
+	layers.push(l);
+	l.dirty = true;
 	await update();
+	l.dirty = undefined;
 	currentFile.dirty = undefined;
 };
 const layerUpdate = async (context, args) => {

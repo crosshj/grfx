@@ -18,12 +18,6 @@ const createTabContent = ({ pane, file, layout }) => {
 		? `${paneModule||''}`
 		: `${file}`;
 
-	// return '<pre>' + JSON.stringify({
-	// 	src,
-	// 	paneModule,
-	// 	params: Object.fromEntries(params)
-	// }, null, 2) + '</pre>';
-
 	const sandbox = [
 		"allow-same-origin",
 		"allow-scripts",

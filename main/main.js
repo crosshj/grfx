@@ -59,7 +59,7 @@ listen('file-update', async (args) => {
 		canvas.viewport.destroy();
 		canvas = undefined;
 	}
-
+	const canvasIsNew = !canvas;
 	canvas = canvas || await Canvas({
 		width,
 		height,
@@ -77,26 +77,34 @@ listen('file-update', async (args) => {
 
 	//right/sidebarReady.js:51
 	for(const layer of layers){
-		if(layer.dirty){
-			console.log('layer is dirty')
+		if(!layer.dirty) continue;
+
+		const canvasLayer = canvas.layers[layer.number];
+		if(!canvasLayer) continue;
+
+		const visChange = Boolean(layer.visible !== undefined && canvasLayer.visible !== layer.visible);
+		const blendChange = Boolean(layer.blendMode !== undefined && canvasLayer.blendMode !== layer.blendMode);
+		const alphaChange = Boolean(layer.alpha !== undefined && canvasLayer.alphaMode !== layer.alpha);
+		const defChange =  !(visChange || blendChange || alphaChange);
+		console.log({ defChange, alphaChange });
+
+		if(visChange)
+			canvasLayer.visible = layer.visible;
+		if(blendChange)
+			canvasLayer.blendMode = layer.blendMode;
+		if(alphaChange)
+			canvasLayer.alpha = layer.alpha;
+		if(defChange){
 			await canvas.renderFns[layer.number].update({
 				...layer,
 				render: layerDef(layer)
 			});
+			await canvas.renderFns[layer.number](layer);
 		}
-		const canvasLayer = canvas.layers[layer.number];
-		const render = canvas.renderFns[layer.number];
-		if(!canvasLayer) continue;
-
-		if(layer.visible !== undefined)
-			canvasLayer.visible = layer.visible;
-		if(layer.blendMode !== undefined){
-			canvasLayer.blendMode = layer.blendMode;
-		}
-
-		await render(layer);
 	}
-	canvas.viewport.render();
+	if(!canvasIsNew){
+		canvas.viewport.render();
+	}
 	send('update-thumbs', { thumbs: canvas.thumbs });
 
 	timer.log(timerLabel);

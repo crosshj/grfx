@@ -1,4 +1,4 @@
-import fs from '../../shared/fs.js';
+import fs from '@grfx/fs';
 const init = fs.init();
 
 const loadImage = (url) => new Promise(async (resolve) => {
@@ -47,21 +47,18 @@ const getDims = (width, height) => (i) => {
 
 const processDef = (layer) => {
 	const AsyncFunction = (async function () {}).constructor;
-	const def = layer.type === '2d'
-	? `
-		ctx.save();
-		${layer.def}
-		ctx.restore();
-	`
-	: layer.def;
-	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', 'alpha', def);
+	// const def = layer.type === '2d'
+	// ? `
+	// 	ctx.save();
+	// 	${layer.def}
+	// 	ctx.restore();
+	// `
+	// : layer.def;
+	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', layer.def);
 
 	return async function drawImage({ ctx, width, height, layer }){
 		await init;
-		const alpha = typeof layer.alpha !== "undefined"
-			? layer.alpha
-			: 1;
-		await renderFn(loadImage, loadFile, ctx, getDims(width, height), alpha);
+		await renderFn(loadImage, loadFile, ctx, getDims(width, height));
 	};
 }
 

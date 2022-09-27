@@ -20,11 +20,6 @@ function thumbnail(image) {
 const getRender = ({ layer, width, height, layerDef }) => async (args={}) => {
 	const { number, render } = layerDef;
 	const ctx = layer.scene.context;
-	
-	if(layerDef.type === "2d"){
-		ctx.clearRect(0, 0, width, height);
-		ctx.globalAlpha = args.alpha || layerDef.alpha || 1;
-	}
 	await render({ ctx, width, height, layer: { ...layerDef, ...args } });
 	thumbs[number] = thumbnail(layer.scene.canvas);
 };
@@ -34,6 +29,7 @@ const initLayer = async (args) => {
 
 	const layer = new Concrete.Layer(layerDef);
 	layer.number = layerDef.number;
+	layer.alpha = layerDef.alpha !== undefined ? layerDef.alpha : 1;
 	viewport.add(layer);
 
 	if(typeof layerDef.visible !== "undefined"){
