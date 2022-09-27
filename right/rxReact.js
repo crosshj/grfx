@@ -1,3 +1,7 @@
+//import "rxjs";
+//import "react";
+//import "react-dom";
+
 import { isInitedFactory } from './utils.js';
 
 function rxReact() {
@@ -7,13 +11,13 @@ rxReact.scripts = [
 	"../vendor/rxjs.umd.min.js",
 	//'https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.2.0/rxjs.umd.min.js',
 	//'https://unpkg.com/rxjs@beta/bundles/rxjs.umd.js',
-	[
+	//[
 		// react and react-dom should waterfall
 		// 'https://unpkg.com/react@16/umd/react.development.js',
 		// 'https://unpkg.com/react-dom@16/umd/react-dom.development.js'
 		"../vendor/react.development.js",
 		"../vendor/react-dom.development.js",
-	],
+	//],
 ];
 
 rxReact.scriptsAfter = (callback) => {
