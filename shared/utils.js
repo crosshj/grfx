@@ -67,3 +67,58 @@ export const InlineSVG = async (src, id) => {
 	inlinedSVG.setAttribute('id', id);
 	document.body.append(inlinedSVG);
 };
+
+
+const typeSizes = {
+	"undefined": () => 0,
+	"boolean": () => 4,
+	"number": () => 8,
+	"string": item => 2 * item.length,
+	"object": item => !item ? 0 : Object
+		.keys(item)
+		.reduce((total, key) => sizeOf(key) + sizeOf(item[key]) + total, 0)
+};
+export const sizeOf = (obj) => {
+	if(obj?.byteLength !== undefined) return obj.byteLength;
+	if(obj?.size !== undefined) return obj.size;
+	return typeSizes[typeof obj](obj);
+}
+
+export function formatByteSize(bytes) {
+	if(bytes < 1024) return bytes + " bytes";
+	else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KiB";
+	else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MiB";
+	else return(bytes / 1073741824).toFixed(3) + " GiB";
+};
+
+export function sizeOf2(obj, bytes=0) {
+	if(obj === null || obj === undefined) return bytes;
+	if(obj?.byteLength !== undefined) return obj.byteLength;
+	if(obj?.size !== undefined) return obj.size;
+	switch(typeof obj) {
+		case 'number':
+			bytes += 8;
+			break;
+		case 'string':
+			bytes += obj.length * 2;
+			break;
+		case 'boolean':
+			bytes += 4;
+			break;
+		case 'object':
+			var objClass = Object.prototype.toString.call(obj).slice(8, -1);
+			if(objClass === 'Object' || objClass === 'Array') {
+				for(var key in obj) {
+					if(!obj.hasOwnProperty(key)) continue;
+					bytes += sizeOf(obj[key]);
+				}
+			} else {
+				bytes += obj.toString().length * 2;
+			}
+			break;
+	}
+	return bytes;
+};
+
+// TODO: convert to/from many data types
+// https://gist.github.com/xl1/0b24fb2e61c39448a38d3c90b6c6fe3b

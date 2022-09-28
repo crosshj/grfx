@@ -1,3 +1,4 @@
+import { sizeOf, sizeOf2 } from '@grfx/utils';
 import undoable from './undoable.js';
 
 const state = {
@@ -55,6 +56,18 @@ set.layers((layers) => layers.find(x=>x.name==="old").name = "new");
 
 history.file.undo();
 history.file.redo();
-set.zoom(10)
+set.zoom(10);
+
+// EXPLORE- coordinates storage
+
+//https://www.mattzeunert.com/2016/07/24/javascript-array-object-sizes.html
+//https://18choi18.medium.com/memory-size-of-javascript-primitive-types-6c35ae5a0e00
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+const res8K = [7680, 4320];
+
+// 16-20 bytes
+console.log('array bytes: ' + sizeOf2(res8K) + '-' + sizeOf(res8K));
+// 4 bytes
+console.log('u16array bytes: ' + sizeOf(new Uint16Array(res8K)) );
 
 export default {};
