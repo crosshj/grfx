@@ -1,4 +1,4 @@
-import { sizeOf, sizeOf2 } from '@grfx/utils';
+//import { sizeOf, sizeOf2 } from '@grfx/utils';
 import undoable from './undoable.js';
 
 const loaded = () => {
@@ -9,9 +9,9 @@ const loaded = () => {
 		layers: false,
 	};
 	let done = false;
-	return (section, which, x) => {
+	return (section, which, current) => {
 		if(done) return { done };
-		ready[which] = x;
+		ready[which] = current;
 		if(ready.zoom === false) return;
 		if(ready.tool === false) return;
 		if(ready.canvas === false) return;
@@ -26,14 +26,14 @@ const loaded = () => {
 class History {
 	constructor(state, onChange){
 		this.loaded = loaded();
-		this.onChange = (section, which, x) => {
-			const isLoaded = this.loaded(section, which, x);
+		this.onChange = (section, which, current, prev) => {
+			const isLoaded = this.loaded(section, which, current);
 			if(isLoaded && !isLoaded.done){
 				onChange(isLoaded.state);
 				return isLoaded.finish();
 			}
 			if(!isLoaded) return;
-			onChange({ [which]: x })
+			onChange({ [which]: current, prev })
 		};
 		this.history = {};
 		this.unsubscribe = {};
@@ -53,7 +53,7 @@ class History {
 				this.set[childName] = this.history[section].setter(childName);
 				this.unsubscribe[childName] = this.history[section].subscribe(
 					childName,
-					(x) => this.onChange(section, childName, x)
+					(current, prev) => this.onChange(section, childName, current, prev)
 				);
 			}
 		}
@@ -66,21 +66,6 @@ class History {
 	undo(){ this.history.file.undo(); }
 	redo(){ this.history.file.undo(); }
 }
-
-
-//const h = new History(state, console.log);
-
-//h.layers = (layers) => (layers.find(x=>x.name==="old").name = "new");
-
-// TODO: make this possible
-// set.layers((x) => x.name==="foo", (layer) => layer.name = "new");
-
-// TODO: make this possible (for that matter)
-// set.file({ dims, layers })
-
-//h.history.file.undo();
-//h.history.file.redo();
-//h.set.zoom(10);
 
 // EXPLORE - coordinates storage
 /*

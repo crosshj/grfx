@@ -5,11 +5,22 @@ export default (target) => {
 	const subscribe = (path, fn) => {
 		let prev = store.getStateAtPath("doc", "/" + path);
 		fn(prev);
+		/*
+		with this subscribe, I am effectively subbed to entire store
+		there are multiple subscriptions for each path
+		if type of prev, current are array, I should compare prev and current for each item
+		if only one of those changed, call fn with what changed and indicate this
+		the alternative is a different(dynamic) subscriptions for each array item
+		*/
 		const unsubscribe = store.subscribe(() => {
 			const current = store.getStateAtPath("doc", "/" + path);
+			
+			//console.log(store.getStateAtPath("doc", "/" + path + '/0'));
+			//Array.isArray(current) && console.log('isArray');
+			
 			if(prev === current) return;
+			fn(current, prev);
 			prev = current;
-			fn(current);
 		});
 		return () => {
 			prev = undefined;
