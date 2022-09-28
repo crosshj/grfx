@@ -1,6 +1,5 @@
-import history from './history.js';
+import History from './history.js';
 import actions from './actions.js';
-let currentFile;
 
 const context = {
 	host: undefined,
@@ -14,11 +13,28 @@ const update = async ({ host }) => {
 	await host.broadcast({
 		eventName: 'file-update',
 		type: 'file-update',
-		data: currentFile,
+		data: context.currentFile,
 	});
 };
+
 const load = ({ host, config }) => {
-	currentFile = config;
+	context.history = new History({
+		editor: {
+			zoom: config.zoom,
+			tool: { id: config.tool }
+		},
+		file: {
+			canvas: {
+				width: config.width,
+				height: config.height,
+			},
+			layers: config.layers
+		}
+	}, (args) => {
+		// this should be the update function (above)
+		console.warn('TODO:', args);
+	});
+
 	context.currentFile = config;
 	update({ host });
 };
