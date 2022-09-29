@@ -1,3 +1,4 @@
+import produce, {applyPatches} from "immer";
 import History from './history.js';
 import undoable from './undoable.js';
 import { uuidv4 } from '@grfx/utils';
@@ -27,14 +28,43 @@ const state = {
 		}]
 	}
 };
-console.log(state)
+
+
+// - the following could be done on the other end!
+// see: https://medium.com/@mweststrate/distributing-state-changes-using-snapshots-patches-and-actions-part-2-2f50d8363988
+function jsonPatchPathToImmerPath(path) {
+	if (!path) {
+		return [];
+	}
+	path = path.replaceAll("\\/", ":::");
+	var immerPath = path.split("/");
+	immerPath.shift();
+	return immerPath.map(function(p) {
+		return p.replaceAll(":::", "/");
+	});
+}
+const stateClone = applyPatches(state, [
+	{
+		"op": "replace",
+		"path": jsonPatchPathToImmerPath("/file/canvas"),
+		"value": {
+			"width": 800,
+			"height": 600
+		}
+	}
+])
+console.log(stateClone.file.canvas)
+
+// -------------------------------
 
 const s = undoable(state);
 
 document.body.textContent = JSON.stringify(state,null,2) + '\n\n-----------\n\n';
+
 s.subscribe("file", (state, { patch }) => {
 	document.body.textContent += JSON.stringify(patch,null,2) + '\n\n'
 });
+
 const layersSetter = s.setter("file/layers");
 const addLayer = (layer) => {
 	const id = layer.id || uuidv4();
