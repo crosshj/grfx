@@ -1,39 +1,10 @@
 //import { sizeOf, sizeOf2 } from '@grfx/utils';
 import undoable from './undoable.js';
 
-const loaded = () => {
-	const ready = {
-		zoom: false,
-		tool: false,
-		canvas: false,
-		layers: false,
-	};
-	let done = false;
-	return (section, which, current) => {
-		if(done) return { done };
-		ready[which] = current;
-		if(ready.zoom === false) return;
-		if(ready.tool === false) return;
-		if(ready.canvas === false) return;
-		if(ready.layers === false) return;
-		return {
-			state: ready,
-			finish: () => { done = true; }
-		};
-	};
-};
-
 class History {
 	constructor(state, onChange){
-		this.loaded = loaded();
-		this.onChange = (section, which, current, prev) => {
-			const isLoaded = this.loaded(section, which, current);
-			if(isLoaded && !isLoaded.done){
-				onChange(isLoaded.state);
-				return isLoaded.finish();
-			}
-			if(!isLoaded) return;
-			onChange({ [which]: current, prev })
+		this.onChange = (section, which, current, patch) => {
+			onChange({ [which]: current, patch })
 		};
 		this.history = {};
 		this.unsubscribe = {};
@@ -53,7 +24,7 @@ class History {
 				this.set[childName] = this.history[section].setter(childName);
 				this.unsubscribe[childName] = this.history[section].subscribe(
 					childName,
-					(current, prev) => this.onChange(section, childName, current, prev)
+					(current, patch) => this.onChange(section, childName, current, patch)
 				);
 			}
 		}
