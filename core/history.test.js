@@ -1,9 +1,6 @@
 import History from './history.js';
 import undoable from './undoable.js';
-
-// import { Observable } from 'https://cdn.jsdelivr.net/npm/rxjs@7.5.7/dist/esm5/index.js';
-// const layersObserve = new Observable();
-// console.log()
+import { uuidv4 } from '@grfx/utils';
 
 const state = {
 	editor: {
@@ -17,24 +14,59 @@ const state = {
 			width: 0,
 			height: 0,
 		},
-		order: [1,0],
-		layers: [{ name: "old" }, { name: "new" }]
+		layerOrder: [
+			"867f51d2-5b72-479d-83a8-602b42059075",
+			"70b129f8-1e7d-4080-854c-1279ea63dd86"
+		],
+		layers: [{
+			name: "old",
+			id: "867f51d2-5b72-479d-83a8-602b42059075"
+		}, {
+			name: "new",
+			id: "70b129f8-1e7d-4080-854c-1279ea63dd86"
+		}]
 	}
 };
+console.log(state)
 
 const s = undoable(state);
 
-s.subscribe("file", (...args) => {
-	document.body.textContent += '\n\n' + JSON.stringify(args,null,2)
-})
-const setLayers = s.setter("file/layers");
-
-setLayers((layers) => {
-	layers.sort((a,b) => a.order-b.order)
-		.forEach((x,i) => { x.order = i; })
+document.body.textContent = JSON.stringify(state,null,2) + '\n\n-----------\n\n';
+s.subscribe("file", (state, { patch }) => {
+	document.body.textContent += JSON.stringify(patch,null,2) + '\n\n'
 });
+const layersSetter = s.setter("file/layers");
+const addLayer = (layer) => {
+	const id = layer.id || uuidv4();
+	layersSetter((layers) => {
+		layers.push({ ...layer, id });
+	});
+	setLayerOrder(order => {
+		order.unshift(id);
+	});
+};
+const removeLayer = (id) => {
+	layersSetter(layers => {
+		const i = layers.findIndex(x => x.id === id);
+		layers.splice(i, 1);
+	});
+	setLayerOrder(order => {
+		const i = order.findIndex(x => x === id);
+		order.splice(i, 1);
+	});
+};
+const setLayerOrder = s.setter("file/layerOrder");
 
 
+
+setLayerOrder([
+	"70b129f8-1e7d-4080-854c-1279ea63dd86",
+	"867f51d2-5b72-479d-83a8-602b42059075",
+])
+addLayer({ name: "newer" })
+removeLayer("867f51d2-5b72-479d-83a8-602b42059075");
+
+document.body.textContent += '\n\n-----------\n\n' + JSON.stringify(s.get(),null,2);
 
 /*
 const h = new History(state, (args) => {

@@ -23,7 +23,7 @@ export default (target) => {
 // 		}
 
 		const dispose = store.observe("doc", "/"+path, (...args) => {
-			console.log(args)
+			//console.log(args)
 			fn(...args)
 		}, Infinity);
 		return dispose;
@@ -34,7 +34,9 @@ export default (target) => {
 	};
 	const undo = () => store.dispatch(history.undo());
 	const redo = () => store.dispatch(history.redo());
-	const get = (path) => store.getStateAtPath("doc", "/" + path);
+	const get = (path) => path
+		? store.getStateAtPath("doc", "/" + path)
+		: store.getState("doc");
 	return {
 		subscribe, setter,
 		undo, redo,

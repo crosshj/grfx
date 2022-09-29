@@ -20,6 +20,7 @@ const imports = (base) => ({
 	//"react-dom": "https://unpkg.com/react-dom/umd/react-dom.development.js",
 	"redux": "https://cdn.skypack.dev/-/redux@v4.1.1-XG1G4MAJLJXXzlRpXjOG/dist=es2019,mode=imports/optimized/redux.js",
 	"rxjs": `${base}/vendor/rxjs.umd.min.js`,
+	"rxjs-deno": `https://cdn.skypack.dev/rxjs-deno`,
 	//"rxjs": "https://unpkg.com/rxjs/dist/bundles/rxjs.umd.js",
 	"three": "https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.module.js",
 	"three-objloader": "https://cdn.jsdelivr.net/npm/three@0.144.0/examples/jsm/loaders/OBJLoader.js",
