@@ -1,7 +1,7 @@
 import produce, {applyPatches} from "immer";
 import History from './history.js';
 import undoable from './undoable.js';
-import { uuidv4 } from '@grfx/utils';
+import { uuidv4, clone } from '@grfx/utils';
 
 const state = {
 	editor: {
@@ -33,28 +33,35 @@ const state = {
 
 // - the following could be done on the other end!
 // see: https://medium.com/@mweststrate/distributing-state-changes-using-snapshots-patches-and-actions-part-2-2f50d8363988
-function jsonPatchPathToImmerPath(path) {
-	if (!path) {
-		return [];
-	}
-	path = path.replaceAll("\\/", ":::");
-	var immerPath = path.split("/");
+
+function immerPath(path) {
+	if (!path) return [];
+	const immerPath = path
+		.replaceAll("\\/", ":::")
+		.split("/");
 	immerPath.shift();
-	return immerPath.map(function(p) {
-		return p.replaceAll(":::", "/");
-	});
+	return immerPath.map((p) => p.replaceAll(":::", "/"));
 }
 const stateClone = applyPatches(state, [
 	{
 		"op": "replace",
-		"path": jsonPatchPathToImmerPath("/file/canvas"),
-		"value": {
-			"width": 800,
-			"height": 600
-		}
+		"path": immerPath("/file/layers/0/opacity"),
+		"value": 1
+	},
+	{
+		"op": "add",
+		"path": immerPath("/file/layers/0/selected"),
+		"value": false
+	},
+	{
+		"op": "add",
+		"path": immerPath("/file/history/3"),
+		"value": "layerProperties",
+		"type": "layerProperties"
 	}
-])
-console.log(stateClone.file.canvas)
+]);
+console.log(stateClone)
+
 
 // -------------------------------
 
@@ -62,89 +69,112 @@ const s = undoable(state);
 
 //document.body.textContent = JSON.stringify(state,null,2) + '\n\n-----------\n\n';
 
-let stack;
-let stackHistory=[]
-let stackRedo;
-s.subscribe("file", (state, { patch }) => {
-	stack = stack || [];
-	stack.push(patch);
+const fileObserveMiddleware = (fn) => {
+	let stack;
+	let stackHistory=[];
+	let stackRedo;
 
-	let logStack = false;
-	if(stackRedo?.length === 1){
-		stackRedo = undefined;
-		logStack = true;
-	}
-	if(stackRedo?.length){
-		stackRedo.pop();
-		return;
-	}
-	if(patch.path.startsWith('/file/history/length')){
-		const originalAction = stackHistory[patch.value]
-			.find(x => x.path.startsWith('/file/history'))
-		console.log(originalAction, patch.value, stackHistory);
-		const undoAction = {
-			layerAdd: "layerRemove",
-			layerRemove: "layerAdd",
-			layerOrder: "layerOrder"
-		}[originalAction.value];
-		//stackRedo = stackHistory[patch.value];
-		stackRedo = stackHistory.find(x =>
-			x.find(y =>
-				y.path === '/file/history/'+patch.value
-			)
+	return (state, { patch }) => {
+		stack = stack || [];
+		stack.push(patch);
+
+		let isUndo;
+		if(stackRedo?.length === 1){
+			isUndo = true;
+			stackRedo = undefined;
+		}
+		if(patch.path.startsWith('/file/history/length')){
+			stackRedo = clone(stackHistory[patch.value]);
+		}
+		if(stackRedo?.length){
+			stackRedo.pop();
+			return;
+		}
+
+		const stackAction = stack.find(x =>
+			x.path.startsWith('/file/history/')
 		);
-		patch.value = undoAction;
-		stackRedo.pop();
-		return;
+		if(!stackAction) return
+		const isNew = !stackHistory.find(s => s.find(p => p.path === stackAction.path))
+		if(!isUndo && isNew){
+			stackAction.type = stackAction.value;
+			stackHistory.push(stack);
+		} else {
+			stackAction.type = isUndo ? "undo": "redo"
+		}
+		fn(state, stack);
+		stack = undefined;
 	}
-	if(!logStack && !patch.path.startsWith('/file/history')){
-		return;
+};
+
+s.subscribe("file", fileObserveMiddleware((state, changes) => {
+	document.body.textContent += JSON.stringify(changes,null,2) + '\n\n'
+}));
+
+const setHistory = s.setter("file/history", { breakpoint: false });
+
+const Setter = (actions) => {
+	for(const [i, a] of Object.entries(actions)){
+		const [ path, handler] = a;
+		const opts = i > 0 ? { breakpoint: false } : {};
+		(path
+			? s.setter(path, opts)(handler)
+			: handler && handler()
+		);
 	}
-	!logStack && stackHistory.push(stack);
-	document.body.textContent += JSON.stringify(stack.find(x => x.path.startsWith('/file/history')),null,2) + '\n\n'
-	stack = undefined;
-});
-
-const setFileHistory = s.setter("file/history", { breakpoint: false });
-
-const layersSetter = s.setter("file/layers");
-const addLayer = (layer) => {
-	const id = layer.id || uuidv4();
-	layersSetter((layers) => {
-		layers.push({ ...layer, id });
-	});
-	s.setter("file/layerOrder", { breakpoint: false })(order => {
-		order.unshift(id);
-	});
-	setFileHistory(h => h.push('layerAdd'));
-};
-const removeLayer = (id) => {
-	layersSetter(layers => {
-		const i = layers.findIndex(x => x.id === id);
-		layers.splice(i, 1);
-	});
-	s.setter("file/layerOrder", { breakpoint: false })(order => {
-		const i = order.findIndex(x => x === id);
-		order.splice(i, 1);
-	});
-	setFileHistory(h => h.push('layerRemove'));
-};
-const setLayerOrder = (...args) => {
-	s.setter("file/layerOrder")(...args);
-	setFileHistory(h => h.push('layerOrder'));
 };
 
+const add = (item) => (arr) => {
+	arr.push(item);
+};
+const prepend = (item) => (arr) => {
+	arr.unshift(item);
+};
+const remove = (pred) => (arr) => {
+	pred && arr.splice(arr.findIndex(pred), 1);
+};
+const update = (pred, updates={}) => (arr) => {
+	const x = pred && arr.find(pred) || {};
+	for(const [k,v] of Object.entries(updates)){
+		x[k] = v;
+	}
+};
+
+const layerAdd = (layer) => Setter([
+	[null, () => layer.id = layer.id || uuidv4()],
+	["file/layers", add(layer)],
+	["file/layerOrder", prepend(layer.id)],
+	["file/history", add('layerAdd')],
+]);
+const layerRemove = (id) => Setter([
+	["file/layers", remove(x => x.id === id)],
+	["file/layerOrder", remove(x => x === id)],
+	["file/history", add('layerRemove')],
+]);
+const layerUpdate = (id, updates) => Setter([
+	["file/layers", update(x => x.id === id, updates)],
+	["file/history", add('layerUpdate')],
+]);
+const layerOrder = (...args) => Setter([
+	["file/layerOrder", args],
+	["file/history", add('layerOrder')],
+]);
 
 
-setLayerOrder([
+
+layerOrder([
 	"70b129f8-1e7d-4080-854c-1279ea63dd86",
 	"867f51d2-5b72-479d-83a8-602b42059075",
-])
-addLayer({ name: "newer" })
-s.undo();
+]);
+layerAdd({ name: "newer" })
+s.undo(); 
 s.redo();
-removeLayer("867f51d2-5b72-479d-83a8-602b42059075");
+layerRemove("867f51d2-5b72-479d-83a8-602b42059075");
 s.undo();
+
+layerUpdate("867f51d2-5b72-479d-83a8-602b42059075", { opacity: 0.5 });
+layerUpdate("867f51d2-5b72-479d-83a8-602b42059075", { opacity: 1, selected: false });
+
 
 //document.body.textContent += '\n\n-----------\n\n' + JSON.stringify(s.get(),null,2);
 
