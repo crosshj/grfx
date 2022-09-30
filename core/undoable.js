@@ -21,6 +21,18 @@ export default (target) => {
 // 			prev = undefined;
 // 			unsubscribe();
 // 		}
+		// let stack;
+		// store.observe("history", "/", (...args) => {
+		// 	if(args[1].patch.value.type === "breakpoint"){
+		// 		console.log(
+		// 			stack
+		// 		);
+		// 		stack = undefined;
+		// 		return;
+		// 	}
+		// 	stack = stack || [];
+		// 	stack.push(args[1].patch);
+		// }, Infinity);
 
 		const dispose = store.observe("doc", "/"+path, (...args) => {
 			//console.log(args)
@@ -28,12 +40,20 @@ export default (target) => {
 		}, Infinity);
 		return dispose;
 	}
-	const setter = (path) => {
-		const [state,setter, dispatch] = store.useDoc("/" + path);
-		return setter;
+	const setter = (path, { breakpoint=true }={}) => {
+		const [state,setter,dispatch] = store.useDoc("/" + path);
+		return (...args) => {
+			if(breakpoint)
+				store.dispatch(history.insertUndoBreakpoint());
+			setter(...args);
+		};
 	};
-	const undo = () => store.dispatch(history.undo());
-	const redo = () => store.dispatch(history.redo());
+	const undo = () => {
+		store.dispatch(history.undoTillBreakpoint());
+	};
+	const redo = () => {
+		store.dispatch(history.redoTillBreakpoint());
+	};
 	const get = (path) => path
 		? store.getStateAtPath("doc", "/" + path)
 		: store.getState("doc");
