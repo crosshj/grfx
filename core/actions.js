@@ -26,6 +26,7 @@ const layerAlpha = async (context, args) => {
 	const { layers } = currentFile;
 	const l = layers.find(x => x.number === Number(number));
 	l.alpha = alpha;
+	context.state.layer.update(l.id, l);
 	l.dirty = true;
 	await update();
 	l.dirty = undefined;
@@ -36,6 +37,7 @@ const layerBlendMode = async (context, args) => {
 	const { layers } = currentFile;
 	const l = layers.find(x => x.number === Number(number));
 	l.blendMode = mode;
+	context.state.layer.update(l.id, l);
 	l.dirty = true;
 	await update();
 	l.dirty = undefined;
@@ -44,11 +46,14 @@ const layerSelect = async (context, args) => {
 	const { update, currentFile } = context;
 	const { number } = args;
 	const { layers } = currentFile;
+	let selectId;
 	for(const layer of layers){
 		layer.selected = undefined;
 		if(layer.number !== number) continue;
 		layer.selected = true;
+		selectId = layer.id;
 	}
+	context.state.layer.select(selectId);
 	await update();
 };
 const layerVisibility = async (context, args) => {
@@ -57,6 +62,7 @@ const layerVisibility = async (context, args) => {
 	const { layers } = currentFile;
 	const l = layers.find(x => x.number === Number(number));
 	l.visible = visible;
+	context.state.layer.update(l.id, { visible });
 	l.dirty = true;
 	await update();
 	l.dirty = undefined;
@@ -80,6 +86,7 @@ const layerAdd = async (context, args) => {
 		selected: true
 	};
 	layers.push(l);
+	context.state.layer.add(l);
 	l.dirty = true;
 	await update();
 	l.dirty = undefined;
@@ -88,6 +95,8 @@ const layerAdd = async (context, args) => {
 const layerDelete = async (context, args) => {
 	const { update, currentFile } = context;
 	const { number } = args;
+	const { id } = currentFile.layers
+		.find(x => x.number === number);
 	currentFile.layers = currentFile.layers
 		.filter(x => x.number !== number)
 		.sort((a,b) => a.number-b.number)
@@ -97,6 +106,7 @@ const layerDelete = async (context, args) => {
 			return o;
 		});
 	currentFile.layers[0].selected = true;
+	context.state.layer.remove(id);
 	currentFile.dirty = true;
 	await update();
 	currentFile.dirty = undefined;
@@ -114,6 +124,7 @@ const layerDuplicate = async (context, args) => {
 			o.number = i;
 			return o;
 		});
+	context.state.layer.duplicate(args.id);
 	currentFile.dirty = true;
 	await update();
 	currentFile.dirty = undefined;
@@ -126,6 +137,7 @@ const layerUpdate = async (context, args) => {
 	if(!l) return console.error('could not find layer to update');
 	layer.def && (l.def = layer.def);
 	layer.name && (l.name = layer.name);
+	context.state.layer.update(l.id, l);
 	l.dirty = true;
 	await update();
 	l.dirty = undefined;
@@ -146,6 +158,7 @@ const layersOrder = async (context, args) => {
 		layers[o].number = Number(i);
 	}
 	currentFile.layers = currentFile.layers.sort((a,b) => a.number-b.number);
+	context.state.layer.order(currentFile.layers.map(x => x.id));
 	currentFile.dirty = true;
 	await update();
 	currentFile.dirty = undefined;
@@ -162,6 +175,7 @@ const menuLayerNew = async (context) => {
 	await layerNew(context, newLayer);
 };
 const menuShowLayerSource = async (context) => {
+	const { host } = context;
 	const selectedLayer = SelectedLayer(context);
 	await host.broadcast({
 		eventName: 'show-layer-source',

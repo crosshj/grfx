@@ -1,5 +1,6 @@
-import History from './history.js';
+import { HostState } from './state.js';
 import actions from './actions.js';
+import { clone } from '@grfx/utils';
 
 const context = {
 	host: undefined,
@@ -18,7 +19,7 @@ const update = async ({ host }) => {
 };
 
 const load = ({ host, config }) => {
-	context.history = new History({
+	context.state = new HostState(clone({
 		editor: {
 			zoom: config.zoom,
 			tool: { id: config.tool }
@@ -28,11 +29,13 @@ const load = ({ host, config }) => {
 				width: config.width,
 				height: config.height,
 			},
+			history: [],
+			layerOrder: config.layers.map(x => x.id || x.name),
 			layers: config.layers
 		}
-	}, (args) => {
+	}), (state, changes) => {
 		// this should be the update function (above)
-		console.warn('TODO:', args);
+		console.warn(changes);
 	});
 
 	context.currentFile = config;

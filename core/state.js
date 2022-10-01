@@ -6,6 +6,14 @@ const List = {
 	append: (item) => (arr) => {
 		arr.push(item);
 	},
+	duplicate: (pred, newId) => (arr) => {
+		const layer = clone(arr.find(pred));
+		layer.id = newId;
+		arr.push(layer);
+	},
+	insertBefore: (pred, item) => (arr) => {
+		pred && arr.splice(arr.findIndex(pred)-1, 0, item);
+	},
 	prepend: (item) => (arr) => {
 		arr.unshift(item);
 	},
@@ -16,6 +24,11 @@ const List = {
 		const x = pred && arr.find(pred) || {};
 		for(const [k,v] of Object.entries(updates)){
 			x[k] = v;
+		}
+	},
+	select: (pred) => (arr) => {
+		for(const item of arr){
+			item.selected = pred(item);
 		}
 	}
 };
@@ -40,6 +53,14 @@ const Layer = (state) => ({
 			["file/history", List.append('layerAdd')],
 		]);
 	},
+	duplicate: (id) => {
+		const newId = uuidv4();
+		Setter(state)([
+			["file/layers", List.duplicate(x => x.id === id, newId)],
+			["file/layerOrder", List.insertBefore(x => x.id === id, newId)],
+			["file/history", List.append('layerDuplicate')],
+		]);
+	},
 	remove: (id) => Setter(state)([
 		["file/layers", List.remove(x => x.id === id)],
 		["file/layerOrder", List.remove(x => x === id)],
@@ -48,6 +69,10 @@ const Layer = (state) => ({
 	update: (id, updates) => Setter(state)([
 		["file/layers", List.update(x => x.id === id, updates)],
 		["file/history", List.append('layerUpdate')],
+	]),
+	select: (id) => Setter(state)([
+		["file/layers", List.select(x => x.id === id)],
+		["file/history", List.append('layerSelect')],
 	]),
 	order: (order) => Setter(state)([
 		["file/layerOrder", order],

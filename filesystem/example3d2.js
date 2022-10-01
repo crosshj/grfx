@@ -235,17 +235,20 @@ export default {
 	tool: "ink",
 	layers: [{
 		number: 0,
+		id: "70b129f8-1e7d-4080-854c-1279ea63dd86",
 		name: "moon",
 		type: '2d',
 		def: moon
 	}, {
 		number: 1,
 		selected: true,
+		id: "867f51d2-5b72-479d-83a8-602b42059075",
 		name: "threejs",
 		type: 'webgl2',
 		def: threejs
 	}, {
 		number: 2,
+		id: "602b4205-5b72-479d-83a8-190740740740",
 		name: "background",
 		type: '2d',
 		def: background

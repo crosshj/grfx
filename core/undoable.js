@@ -41,8 +41,9 @@ export default (target) => {
 		return dispose;
 	}
 	const observe = (fn) => {
-		const dispose = store.observe("doc", "/", (...args) => {
-			fn(...args)
+		const dispose = store.observe("doc", "/", (state, change) => {
+			//console.log(change)
+			fn(store.getState("doc"), change)
 		}, Infinity);
 		return dispose;
 	};
