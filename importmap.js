@@ -11,6 +11,7 @@ const imports = (base) => ({
 	"browserfs": "https://cdn.skypack.dev/browserfs",
 	"concretejs": `${base}/vendor/concrete.js`,
 	//"concretejs": "https://cdn.skypack.dev/concretejs",
+	"es-react": "https://unpkg.com/es-react",
 	"footils": "https://cdn.skypack.dev/footils",
 	"immer": "https://cdn.skypack.dev/-/immer@v7.0.15-7TvRXFAjwhTKJWP7XBf6/dist=es2019,mode=imports/optimized/immer.js",
 	"lodash/get": "https://cdn.skypack.dev/-/lodash.get@v4.4.2-BmwyhyYUfa0zoZ0JKXri/dist=es2019,mode=imports/optimized/lodash.get.js",
