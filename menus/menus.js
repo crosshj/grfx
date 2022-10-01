@@ -6230,7 +6230,7 @@ function ContextPane({forms: forms = {}} = {}) {
             const isCancel = event.submitter.value.toLowerCase() === "cancel";
             if (isCancel) return;
             const data = getFormData(event.target);
-            console.log(data);
+            console.log(event.target.dataset.action, data);
             return false;
         };
         container.appendChild(div);
