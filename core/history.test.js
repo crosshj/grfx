@@ -1,4 +1,4 @@
-import { HostState } from './state.js';
+import { HostState, ClientState } from './state.js';
 
 const state = {
 	editor: {
@@ -57,3 +57,23 @@ document.body.textContent += '\n\n-----------\n\n' + JSON.stringify(s.get(),null
 // set.file({ dims, layers })
 
 
+const patches = [
+	{
+		"op": "replace",
+		"path": "/file/layers/0/opacity",
+		"value": 1
+	},
+	{
+		"op": "add",
+		"path": "/file/layers/0/selected",
+		"value": false
+	},
+	{
+		"op": "add",
+		"path": "/file/history/3",
+		"value": "layerProperties",
+		"type": "layerProperties"
+	}
+];
+const stateClone = ClientState(state, patches);
+console.log(stateClone);

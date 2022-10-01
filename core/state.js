@@ -117,10 +117,8 @@ export class HostState {
 	redo(){ this.history.file.undo(); }
 };
 
-export const ClientState = () => {
-	// - the following could be done on the other end!
+export const ClientState = (state, patches) => {
 	// see: https://medium.com/@mweststrate/distributing-state-changes-using-snapshots-patches-and-actions-part-2-2f50d8363988
-
 	function immerPath(path) {
 		if (!path) return [];
 		const immerPath = path
@@ -129,23 +127,8 @@ export const ClientState = () => {
 		immerPath.shift();
 		return immerPath.map((p) => p.replaceAll(":::", "/"));
 	}
-	const stateClone = applyPatches(state, [
-		{
-			"op": "replace",
-			"path": immerPath("/file/layers/0/opacity"),
-			"value": 1
-		},
-		{
-			"op": "add",
-			"path": immerPath("/file/layers/0/selected"),
-			"value": false
-		},
-		{
-			"op": "add",
-			"path": immerPath("/file/history/3"),
-			"value": "layerProperties",
-			"type": "layerProperties"
-		}
-	]);
-	console.log(stateClone);
+	return applyPatches(state, patches.map(x => {
+		x.path = immerPath(x.path);
+		return x
+	}));
 };
