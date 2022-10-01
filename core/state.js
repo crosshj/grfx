@@ -108,6 +108,13 @@ export class HostState {
 			fileObserveMiddleware(handler)
 		);
 	}
+	set canvas(args){ this.set.canvas(args); }
+	set layers(args){ this.set.layers(args); }
+	set tool(args){ this.set.tool(args); }
+	set zoom(args){ this.set.zoom(args); }
+
+	undo(){ this.history.file.undo(); }
+	redo(){ this.history.file.undo(); }
 };
 
 export const ClientState = () => {
