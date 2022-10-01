@@ -40,6 +40,12 @@ export default (target) => {
 		}, Infinity);
 		return dispose;
 	}
+	const observe = (fn) => {
+		const dispose = store.observe("doc", "/", (...args) => {
+			fn(...args)
+		}, Infinity);
+		return dispose;
+	};
 	const setter = (path, { breakpoint=true }={}) => {
 		const [state,setter,dispatch] = store.useDoc("/" + path);
 		return (...args) => {
@@ -58,7 +64,9 @@ export default (target) => {
 		? store.getStateAtPath("doc", "/" + path)
 		: store.getState("doc");
 	return {
-		subscribe, setter,
+		subscribe,
+		observe,
+		setter,
 		undo, redo,
 		get
 	}
