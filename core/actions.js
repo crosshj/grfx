@@ -197,6 +197,12 @@ const menuLayerDelete = async (context) => {
 	const selectedLayer = SelectedLayer(context);
 	await layerDelete(context, selectedLayer);
 };
+const menuLayerNewUrl = async (context) => {
+	ShowModal('layerNew', { fromUrl: true });
+};
+const menuLayerNewImage = async (context) => {
+	ShowModal('layerNew', { fromImage: true });
+};
 
 const actions = {
 	layerAlpha,
@@ -215,6 +221,8 @@ const actions = {
 	menuImageSize,
 	menuLayerDuplicate,
 	menuLayerDelete,
+	menuLayerNewUrl,
+	menuLayerNewImage,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)

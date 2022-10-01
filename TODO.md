@@ -1,13 +1,5 @@
 ## TODO
 
-- [ ] Active tool options bar
-- [ ] Color picker
-- [X] update icons
-- [ ] Optgroup/separators
-- [ ] 
-
-<!--
-- [ ] 
-- [ ] 
-- [ ] 
--->
+- [ ] import layer from url
+- [ ] auto-save file changes (to fs)
+- [ ] paste image from clipboard (to layer)
