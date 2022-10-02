@@ -189,6 +189,11 @@ const menuImageSize = async (context) => {
 	const { width, height } = currentFile;
 	ShowModal('imageSize', { width, height });
 };
+const menuCanvasSize = async (context) => {
+	const { currentFile } = context;
+	const { width, height } = currentFile;
+	ShowModal('canvasSize', { width, height });
+};
 const menuLayerDuplicate = async (context) => {
 	const selectedLayer = SelectedLayer(context);
 	await layerDuplicate(context, selectedLayer);
@@ -219,6 +224,7 @@ const actions = {
 	menuLayerNew,
 	menuShowLayerSource,
 	menuImageSize,
+	menuCanvasSize,
 	menuLayerDuplicate,
 	menuLayerDelete,
 	menuLayerNewUrl,

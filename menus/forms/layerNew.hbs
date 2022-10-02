@@ -1,7 +1,9 @@
 
 <form data-action="layerNew">
+
+
 	{{#if fromUrl}}
-		<div class="note">New Layer from URL</div>
+		<title>New Layer from URL</title>
 		<div class="row"></div>
 		<div>
 			<label for="image-url">Image URL</label>
@@ -11,7 +13,7 @@
 	{{/if}}
 
 	{{#if fromImage}}
-		<div class="note">New Layer from Image</div>
+		<title>New layer from Image</title>
 		<input
 			type="text" id="data-uri" name="image-data-uri"
 			class="hidden"
