@@ -58,7 +58,7 @@ body {
 	height: 100vh;
 }
 .canvasContainer {
-	box-shadow: 0 0 10px black;
+	box-shadow: 0 0 4px 3px #0000005c;
 	transform: scale(0);
 }
 .canvasContainer canvas {

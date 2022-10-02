@@ -8,6 +8,22 @@ dragimage.style.opacity = 0;
 dragimage.id = "layer-drag-image-helper";
 document.body.appendChild(dragimage);
 
+/* TRY THIS INSTEAD, MAYBE
+import htm from 'https://unpkg.com/htm?module'
+  const html = htm.bind(React.createElement)
+
+  const Counter = props => {
+    const [count, setCount] = React.useState(parseInt(props.count))
+    return html`
+      <div>
+        <h1>${count}</h1>
+        <button onClick=${e => setCount(count - 1)}>Decrement</button>
+        <button onClick=${e => setCount(count + 1)}>Increment</button>
+      </div>
+    `
+  }
+*/
+
 export default function sidebarStart({ sidebarDef, thumbs, listener }, startCallback) {
 	const getRoot = (components, dispatcher) => {
 		const {

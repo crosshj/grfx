@@ -1,8 +1,9 @@
-// import { InlineSVG } from './utils.js';
+import { send } from '@grfx/messages';
+import { client as Hotkeys } from '@grfx/hotkeys';
+// import { InlineSVG } from '@grfx/utils.js';
+
 // await InlineSVG('./icons.svg', "svg-icons");
 
-import { send } from '../shared/messages.js';
-import { client as Hotkeys } from '../shared/hotkeys.js';
 Hotkeys();
 
 const selectTool = (tool) => {

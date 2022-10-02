@@ -1,25 +1,28 @@
+import * as rxjs from 'rxjs-deno';
+import { React, ReactDOM, PropTypes } from 'es-react';
+
 import { isInitedFactory } from './utils.js';
 
 function rxReact() {
 	return returnProps(rxReact);
 }
 rxReact.scripts = [
-	"./vendor/rxjs.umd.min.js",
+	//"../vendor/rxjs.umd.min.js",
 	//'https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.2.0/rxjs.umd.min.js',
 	//'https://unpkg.com/rxjs@beta/bundles/rxjs.umd.js',
-	[
+	//[
 		// react and react-dom should waterfall
 		// 'https://unpkg.com/react@16/umd/react.development.js',
 		// 'https://unpkg.com/react-dom@16/umd/react-dom.development.js'
-		"./vendor/react.development.js",
-		"./vendor/react-dom.development.js",
-	],
+		//"../vendor/react.development.js",
+		//"../vendor/react-dom.development.js",
+	//],
 ];
 
 rxReact.scriptsAfter = (callback) => {
 	const { of, fromEvent, from, range } = rxjs;
 	const { Observable, Subject } = rxjs;
-	const { map, filter, startWith, scan } = rxjs.operators;
+	const { map, filter, startWith, scan } = rxjs;
 	const { render } = ReactDOM;
 	const { createElement, Component } = React;
 

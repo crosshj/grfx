@@ -63,27 +63,33 @@ const getDraw = (canvas, listen, state) => (e, eventName="") => {
 	state.prev = pos;
 };
 
-const drawFn = (concrete, brushFn) => {
+const drawFn = (concrete, brushFn, updateThumbs) => {
 	//const ctx = canvas.viewport.scene.context;
-	const ctx = concrete.layers[0].scene.context;
+	//console.log(selectedNumber, selected)
+
+	//const ctx = concrete.layers[0].scene.context;
 	// const pattern = ctx.createPattern(brushImage, 'repeat');
 	// ctx.strokeStyle = pattern;
 	// ctx.fillStyle = pattern;
 
-	return ({ x1, y1, x2, y2 }) => {
+	return (path) => {
+		const [selectedNumber, selected] = (Object.entries(concrete.layers)).find(([,x]) => x.selected);
+		const ctx = selected.scene.context;
+		if(!ctx.save) return;
 		ctx.save();
 
 		const radius = 2.5;
-		brushFn(ctx, radius, x1, y1, x2, y2);
+		brushFn(ctx, radius, path);
 		ctx.restore();
 		requestAnimationFrame(() => {
 			concrete.viewport.render();
+			updateThumbs(selectedNumber, selected, path);
 		});
 	};
 };
 
 let attached;
-export const attachDraw = (concrete, brush) => {
+export const attachDraw = (concrete, brush, updateThumbs) => {
 	if(attached) return;
 
 	const brushFn = brushes[brush] || brushes.pixel;
@@ -103,7 +109,7 @@ export const attachDraw = (concrete, brush) => {
 		draw = null;
 	};
 	const down = () => {
-		draw = getDraw(canvas, drawFn(concrete, brushFn), state);
+		draw = getDraw(canvas, drawFn(concrete, brushFn, updateThumbs), state);
 		canvas.addEventListener("pointermove", draw, false);
 		canvas.addEventListener("pointerup", end, false);
 		canvas.addEventListener("pointerleave", end, false);

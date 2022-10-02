@@ -1,4 +1,11 @@
-import Concrete from "./concrete.js";
+import Concrete from "concretejs";
+
+/*
+IDEA: build another multi-layered canvas solution
+partly like concretejs and https://github.com/federicojacobi/layeredCanvas/blob/master/layeredCanvas.js
+except use canvases stacked in the DOM instead of one canvas combined
+only combine when saving image to file
+*/
 
 const thumbs = {};
 
@@ -10,14 +17,13 @@ function thumbnail(image) {
 	return canvas.toDataURL('image/png');
 }
 
+const updateLayerThumb = (number, layer) => {
+	thumbs[number] = thumbnail(layer.scene.canvas);
+};
+
 const getRender = ({ layer, width, height, layerDef }) => async (args={}) => {
 	const { number, render } = layerDef;
 	const ctx = layer.scene.context;
-	
-	if(layerDef.type === "2d"){
-		ctx.clearRect(0, 0, width, height);
-		ctx.globalAlpha = args.alpha || layerDef.alpha || 1;
-	}
 	await render({ ctx, width, height, layer: { ...layerDef, ...args } });
 	thumbs[number] = thumbnail(layer.scene.canvas);
 };
@@ -27,6 +33,8 @@ const initLayer = async (args) => {
 
 	const layer = new Concrete.Layer(layerDef);
 	layer.number = layerDef.number;
+	layer.alpha = layerDef.alpha !== undefined ? layerDef.alpha : 1;
+	layer.selected = layerDef.selected !== undefined ? layerDef.selected : false;
 	viewport.add(layer);
 
 	if(typeof layerDef.visible !== "undefined"){
@@ -60,8 +68,10 @@ const updateLayer = async (args) => {
 };
 
 async function Canvas(args) {
-	const { width, height, layers:layerDefs } = args;
+	const { width, height, layers:layerDefs, container } = args;
 	const viewport = new Concrete.Viewport(args);
+	container.style.width = width + "px";
+	container.style.height = height + "px";
 
 	const layers = {};
 	const renderFns = {};
@@ -88,6 +98,7 @@ async function Canvas(args) {
 
 	return {
 		thumbs,
+		updateLayerThumb,
 		viewport,
 		layers,
 		renderFns

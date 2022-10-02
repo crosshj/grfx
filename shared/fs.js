@@ -1,5 +1,5 @@
-import BrowserFS from 'https://cdn.skypack.dev/browserfs';
-import { blobToBase64 } from './utils.js'; 
+import BrowserFS from 'browserfs';
+import { blobToBase64 } from '@grfx/utils';
 
 const mountConfig = {
 	fs: "MountableFileSystem",

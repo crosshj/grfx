@@ -1,4 +1,4 @@
-import fs from '../../shared/fs.js';
+import fs from '@grfx/fs';
 const init = fs.init();
 
 const loadImage = (url) => new Promise(async (resolve) => {
@@ -6,6 +6,14 @@ const loadImage = (url) => new Promise(async (resolve) => {
 		const image = new Image();
 		image.onload = () => resolve(image);
 		image.src = url;
+		return;
+	}
+	if(url.startsWith('images/')){
+		const image = new Image();
+		image.onload = () => resolve(image);
+		image.src = await fs.readFile({
+			path: "/indexDB/" + url
+		});
 		return;
 	}
 	const path = `/indexDB/downloads/${url.split('/').pop()}`;
@@ -42,18 +50,17 @@ const processDef = (layer) => {
 	const def = layer.type === '2d'
 	? `
 		ctx.save();
+		ctx.clearRect(0, 0, getDims().width, getDims().height);
+		ctx.beginPath();
 		${layer.def}
 		ctx.restore();
 	`
 	: layer.def;
-	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', 'alpha', def);
+	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', def);
 
 	return async function drawImage({ ctx, width, height, layer }){
 		await init;
-		const alpha = typeof layer.alpha !== "undefined"
-			? layer.alpha
-			: 1;
-		await renderFn(loadImage, loadFile, ctx, getDims(width, height), alpha);
+		await renderFn(loadImage, loadFile, ctx, getDims(width, height));
 	};
 }
 

@@ -1,5 +1,6 @@
+import { HostState } from './state.js';
 import actions from './actions.js';
-let currentFile;
+import { clone } from '@grfx/utils';
 
 const context = {
 	host: undefined,
@@ -13,17 +14,30 @@ const update = async ({ host }) => {
 	await host.broadcast({
 		eventName: 'file-update',
 		type: 'file-update',
-		data: currentFile,
+		data: context.currentFile,
 	});
-	//DEPRECATE
-	// await host.broadcast({
-	// 	eventName: 'layers-update',
-	// 	type: 'layers-update',
-	// 	data: currentFile,
-	// });
 };
+
 const load = ({ host, config }) => {
-	currentFile = config;
+	context.state = new HostState(clone({
+		editor: {
+			zoom: config.zoom,
+			tool: { id: config.tool }
+		},
+		file: {
+			canvas: {
+				width: config.width,
+				height: config.height,
+			},
+			history: [],
+			layerOrder: config.layers.map(x => x.id || x.name),
+			layers: config.layers
+		}
+	}), (state, changes) => {
+		// this should be the update function (above)
+		console.warn(changes);
+	});
+
 	context.currentFile = config;
 	update({ host });
 };

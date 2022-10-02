@@ -1,11 +1,12 @@
-function getDistance(x1, y1, x2, y2){
+function getDistance({ x1, y1, x2, y2 }){
 	let y = x2 - x1;
 	let x = y2 - y1;
 	return Math.sqrt(x * x + y * y);
 }
 
-export default (ctx, radius, x1, y1, x2, y2) => {
-	const dist = getDistance(x1,y1,x2,y2);
+export default (ctx, radius, path) => {
+	const {x1, y1, x2, y2} = path;
+	const dist = getDistance(path);
 	if(dist <= radius){
 		ctx.beginPath();
 		ctx.arc(x2, y2, radius, 0, 2 * Math.PI);

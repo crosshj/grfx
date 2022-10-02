@@ -1,10 +1,11 @@
-import YAML from "https://cdn.skypack.dev/yaml";
-import Layout from "https://unpkg.com/@fiug/layout@0.1.0";
+import YAML from "yaml";
+import Layout from "@fiug/layout";
 //import Layout from "https://beta.fiug.dev/fiugd/layout/src/index.js";
+
 import createTabContent from './paneContent.js';
 
 export default async () => {
-	let layoutConfig = "./layout/layout.yaml";
+	let layoutConfig = "./config/layout.config.yaml";
 
 	if (typeof layoutConfig !== "object") {
 		const url = layoutConfig;

@@ -1,10 +1,14 @@
-import { listen, send } from '../shared/messages.js';
-import { sleep } from '../shared/utils.js';
+import { timer } from "footils";
+import { listen, send } from '@grfx/messages';
+import { sleep } from '@grfx/utils';
+import Menus from '@grfx/menus';
+import { client as Hotkeys } from '@grfx/hotkeys';
+
 import Canvas from './canvas.js';
 import layerDef from './layers/layerDef.js';
 import './cursor.js';
 import { attachDraw, detachDraw } from './draw.js';
-import { client as Hotkeys } from '../shared/hotkeys.js';
+
 Hotkeys();
 
 const container = document.querySelector('.canvasContainer');
@@ -45,6 +49,9 @@ document.body.addEventListener('wheel', (ev) => {
 
 
 listen('file-update', async (args) => {
+	const timerLabel = 'main: file-update [' + Date.now() + "]";
+	timer.start(timerLabel);
+
 	const { layers, width, height, zoom, tool, dirty } = args;
 
 	if(dirty){
@@ -52,47 +59,65 @@ listen('file-update', async (args) => {
 		canvas.viewport.destroy();
 		canvas = undefined;
 	}
-
+	const canvasIsNew = !canvas;
 	canvas = canvas || await Canvas({
 		width,
 		height,
 		layers: layers
 			.sort((a,b) => b.number-a.number)
 			.map(layer => ({
-			...layer,
-			render: layerDef(layer)
+				...layer,
+				render: layerDef(layer)
 			})
 		),
 		container
 	});
-	attachDraw(canvas, tool);
+	attachDraw(canvas, tool, (number, layer) => {
+		//TODO: should update layer def here (perhaps)
+		canvas.updateLayerThumb(number, layer);
+		send('update-thumbs', { thumbs: canvas.thumbs })
+	});
 	!scale && setScale(zoom);
 
 	//right/sidebarReady.js:51
+	let incomingSelected;
 	for(const layer of layers){
-		if(layer.dirty){
-			console.log('layer is dirty')
+		if(layer.selected) incomingSelected = layer.number;
+		if(!layer.dirty) continue;
+
+		const canvasLayer = canvas.layers[layer.number];
+		if(!canvasLayer) continue;
+
+		const visChange = Boolean(layer.visible !== undefined && canvasLayer.visible !== layer.visible);
+		const blendChange = Boolean(layer.blendMode !== undefined && canvasLayer.blendMode !== layer.blendMode);
+		const alphaChange = Boolean(layer.alpha !== undefined && canvasLayer.alphaMode !== layer.alpha);
+		const defChange =  !(visChange || blendChange || alphaChange);
+
+		if(visChange)
+			canvasLayer.visible = layer.visible;
+		if(blendChange)
+			canvasLayer.blendMode = layer.blendMode;
+		if(alphaChange)
+			canvasLayer.alpha = layer.alpha;
+		if(defChange){
 			await canvas.renderFns[layer.number].update({
 				...layer,
 				render: layerDef(layer)
 			});
+			await canvas.renderFns[layer.number](layer);
 		}
-		const canvasLayer = canvas.layers[layer.number];
-		const render = canvas.renderFns[layer.number];
-		if(!canvasLayer) continue;
-
-		if(layer.visible !== undefined)
-			canvasLayer.visible = layer.visible;
-		if(layer.blendMode !== undefined){
-			canvasLayer.blendMode = layer.blendMode;
-		}
-
-		await render(layer);
 	}
-	canvas.viewport.render();
+	if(!canvasIsNew){
+		canvas.viewport.render();
+		for(const [number, layer] of Object.entries(canvas.layers)){
+			layer.selected = false;
+		}
+		canvas.layers[incomingSelected] && (canvas.layers[incomingSelected].selected = true);
+	}
 	send('update-thumbs', { thumbs: canvas.thumbs });
-	return;
 
+	timer.log(timerLabel);
+	return;
 });
 
 send('ping', 'main');
