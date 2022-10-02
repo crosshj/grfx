@@ -4,6 +4,7 @@
 	create (or find) a function that parses a simpler syntax and returns a function
 */
 export default {
+	paste: (k) => [ k.code === "KeyV", k.ctrlKey || k.metaKey ],
 	moveTool: (k) => [ k.code === "KeyV" ],
 	transformTool: (k) => [ k.code === "KeyT", k.altKey, k.ctrlKey || k.metaKey ],
 	lassoTool: (k) => [ k.code === "KeyL" ],
