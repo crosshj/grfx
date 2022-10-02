@@ -67,6 +67,18 @@ body .ContextOverlay.modal .menu-container {
 }
 
 body .ContextOverlay.modal form {
+	margin-top: 30px;
+}
+body .ContextOverlay.modal form title {
+	display: block;
+	background: var(--bg-medium-color);
+	position: absolute;
+	left: 0px;
+	right: 0;
+	top: 1px;
+	padding: 0.5em;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 }
 body .ContextOverlay.modal .menu-container .list {
 	display: none;
