@@ -1,0 +1,52 @@
+<form action="resizeImage">
+	<div class="note">
+		{{ message }} + {{ anotherMsg }}
+	</div>
+	<fieldset>
+		<legend>Resize</legend>
+
+		<div class="row">
+			<label>By:</label>
+			<input type="radio" id="pixels" name="resize-units" value="pixels" checked>
+			<label for="pixels">Pixels</label>
+			<input type="radio" id="percentage" name="resize-units" value="pixels">
+			<label for="percentage">Percentage</label>
+		</div>
+		
+		<div class="row">
+			<label for="resize-horizontal">Horizontal:</label>
+			<input type="text" id="resize-horizontal" name="resize-horizontal" value="{{ width }}">
+		</div>
+
+		<div class="row">
+			<label for="resize-vertical">Vertical:</label>
+			<input type="text" id="resize-vertical" name="resize-vertical"  value="{{ height }}">
+		</div>
+
+		<div class="row">
+			<input type="checkbox" id="maintainAspectRatio" name="maintainAspectRatio" checked>
+			<label for="maintainAspectRatio">Maintain aspect ratio</label>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>Skew</legend>
+
+		{{ moreMsg }}
+
+		<div class="row">
+			<label for="skew-horizontal">Horizontal:</label>
+			<input type="text" id="skew-horizontal" name="skew-horizontal">
+		</div>
+
+		<div class="row">
+			<label for="skew-vertical">Vertical:</label>
+			<input type="text" id="skew-vertical" name="skew-vertical">
+		</div>
+	</fieldset>
+
+	<div class="row align-right">
+		<input type="submit" value="OK">
+		<input type="submit" value="Cancel">
+	</div>
+</form>
