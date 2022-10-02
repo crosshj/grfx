@@ -1,5 +1,6 @@
 import { send } from './messages.js';
 import { clone } from './utils.js';
+import pasteHandler from './pasteHandler.js';
 
 const KeyEvent = ({
 	code, ctrlKey, shiftKey, altKey, metaKey
@@ -7,8 +8,13 @@ const KeyEvent = ({
 	code, ctrlKey, shiftKey, altKey, metaKey
 });
 
+pasteHandler.attach();
+
 export const client = ({ skip }={}) => {
 	const logKey = (e) => {
+		// if(e.code === "KeyV" && (e.ctrlKey || e.metaKey)){
+		// 	return;
+		// }
 		if(skip && skip(e)) return;
 		send('keydown', KeyEvent(e))
 	};
