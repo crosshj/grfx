@@ -235,7 +235,7 @@ const menuFileNew = async (context) => {
 const menuFileOpen = async (context) => {
 	const files = [
 		{ name: 'example1' },
-		{ name: 'example2' },
+		{ name: 'example2', selected: true },
 		{ name: 'example3' },
 	];
 	ShowModal('fileOpen', { files });
