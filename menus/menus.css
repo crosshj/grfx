@@ -204,6 +204,11 @@ body .ContextMenu .list .context-seperator {
 	color: var(--bg-lighter-color);
 }
 
+.filesToOpen {
+	padding: 1em;
+    min-width: 200px;
+}
+
 /*
 html { 
   --brand: hotpink;
