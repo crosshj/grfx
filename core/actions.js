@@ -169,6 +169,17 @@ const layersOrder = async (context, args) => {
 	await update();
 	currentFile.dirty = undefined;
 };
+const fileSave = async (context, args) => {
+	const { currentFile, currentFileName } = context;
+	const filename = args.filename || currentFileName;
+	const path = '/indexDB/' + filename;
+	const data = new Blob(
+		['export default ' + JSON.stringify(currentFile, null, 2)],
+		{ type: "application/javascript" }
+	);
+	console.log(data);
+	await fs.writeFile({ path, data });
+};
 
 const menuLayerNew = async (context) => {
 	const { host } = context;
@@ -214,6 +225,10 @@ const menuLayerNewUrl = async (context) => {
 const menuLayerNewImage = async (context) => {
 	ShowModal('layerNew', { fromImage: true });
 };
+const menuFileSaveAs = async (context, args) => {
+	const { currentFileName: filename } = context;
+	ShowModal('fileSaveAs', { filename });
+};
 
 // FORM SUBMIT
 const menuLayerNewSubmit = async (context, { form={} }={}) => {
@@ -255,6 +270,9 @@ const menuCanvasSizeSubmit = async (context, { form }) => {
 const menuImageSizeSubmit = async (context, { form }) => {
 	console.log(form);
 };
+const menuFileSaveAsSubmit = async (context, { form }) => {
+	await fileSave(context, form);
+};
 // FORM SUBMIT (END)
 
 const actions = {
@@ -268,6 +286,7 @@ const actions = {
 	showLayerSource,
 	hideLayerSource,
 	layersOrder,
+	fileSave,
 
 	menuLayerNew,
 	menuLayerNewSubmit,
@@ -280,6 +299,8 @@ const actions = {
 	menuLayerDelete,
 	menuLayerNewUrl,
 	menuLayerNewImage,
+	menuFileSaveAs,
+	menuFileSaveAsSubmit,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)

@@ -1,11 +1,13 @@
+import { clone } from '@grfx/utils';
+import fs from '@grfx/fs';
 import { HostState } from './state.js';
 import actions from './actions.js';
-import { clone } from '@grfx/utils';
 
 const context = {
 	host: undefined,
 	layout: undefined,
 	currentFile: undefined,
+	currentFileName: undefined,
 	update: undefined,
 	load: undefined,
 };
@@ -18,8 +20,12 @@ const update = async ({ host }) => {
 	});
 };
 
-const load = ({ host, config }) => {
+const load = async ({ host, filename }) => {
+	const { default: config } = await import(
+		await fs.readFile({ path: '/indexDB/' + filename })
+	);
 	context.state = new HostState(clone({
+		filename,
 		editor: {
 			zoom: config.zoom,
 			tool: { id: config.tool }
@@ -39,6 +45,7 @@ const load = ({ host, config }) => {
 	});
 
 	context.currentFile = config;
+	context.currentFileName = filename;
 	update({ host });
 };
 
@@ -70,7 +77,7 @@ const Core = ({ host, layout }) => {
 	// });
 
 	return {
-		load: (config) => load({ host, config })
+		load: (filename) => load({ host, filename })
 	};
 };
 

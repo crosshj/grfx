@@ -1,5 +1,6 @@
 export default {
-	imageSize: new URL(import.meta.url).href + '/../forms/imageSize.hbs',
 	canvasSize: new URL(import.meta.url).href + '/../forms/canvasSize.hbs',
+	fileSaveAs: new URL(import.meta.url).href + '/../forms/fileSaveAs.hbs',
+	imageSize: new URL(import.meta.url).href + '/../forms/imageSize.hbs',
 	layerNew: new URL(import.meta.url).href + '/../forms/layerNew.hbs',
 };

@@ -11,7 +11,7 @@ import forms from './menus/forms.js';
 import Layout from './layout/layout.js';
 
 
-const config = await FileSystem.init({ config: fsConfig });
+await FileSystem.init({ config: fsConfig });
 
 const layout = await Layout();
 const host = MessageHost();
@@ -25,4 +25,4 @@ Hotkeys({ host, onKey, config: hotkeyConfig });
 const core = Core({ host, layout });
 Menus({ forms });
 
-core.load(config);
+core.load('example3d2.js');

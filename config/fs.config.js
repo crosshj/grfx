@@ -32,30 +32,25 @@ const files = {
 
 
 const boot = async (fs) => {
-	const { readFile, writeFile, walk, mkdir } = fs;
+	const { exists, writeFile, walk, mkdir } = fs;
 
 	for(const path of dirs){
 		await mkdir({ path });
 	}
 	for(const [path, url] of Object.entries(files)){
+		const fileExists = await exists({ path });
+		if(fileExists) continue;
 		const data = await fetch(url).then(x => x.blob());
 		await writeFile({ path, data });
 	}
-	
-	//TODO: this should be done elsewhere (when the notion of loading a file exists)
-	const module = await import(
-		await readFile({ path: '/indexDB/example3d2.js' })
-	);
 
-	// await walk({
-	// 	dir: '/',
-	// 	callback: (err, results) => {
-	// 		if (err) throw err;
-	// 		console.log(results);
-	// 	}
-	// });
-
-	return module.default;
+	await walk({
+		dir: '/',
+		callback: (err, results) => {
+			if (err) throw err;
+			console.log(results);
+		}
+	});
 };
 
 export default boot;
