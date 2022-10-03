@@ -232,6 +232,14 @@ const menuFileSaveAs = async (context, args) => {
 const menuFileNew = async (context) => {
 	ShowModal('fileNew');
 };
+const menuFileOpen = async (context) => {
+	const files = [
+		{ name: 'example1' },
+		{ name: 'example2' },
+		{ name: 'example3' },
+	];
+	ShowModal('fileOpen', { files });
+};
 
 // FORM SUBMIT
 const menuLayerNewSubmit = async (context, { form={} }={}) => {
@@ -309,6 +317,7 @@ const actions = {
 	menuFileSaveAsSubmit,
 	menuFileNew,
 	menuFileNewSubmit,
+	menuFileOpen,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
