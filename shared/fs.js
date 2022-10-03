@@ -68,6 +68,9 @@ const exists = ({ fs, path }) => new Promise((resolve) => {
 const mkdir = ({ fs, path }) => new Promise((resolve) => {
 	fs.mkdir(path, (e, stat) => resolve(!e));
 });
+const stat = ({ fs, path }) => new Promise((resolve) => {
+	fs.stat(path, (e, stat) => resolve(!e && stat));
+});
 
 const walk = ({ fs, dir, callback }) => {
 	var results = [];
@@ -113,5 +116,6 @@ FileSystem.readFile = (args) => readFile({ ...args, fs: FileSystem.fs });
 FileSystem.writeFile = (args) => writeFile({ ...args, fs: FileSystem.fs });
 FileSystem.exists = (args) => exists({ ...args, fs: FileSystem.fs });
 FileSystem.mkdir = (args) => mkdir({ ...args, fs: FileSystem.fs });
+FileSystem.stat = (args) => stat({ ...args, fs: FileSystem.fs });
 
 export default FileSystem;

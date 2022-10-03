@@ -171,13 +171,15 @@ const layersOrder = async (context, args) => {
 };
 const fileSave = async (context, args) => {
 	const { currentFile, currentFileName } = context;
-	const filename = args.filename || currentFileName;
+	let filename = args.filename || currentFileName;
+	if(!filename.endsWith('.js')){
+		filename += '.js';
+	}
 	const path = '/indexDB/' + filename;
 	const data = new Blob(
 		['export default ' + JSON.stringify(currentFile, null, 2)],
 		{ type: "application/javascript" }
 	);
-	console.log(data);
 	await fs.writeFile({ path, data });
 };
 
@@ -227,17 +229,23 @@ const menuLayerNewImage = async (context) => {
 };
 const menuFileSaveAs = async (context, args) => {
 	const { currentFileName: filename } = context;
-	ShowModal('fileSaveAs', { filename });
+	ShowModal('fileSaveAs', { filename: filename.replace(/\.js$/, '') });
 };
 const menuFileNew = async (context) => {
 	ShowModal('fileNew');
 };
 const menuFileOpen = async (context) => {
-	const files = [
-		{ name: 'example1' },
-		{ name: 'example2', selected: true },
-		{ name: 'example3' },
-	];
+	const dir = await fs.readdir({ path: '/indexDB/'});
+	const dirFiles = [];
+	for(var entry of dir){
+		const stat = await fs.stat({ path: '/indexDB/' + entry });
+		if(stat.isDirectory()) continue;
+		dirFiles.push(entry);
+	}
+	const files = dirFiles.sort().map((x,i) => ({
+		name: x.replace(/\.js$/, ''),
+		selected: i===0
+	}));
 	ShowModal('fileOpen', { files });
 };
 
@@ -282,7 +290,7 @@ const menuImageSizeSubmit = async (context, { form }) => {
 	console.log(form);
 };
 const menuFileSaveAsSubmit = async (context, { form }) => {
-	await fileSave(context, form);
+	await fileSave(context, { filename: form.filename[0] });
 };
 const menuFileNewSubmit = async (context, { form }) => {
 	console.log(form);
