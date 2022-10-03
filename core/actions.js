@@ -287,6 +287,10 @@ const menuFileSaveAsSubmit = async (context, { form }) => {
 const menuFileNewSubmit = async (context, { form }) => {
 	console.log(form);
 };
+const menuFileOpenSubmit = async (context, { form }) => {
+	console.log(form);
+};
+
 // FORM SUBMIT (END)
 
 const actions = {
@@ -318,6 +322,7 @@ const actions = {
 	menuFileNew,
 	menuFileNewSubmit,
 	menuFileOpen,
+	menuFileOpenSubmit,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
