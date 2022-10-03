@@ -2,10 +2,12 @@
 
 	{{#if fromUrl}}
 		<title>New Layer from URL</title>
-		<div class="row"></div>
 		<div>
 			<label for="image-url">Image URL</label>
-			<input type="text" id="image-url" name="image-url" autocomplete="off">
+			<input
+				type="text" id="image-url" name="image-url" autocomplete="off"
+				autofocus
+			>
 		</div>
 		<div class="row"></div>
 	{{/if}}
@@ -17,7 +19,8 @@
 			<label for="image">Image</label>
 			<input
 				type="file" id="image" name="image"
-				accept="image/*"
+				accept=".png,.jpg,.jpeg,.gif"
+				autofocus
 			>
 		</div>
 		<div class="row"></div>

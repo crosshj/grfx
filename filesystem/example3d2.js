@@ -1,3 +1,7 @@
+/*
+https://medium.com/threejs/using-es6-modules-in-three-js-7621f98d72d5
+*/
+
 const images = {
 	hatch: `images/hatch.png`,
 	leaves: `images/leaves.png`,
