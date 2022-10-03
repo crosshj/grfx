@@ -7,6 +7,16 @@ Many of the tool options in `top-bar` are inspired by:
 
 ## How to add a new form
 1. create an handlebars(hbs) in menus/forms.
-2. create a property in menus/forms.js that matches the file from first step.
-update>>>3. create a property in core/core.js in the modalData object, this is how we get data into handlebars template created above.
-X4. create a property in core/core.js in the modals object, the key should match the menu item string that you want to trigger the modal, the value should match the property you put in modalData(Step 3) and in forms/forms.js (Step 2).
+2. create a property in menus/forms.js that matches the file
+ from first step.
+
+3. from top index html there should be a value on the option 
+you want to trigger the menu. 
+
+4. take that value and go to core/actions.js and add a
+handler. add handler for a modal 
+- name it like 'menu' + modal name
+
+5. also in core/actions.js, add a handler for the form submit;
+this should match what the form has for data-action
+ - name it like 'menu' + data-action

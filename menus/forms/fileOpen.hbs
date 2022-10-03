@@ -1,0 +1,23 @@
+<form data-action="file-open-submit">
+	<title>Open File</title>
+
+	<div class="filesToOpen">
+		{{#each files}}
+			<div>
+				<input
+					type="radio"
+					id="{{this.name}}"
+					name="selected-file"
+					value="{{this.name}}"
+					{{#if this.selected}}checked{{/if}} 
+				>
+				<label for="{{this.name}}">{{this.name}}</label>
+			</div>
+		{{/each}}
+	</div>
+
+	<div class="row align-right">
+		<input type="submit" value="Cancel">
+		<input type="submit" value="OK">
+	</div>
+</form>
