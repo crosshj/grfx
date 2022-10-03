@@ -54,11 +54,11 @@ const Core = ({ host, layout }) => {
 	}
 
 	window.addEventListener('contextmenu-select', async ({ detail={} }={}) => {
-		const { which, key } = detail;
+		const { which, key, form } = detail;
 		const name = key || which;
 		const action = actions["menu-" + name] || actions[name];
 		if(!action) return;
-		await doAction(action)();
+		await doAction(action)({ form });
 	});
 
 	// window.addEventListener('contextmenu-select', (e) => {

@@ -1,4 +1,10 @@
-import { camelToDashed, clone } from '../shared/utils.js';
+import fs from '@grfx/fs';
+import {
+	camelToDashed,
+	clone,
+	dataUriImageFromUrl,
+	dataUriToBlob
+} from '@grfx/utils';
 
 const ShowModal = (modal, data) => {
 	const event = new CustomEvent('contextMenuShow', {
@@ -209,6 +215,48 @@ const menuLayerNewImage = async (context) => {
 	ShowModal('layerNew', { fromImage: true });
 };
 
+// FORM SUBMIT
+const menuLayerNewSubmit = async (context, { form={} }={}) => {
+	const imageUrl = form['image-url'] || [];
+	const image = form.image || [];
+	for(const url of imageUrl){
+		const value = await dataUriImageFromUrl(url);
+		let name = url.split('?')[0].split('#')[0].split('/').pop()
+		name = name.replace('.jpg', '.png').replace('.jpeg', '.png')
+		image.push({ name, value });
+	}
+	let def = '';
+	for(const { name, value } of image){
+		if(!value) continue;
+		const path = `/indexDB/downloads/${name}`;
+		const fileExists = await fs.exists({ path });
+		if(!fileExists){
+			const data = await dataUriToBlob(value);
+			await fs.writeFile({ path, data });
+		}
+		def += `
+			const image = await loadImage("${name}");
+			ctx.drawImage(image,
+				0,0, image.width, image.height,
+				0,0, image.width, image.height
+			);
+		`.replace(/^\t\t/gm, '');
+	}
+	//TODO:  (LATER) what about the case when mutliple images exist?
+	await layerAdd(context, {
+		def,
+		name: image.map(x => x.name).join(' - '),
+		type: '2d'
+	});
+};
+const menuCanvasSizeSubmit = async (context, { form }) => {
+	console.log(form);
+};
+const menuImageSizeSubmit = async (context, { form }) => {
+	console.log(form);
+};
+// FORM SUBMIT (END)
+
 const actions = {
 	layerAlpha,
 	layerBlendMode,
@@ -222,9 +270,12 @@ const actions = {
 	layersOrder,
 
 	menuLayerNew,
+	menuLayerNewSubmit,
 	menuShowLayerSource,
 	menuImageSize,
+	menuImageSizeSubmit,
 	menuCanvasSize,
+	menuCanvasSizeSubmit,
 	menuLayerDuplicate,
 	menuLayerDelete,
 	menuLayerNewUrl,

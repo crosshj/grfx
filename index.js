@@ -1,3 +1,4 @@
+import Menus from '@fiug/menus'
 import { host as MessageHost } from '@grfx/messages';
 import { host as Hotkeys } from '@grfx/hotkeys';
 import FileSystem from '@grfx/fs';
@@ -9,8 +10,6 @@ import Core from './core/core.js';
 import forms from './menus/forms.js';
 import Layout from './layout/layout.js';
 
-import Menus from './menus/menus.js';
-//import Menus from 'https://beta.fiug.dev/dist/menus.js'
 
 const config = await FileSystem.init({ config: fsConfig });
 

@@ -1,4 +1,4 @@
-import handlebars from "https://unpkg.com/@fiug/handlebars-esm";
+import handlebars from "@fiug/handlebars-esm";
 let offsetLeft=0;
 let offsetTop=0;
 const setOffsets = (x,y) => {

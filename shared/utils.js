@@ -10,6 +10,26 @@ export function clone(o){
 	} catch(e){}
 }
 
+export const dataUriImageFromUrl = (url) => {
+	const proxy = 'https://api.allorigins.win/raw?url='
+	return new Promise((resolve) => {
+		const image = new Image();
+		image.crossOrigin = "Anonymous";
+		image.src = proxy + url;
+		image.onload = () => {
+			const canvas = document.createElement('canvas');
+			const context = canvas.getContext('2d');
+			canvas.height = image.naturalHeight;
+			canvas.width = image.naturalWidth;
+			context.drawImage(image, 0, 0);
+			const dataURL = canvas.toDataURL('image/png');
+			resolve(dataURL);
+		};
+	});
+}
+
+export const dataUriToBlob = (uri) => fetch(uri).then(r => r.blob());
+
 export const blobToBinary = async (blob) => {
 	const buffer = await blob.arrayBuffer();
 	const view = new UInt8Array(buffer);

@@ -1,6 +1,6 @@
 /*!
 	fiug menus component
-	Version 0.4.6 ( 2022-09-22T17:34:50.841Z )
+	Version 0.4.6 ( 2022-10-03T04:34:36.276Z )
 	https://github.com/fiugd/fiug/menus
 	(c) 2020-2021 Harrison Cross, MIT License
 */
@@ -6192,22 +6192,33 @@ function ContextPane({forms: forms = {}} = {}) {
         const Menu = contextPane.querySelector(".ContextMenu");
         Menu.classList.remove("open");
     }
-    function getFormData(form) {
+    async function getFormData(form) {
         const data = new FormData(form);
         let obj = {};
         for (let [key, value] of data) {
-            if (obj[key] !== undefined) {
-                if (!Array.isArray(obj[key])) {
-                    obj[key] = [ obj[key] ];
-                }
-                obj[key].push(value);
-            } else {
-                obj[key] = value;
+            let xformValue = value;
+            if (value instanceof File) {
+                const xform = await new Promise((resolve => {
+                    const r = new FileReader;
+                    r.onload = () => resolve(r.result);
+                    r.readAsDataURL(value);
+                }));
+                xformValue = {
+                    name: value.name,
+                    type: value.type,
+                    size: value.size,
+                    value: xform
+                };
             }
+            if (obj[key] === undefined) {
+                obj[key] = [ xformValue ];
+                continue;
+            }
+            obj[key].push(xformValue);
         }
         return obj;
     }
-    function showModal({modal: modal, data: data, template: template}) {
+    function showModal({modal: modal, data: data, template: template, parent: parent}) {
         const templateHtml = template(data);
         contextPane.show();
         contextPane.classList.add("modal");
@@ -6222,15 +6233,22 @@ function ContextPane({forms: forms = {}} = {}) {
         const div = document.createElement("div");
         div.innerHTML = templateHtml;
         const form = div.querySelector("form");
-        form.onsubmit = (event, submitter) => {
+        form.onsubmit = async (event, submitter) => {
             contextPane.classList.remove("modal");
             div.remove();
             hideMenu();
             event.preventDefault();
             const isCancel = event.submitter.value.toLowerCase() === "cancel";
             if (isCancel) return;
-            const data = getFormData(event.target);
-            console.log(event.target.dataset.action, data);
+            const data = await getFormData(event.target);
+            contextMenuSelect({
+                detail: {
+                    key: event.target.dataset.action,
+                    modal: modal,
+                    parent: parent,
+                    form: data
+                }
+            });
             return false;
         };
         container.appendChild(div);
@@ -6244,6 +6262,7 @@ function ContextPane({forms: forms = {}} = {}) {
             return showModal({
                 modal: modal,
                 data: data,
+                parent: parent,
                 template: templates[modal]
             });
         }

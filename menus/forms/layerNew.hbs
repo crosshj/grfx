@@ -1,6 +1,4 @@
-
-<form data-action="layerNew">
-
+<form data-action="layer-new-submit">
 
 	{{#if fromUrl}}
 		<title>New Layer from URL</title>
@@ -14,21 +12,12 @@
 
 	{{#if fromImage}}
 		<title>New layer from Image</title>
-		<input
-			type="text" id="data-uri" name="image-data-uri"
-			class="hidden"
-		>
-		<input
-			type="text" id="name" name="image-name"
-			class="hidden"
-		>
 		<div class="row"></div>
 		<div class="row">
-			<label for="image-local">Image</label>
+			<label for="image">Image</label>
 			<input
-				type="file" id="image-local" name="image-local"
+				type="file" id="image" name="image"
 				accept="image/*"
-				onchange="const r=new FileReader;r.onload=()=>document.getElementById('data-uri').value=r.result;r.readAsDataURL(event.target.files[0]);document.getElementById('name').value=event.target.files[0].name;"
 			>
 		</div>
 		<div class="row"></div>
