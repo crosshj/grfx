@@ -209,6 +209,12 @@ body .ContextMenu .list .context-seperator {
     min-width: 200px;
 }
 
+.filesBlur {
+	padding: 1em;
+    min-width: 200px;
+}
+
+
 /*
 html { 
   --brand: hotpink;
