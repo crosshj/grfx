@@ -1,8 +1,17 @@
 ## TODO
 
 - [X] import layer from url
-- [ ] save file changes (to fs)
-- [ ] paste image from clipboard (to layer)
+- [X] save file changes (to fs)
+- [X] paste image from clipboard (to layer)
+- [ ] save zoom when it changes
+- [ ] fit zoom to file when it loads
+- [ ] new file
+	- blank
+	- from upload
+	- from url
+	- from clipboard
+- [ ] fix layer move issues
+- [ ] paste a copied image (versus a screencap)
 
 
 paste these two and play

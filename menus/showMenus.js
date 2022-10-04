@@ -92,6 +92,13 @@ const attach = () => {
 		const menu = e.target.dataset.menu;
 		if(menu) return showMenu(e);
 	});
+	const selectElements = Array.from(document.querySelectorAll('select'));
+	for(const selectEl of selectElements){
+		selectEl.addEventListener('mouseenter', (e) => {
+			const menu = e.target.dataset.menu;
+			if(menu) return showMenu(e);
+		});
+	}
 };
 
 const menus = {};
