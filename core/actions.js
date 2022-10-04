@@ -332,8 +332,7 @@ const menuFileNew = async (context) => {
 		context.currentFile.dirty = true;
 		await update();
 		context.currentFile.dirty = undefined;
-	} catch(e){
-	debugger}
+	} catch(e){}
 };
 const menuFileOpen = async (context) => {
 	const { currentFileName, load, host, update } = context;

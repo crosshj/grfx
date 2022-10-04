@@ -1,6 +1,6 @@
 /*!
 	fiug menus component
-	Version 0.4.6 ( 2022-10-04T19:34:14.152Z )
+	Version 0.4.6 ( 2022-10-04T22:42:59.422Z )
 	https://github.com/fiugd/fiug/menus
 	(c) 2020-2021 Harrison Cross, MIT License
 */
@@ -6243,7 +6243,14 @@ function ContextPane({forms: forms = {}} = {}) {
             hideMenu();
             event.preventDefault();
             const isCancel = event.submitter.value.toLowerCase() === "cancel";
-            if (isCancel) return;
+            if (isCancel) {
+                contextMenuSelect({
+                    detail: {
+                        key: "cancel-modal"
+                    }
+                });
+                return;
+            }
             const data = await getFormData(event.target);
             contextMenuSelect({
                 detail: {

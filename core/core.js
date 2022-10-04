@@ -63,6 +63,11 @@ const Core = ({ host, layout }) => {
 
 	window.addEventListener('contextmenu-select', async ({ detail={} }={}) => {
 		const { which, key, form } = detail;
+		if(key === "cancel-modal"){
+			context.pending.reject(new Error('user canceled'));
+			context.pending = undefined;
+			return;
+		}
 		if(form && context.pending){
 			context.pending.resolve(detail);
 			context.pending = undefined;
