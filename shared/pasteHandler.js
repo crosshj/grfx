@@ -1,4 +1,4 @@
-const pasteHandler = async (event) => {
+const pasteHandler = (cb) => async (event) => {
 	const items = (event.clipboardData || event.originalEvent.clipboardData).items;
 	const results = [];
 	for(const item of items) {
@@ -16,12 +16,12 @@ const pasteHandler = async (event) => {
 		}
 		results.push(await result);
 	}
-	console.log(results)
+	cb(results)
 };
 
-pasteHandler.attach = () => {
+pasteHandler.attach = (cb) => {
 	// window.addEventListener('paste', ... or
-	document.onpaste = pasteHandler;
+	document.onpaste = pasteHandler(cb);
 };
 
 export default pasteHandler;

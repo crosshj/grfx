@@ -8,7 +8,9 @@ const KeyEvent = ({
 	code, ctrlKey, shiftKey, altKey, metaKey
 });
 
-pasteHandler.attach();
+pasteHandler.attach((data) => {
+	send('paste', data)
+});
 
 export const client = ({ skip }={}) => {
 	const logKey = (e) => {

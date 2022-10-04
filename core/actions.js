@@ -182,6 +182,27 @@ const fileSave = async (context, args) => {
 	);
 	await fs.writeFile({ path, data });
 };
+const paste = async (context, args) => {
+	const pasted = args[0];
+	if(!pasted.startsWith('data:image')) return;
+
+	const filename = Date.now() + '.png';
+	const path = `/indexDB/downloads/${filename}`;
+	const data = await dataUriToBlob(pasted);
+	await fs.writeFile({ path, data });
+	const def = `
+		const image = await loadImage("${filename}");
+		ctx.drawImage(image,
+			0,0, image.width, image.height,
+			0,0, image.width, image.height
+		);
+	`.replace(/^\t\t/gm, '');
+	await layerAdd(context, {
+		def,
+		name: 'Pasted Image',
+		type: '2d'
+	});
+};
 
 const menuLayerNew = async (context) => {
 	const { host } = context;
@@ -310,6 +331,7 @@ const menuFileOpenSubmit = async (context, { form }) => {
 // FORM SUBMIT (END)
 
 const actions = {
+	paste,
 	layerAlpha,
 	layerBlendMode,
 	layerNew,
