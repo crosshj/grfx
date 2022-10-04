@@ -357,6 +357,9 @@ const menuFileOpen = async (context) => {
 		context.currentFile.dirty = undefined;
 	} catch(e){}
 };
+const menuFilterBlur = async (context) => {
+	ShowModal('filterBlur');
+};
 
 const actions = {
 	paste,
@@ -383,6 +386,7 @@ const actions = {
 	menuFileSaveAs,
 	menuFileNew,
 	menuFileOpen,
+	menuFilterBlur
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)

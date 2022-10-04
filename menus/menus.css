@@ -219,6 +219,12 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0;
 }
 
+.filterBlur {
+	padding: 1em;
+    min-width: 200px;
+}
+
+
 /*
 html { 
   --brand: hotpink;
