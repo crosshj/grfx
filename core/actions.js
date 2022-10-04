@@ -358,7 +358,10 @@ const menuFileOpen = async (context) => {
 	} catch(e){}
 };
 const menuFilterBlur = async (context) => {
-	ShowModal('filterBlur');
+	try {
+		const { form } = await ShowModal(context)('filterBlur');
+		console.log(form);
+	}catch(e){}
 };
 
 const actions = {

@@ -204,11 +204,6 @@ body .ContextMenu .list .context-seperator {
 	color: var(--bg-lighter-color);
 }
 
-.filesToOpen {
-	padding: 1em;
-	min-width: 200px;
-}
-
 input[type="color"] {
 	height: 20px;
 	border: 1px solid var(--main-text-color);
@@ -219,9 +214,13 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0;
 }
 
+.filesToOpen {
+	padding: 1em;
+	min-width: 200px;
+}
 .filterBlur {
 	padding: 1em;
-    min-width: 200px;
+	min-width: 200px;
 }
 
 
