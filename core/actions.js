@@ -6,7 +6,7 @@ import {
 	dataUriToBlob
 } from '@grfx/utils';
 
-const ShowModal = (modal, data) => {
+const ShowModal = (context) => async (modal, data) => {
 	const event = new CustomEvent('contextMenuShow', {
 		bubbles: true,
 		detail: {
@@ -17,8 +17,21 @@ const ShowModal = (modal, data) => {
 		}
 	});
 	window.top.dispatchEvent(event);
+	if(context?.pending?.reject){
+		context.pending.reject();
+	}
+	return new Promise((resolve, reject) => {
+		context.pending = { resolve, reject };
+	});
 };
-
+const LayerDefFromFilename = (name) => `
+const image = await loadImage("${name}");
+ctx.drawImage(
+	image,
+	0,0, image.width, image.height,
+	0,0, image.width, image.height
+);
+`;
 const SelectedLayer = (context) => {
 	const { host, currentFile } = context;
 	const { layers } = currentFile;
@@ -183,22 +196,22 @@ const fileSave = async (context, args) => {
 	await fs.writeFile({ path, data });
 };
 const paste = async (context, args) => {
-	const pasted = args[0];
+	const pasted = (() => {
+		try {
+			return (new DOMParser).parseFromString(args[0], "text/html").querySelector('img').src;
+		} catch(e){
+			return args[0];
+		}
+	})();
+
 	if(!pasted.startsWith('data:image')) return;
 
 	const filename = Date.now() + '.png';
 	const path = `/indexDB/downloads/${filename}`;
 	const data = await dataUriToBlob(pasted);
 	await fs.writeFile({ path, data });
-	const def = `
-		const image = await loadImage("${filename}");
-		ctx.drawImage(image,
-			0,0, image.width, image.height,
-			0,0, image.width, image.height
-		);
-	`.replace(/^\t\t/gm, '');
 	await layerAdd(context, {
-		def,
+		def: LayerDefFromFilename(filename),
 		name: 'Pasted Image',
 		type: '2d'
 	});
@@ -227,12 +240,18 @@ const menuShowLayerSource = async (context) => {
 const menuImageSize = async (context) => {
 	const { currentFile } = context;
 	const { width, height } = currentFile;
-	ShowModal('imageSize', { width, height });
+	try {
+		const { form } = await ShowModal(context)('imageSize', { width, height });
+		console.log(form);
+	} catch(e){}
 };
 const menuCanvasSize = async (context) => {
 	const { currentFile } = context;
 	const { width, height } = currentFile;
-	ShowModal('canvasSize', { width, height });
+	try {
+		const { form } = await ShowModal(context)('canvasSize', { width, height });
+		console.log(form);
+	} catch(e){}
 };
 const menuLayerDuplicate = async (context) => {
 	const selectedLayer = SelectedLayer(context);
@@ -243,20 +262,53 @@ const menuLayerDelete = async (context) => {
 	await layerDelete(context, selectedLayer);
 };
 const menuLayerNewUrl = async (context) => {
-	ShowModal('layerNew', { fromUrl: true });
+	try {
+		const { form } = await ShowModal(context)('layerNew', { fromUrl: true });
+		const [url] = form['image-url'] || [];
+		const value = await dataUriImageFromUrl(url);
+		const name = url.split('?')[0].split('#')[0].split('/').pop();
+		await fs.writeFile({
+			path: `/indexDB/downloads/${name}`,
+			data: await dataUriToBlob(value)
+		});
+		await layerAdd(context, {
+			def: LayerDefFromFilename(name),
+			name,
+			type: '2d'
+		});
+	} catch(e){}
 };
 const menuLayerNewImage = async (context) => {
-	ShowModal('layerNew', { fromImage: true });
+	try {
+		const { form } = await ShowModal(context)('layerNew', { fromImage: true });
+		const [{ name, value }] = form.image || [];
+		await fs.writeFile({
+			path: `/indexDB/downloads/${name}`,
+			data: await dataUriToBlob(value)
+		});
+		await layerAdd(context, {
+			def: LayerDefFromFilename(name),
+			name,
+			type: '2d'
+		});
+	} catch(e){}
 };
 const menuFileSaveAs = async (context, args) => {
 	const { currentFileName: filename } = context;
-	ShowModal('fileSaveAs', { filename: filename.replace(/\.js$/, '') });
+	try {
+		const { form } = await ShowModal(context)('fileSaveAs', { filename: filename.replace(/\.js$/, '') });
+		const { filename: [filename] } = form;
+		await fileSave(context, { filename });
+	} catch(e){}
 };
 const menuFileNew = async (context) => {
-	ShowModal('fileNew');
+	try {
+		const { form } = await ShowModal(context)('fileNew');
+		console.log(form);
+	} catch(e){}
 };
 const menuFileOpen = async (context) => {
-	const { currentFileName } = context;
+	const { currentFileName, load, host, update } = context;
 	const dir = await fs.readdir({ path: '/indexDB/'});
 	const dirFiles = [];
 	for(var entry of dir){
@@ -269,66 +321,15 @@ const menuFileOpen = async (context) => {
 		name: x.replace(/\.js$/, ''),
 		selected: i===0,
 	}));
-	ShowModal('fileOpen', { files });
+	try {
+		const { form } = await ShowModal(context)('fileOpen', { files });
+		const { filename: [filename] } = form;
+		await load({ host, filename: filename + '.js' });
+		context.currentFile.dirty = true;
+		await update();
+		context.currentFile.dirty = undefined;
+	} catch(e){}
 };
-
-// FORM SUBMIT
-const menuLayerNewSubmit = async (context, { form={} }={}) => {
-	const imageUrl = form['image-url'] || [];
-	const image = form.image || [];
-	for(const url of imageUrl){
-		const value = await dataUriImageFromUrl(url);
-		let name = url.split('?')[0].split('#')[0].split('/').pop()
-		name = name.replace('.jpg', '.png').replace('.jpeg', '.png')
-		image.push({ name, value });
-	}
-	let def = '';
-	for(const { name, value } of image){
-		if(!value) continue;
-		const path = `/indexDB/downloads/${name}`;
-		const fileExists = await fs.exists({ path });
-		if(!fileExists){
-			const data = await dataUriToBlob(value);
-			await fs.writeFile({ path, data });
-		}
-		def += `
-			const image = await loadImage("${name}");
-			ctx.drawImage(image,
-				0,0, image.width, image.height,
-				0,0, image.width, image.height
-			);
-		`.replace(/^\t\t/gm, '');
-	}
-	//TODO:  (LATER) what about the case when mutliple images exist?
-	await layerAdd(context, {
-		def,
-		name: image.map(x => x.name).join(' - '),
-		type: '2d'
-	});
-};
-const menuCanvasSizeSubmit = async (context, { form }) => {
-	console.log(form);
-};
-const menuImageSizeSubmit = async (context, { form }) => {
-	console.log(form);
-};
-const menuFileSaveAsSubmit = async (context, { form }) => {
-	const { filename: [filename] } = form;
-	await fileSave(context, { filename });
-};
-const menuFileNewSubmit = async (context, { form }) => {
-	console.log(form);
-};
-const menuFileOpenSubmit = async (context, { form }) => {
-	const { load, host, update } = context;
-	const { filename: [filename] } = form;
-	await load({ host, filename: filename + '.js' });
-	context.currentFile.dirty = true;
-	await update();
-	context.currentFile.dirty = undefined;
-};
-
-// FORM SUBMIT (END)
 
 const actions = {
 	paste,
@@ -345,22 +346,16 @@ const actions = {
 	fileSave,
 
 	menuLayerNew,
-	menuLayerNewSubmit,
 	menuShowLayerSource,
 	menuImageSize,
-	menuImageSizeSubmit,
 	menuCanvasSize,
-	menuCanvasSizeSubmit,
 	menuLayerDuplicate,
 	menuLayerDelete,
 	menuLayerNewUrl,
 	menuLayerNewImage,
 	menuFileSaveAs,
-	menuFileSaveAsSubmit,
 	menuFileNew,
-	menuFileNewSubmit,
 	menuFileOpen,
-	menuFileOpenSubmit,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)

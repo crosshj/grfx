@@ -1,6 +1,6 @@
 /*!
 	fiug menus component
-	Version 0.4.6 ( 2022-10-03T04:34:36.276Z )
+	Version 0.4.6 ( 2022-10-04T19:34:14.152Z )
 	https://github.com/fiugd/fiug/menus
 	(c) 2020-2021 Harrison Cross, MIT License
 */
@@ -5948,6 +5948,8 @@ events.map((args => attach({
     ...args
 })));
 
+const MenuState = {};
+
 const safe = fn => {
     try {
         return fn();
@@ -6191,6 +6193,8 @@ function ContextPane({forms: forms = {}} = {}) {
         contextPane.hide();
         const Menu = contextPane.querySelector(".ContextMenu");
         Menu.classList.remove("open");
+        MenuState.data = undefined;
+        MenuState.parent = undefined;
     }
     async function getFormData(form) {
         const data = new FormData(form);
@@ -6254,11 +6258,13 @@ function ContextPane({forms: forms = {}} = {}) {
         container.appendChild(div);
     }
     function showMenu({x: x = 0, y: y = 0, parent: parent = "unknown", data: data, list: list, modal: modal} = {}) {
+        MenuState.data = data;
+        MenuState.parent = parent;
         // warn if menu will appear offscreen?
         // handle case where menu is opened near edge of screen
         // menu should know what items to show
         // menu items should know what event to trigger
-        if (modal && templates[modal]) {
+                if (modal && templates[modal]) {
             return showModal({
                 modal: modal,
                 data: data,
@@ -6280,31 +6286,29 @@ function ContextPane({forms: forms = {}} = {}) {
             Menu.style.bottom = undefined;
         }
         Menu.style.left = x + "px";
-        //attach a listener to body that hides menu and detaches itself
-                const menuClickListener = event => {
-            const menuWasClicked = Menu.contains(event.target);
-            if (menuWasClicked && event.target.tagName !== "LI") {
-                return;
-            }
-            !contextPane.classList.contains("modal") && hideMenu();
-            document.body.removeEventListener("click", menuClickListener, false);
-            if (!menuWasClicked) {
-                return;
-            }
-            contextMenuSelect({
-                detail: {
-                    which: event.target.dataset.text,
-                    modal: event.target.dataset.modal,
-                    ...event.target.dataset,
-                    parent: parent,
-                    data: data
-                }
-            });
-        };
-        document.body.addEventListener("click", menuClickListener);
     }
     window.showMenu = showMenu;
     window.hideMenu = hideMenu;
+    const Menu = contextPane.querySelector(".ContextMenu");
+    const menuClickListener = event => {
+        const menuWasClicked = Menu.contains(event.target);
+        if (menuWasClicked && event.target.tagName !== "LI") {
+            return;
+        }
+        !contextPane.classList.contains("modal") && hideMenu();
+        if (!menuWasClicked) {
+            return;
+        }
+        contextMenuSelect({
+            detail: {
+                which: event.target.dataset.text,
+                modal: event.target.dataset.modal,
+                ...event.target.dataset,
+                ...MenuState
+            }
+        });
+    };
+    document.body.addEventListener("click", menuClickListener);
     const contextMenuSelect = attachTrigger({
         name: "Context Menu",
         eventName: "contextmenu-select",

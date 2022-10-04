@@ -63,6 +63,11 @@ const Core = ({ host, layout }) => {
 
 	window.addEventListener('contextmenu-select', async ({ detail={} }={}) => {
 		const { which, key, form } = detail;
+		if(form && context.pending){
+			context.pending.resolve(detail);
+			context.pending = undefined;
+			return;
+		}
 		const name = key || which;
 		const action = actions["menu-" + name] || actions[name];
 		if(!action) return;
