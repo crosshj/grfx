@@ -235,16 +235,18 @@ const menuFileNew = async (context) => {
 	ShowModal('fileNew');
 };
 const menuFileOpen = async (context) => {
+	const { currentFileName } = context;
 	const dir = await fs.readdir({ path: '/indexDB/'});
 	const dirFiles = [];
 	for(var entry of dir){
 		const stat = await fs.stat({ path: '/indexDB/' + entry });
 		if(stat.isDirectory()) continue;
+		if(entry === currentFileName) continue;
 		dirFiles.push(entry);
 	}
 	const files = dirFiles.sort().map((x,i) => ({
 		name: x.replace(/\.js$/, ''),
-		selected: i===0
+		selected: i===0,
 	}));
 	ShowModal('fileOpen', { files });
 };
@@ -290,13 +292,19 @@ const menuImageSizeSubmit = async (context, { form }) => {
 	console.log(form);
 };
 const menuFileSaveAsSubmit = async (context, { form }) => {
-	await fileSave(context, { filename: form.filename[0] });
+	const { filename: [filename] } = form;
+	await fileSave(context, { filename });
 };
 const menuFileNewSubmit = async (context, { form }) => {
 	console.log(form);
 };
 const menuFileOpenSubmit = async (context, { form }) => {
-	console.log(form);
+	const { load, host, update } = context;
+	const { filename: [filename] } = form;
+	await load({ host, filename: filename + '.js' });
+	context.currentFile.dirty = true;
+	await update();
+	context.currentFile.dirty = undefined;
 };
 
 // FORM SUBMIT (END)

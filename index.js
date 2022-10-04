@@ -25,4 +25,4 @@ Hotkeys({ host, onKey, config: hotkeyConfig });
 const core = Core({ host, layout });
 Menus({ forms });
 
-core.load('example3d2.js');
+core.load(sessionStorage.getItem('grfxCurrentFilename') || 'example3d2.js');

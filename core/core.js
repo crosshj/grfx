@@ -46,6 +46,7 @@ const load = async ({ host, filename }) => {
 
 	context.currentFile = config;
 	context.currentFileName = filename;
+	sessionStorage.setItem('grfxCurrentFilename', filename);
 	update({ host });
 };
 

@@ -56,7 +56,7 @@ listen('file-update', async (args) => {
 
 	if(dirty){
 		detachDraw(canvas);
-		canvas.viewport.destroy();
+		canvas?.viewport && canvas.viewport.destroy();
 		canvas = undefined;
 	}
 	const canvasIsNew = !canvas;

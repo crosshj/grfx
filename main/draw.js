@@ -93,7 +93,8 @@ export const attachDraw = (concrete, brush, updateThumbs) => {
 	if(attached) return;
 
 	const brushFn = brushes[brush] || brushes.pixel;
-	const { canvas } = concrete.viewport.scene;
+	const { canvas } = concrete?.viewport?.scene || {};
+	if(!canvas) return;
 
 	const state = {
 		prev: null
@@ -119,7 +120,8 @@ export const attachDraw = (concrete, brush, updateThumbs) => {
 };
 
 export const detachDraw = (concrete) => {
-	const { canvas } = concrete.viewport.scene;
+	const { canvas } = concrete?.viewport?.scene || {};
+	if(!canvas) return;
 	canvas.removeEventListener("pointerdown", attached, false);
 	attached = undefined;
 };
