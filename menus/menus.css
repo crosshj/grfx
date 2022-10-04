@@ -206,7 +206,17 @@ body .ContextMenu .list .context-seperator {
 
 .filesToOpen {
 	padding: 1em;
-    min-width: 200px;
+	min-width: 200px;
+}
+
+input[type="color"] {
+	height: 20px;
+	border: 1px solid var(--main-text-color);
+	padding: 0;
+	overflow: hidden;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
 }
 
 /*

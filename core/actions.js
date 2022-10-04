@@ -189,8 +189,11 @@ const fileSave = async (context, args) => {
 		filename += '.js';
 	}
 	const path = '/indexDB/' + filename;
+	const fileBody = args.file
+		? args.file
+		: 'export default ' + JSON.stringify(currentFile, null, 2);
 	const data = new Blob(
-		['export default ' + JSON.stringify(currentFile, null, 2)],
+		[fileBody],
 		{ type: "application/javascript" }
 	);
 	await fs.writeFile({ path, data });
@@ -294,18 +297,43 @@ const menuLayerNewImage = async (context) => {
 	} catch(e){}
 };
 const menuFileSaveAs = async (context, args) => {
-	const { currentFileName: filename } = context;
+	const { currentFileName } = context;
 	try {
-		const { form } = await ShowModal(context)('fileSaveAs', { filename: filename.replace(/\.js$/, '') });
+		const { form } = await ShowModal(context)('fileSaveAs', { filename: currentFileName.replace(/\.js$/, '') });
 		const { filename: [filename] } = form;
 		await fileSave(context, { filename });
 	} catch(e){}
 };
 const menuFileNew = async (context) => {
+	const { load, host, update } = context;
 	try {
 		const { form } = await ShowModal(context)('fileNew');
-		console.log(form);
-	} catch(e){}
+		const { height: [height], width: [width], name: [filename], bgColor: [bgColor]} = form;
+		const newFile = {
+			zoom: 1,
+			width,
+			height,
+			layers: [{
+				number: 0,
+				name: "Background",
+				selected: true,
+				type: '2d',
+				def: `
+					ctx.beginPath();
+					ctx.rect(0, 0, ${width}, ${height});
+					ctx.fillStyle = "${bgColor}";
+					ctx.fill();\n\n
+				`.replace(/\t\t\t\t/gm, '')
+			}]
+		};
+		const file = `export default ${JSON.stringify(newFile, null, 2)}`
+		await fileSave(context, { file, filename });
+		await load({ host, filename: filename + '.js' });
+		context.currentFile.dirty = true;
+		await update();
+		context.currentFile.dirty = undefined;
+	} catch(e){
+	debugger}
 };
 const menuFileOpen = async (context) => {
 	const { currentFileName, load, host, update } = context;
