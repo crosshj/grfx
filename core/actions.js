@@ -271,6 +271,10 @@ const menuFileOpen = async (context) => {
 	}));
 	ShowModal('fileOpen', { files });
 };
+const menuFilterBlur = async (context) => {
+	ShowModal('filterBlur');
+};
+
 
 // FORM SUBMIT
 const menuLayerNewSubmit = async (context, { form={} }={}) => {
@@ -328,6 +332,7 @@ const menuFileOpenSubmit = async (context, { form }) => {
 	context.currentFile.dirty = undefined;
 };
 
+
 // FORM SUBMIT (END)
 
 const actions = {
@@ -361,6 +366,7 @@ const actions = {
 	menuFileNewSubmit,
 	menuFileOpen,
 	menuFileOpenSubmit,
+	menuFilterBlur,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
