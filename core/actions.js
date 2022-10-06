@@ -369,6 +369,12 @@ const menuFilterSharpen = async (context) => {
 		console.log(form);
 	}catch(e){}
 };
+const menuFilterNoise = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filterNoise');
+		console.log(form);
+	}catch(e){}
+};
 const actions = {
 	paste,
 	layerAlpha,
@@ -396,6 +402,7 @@ const actions = {
 	menuFileOpen,
 	menuFilterBlur,
 	menuFilterSharpen,
+	menuFilterNoise,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
