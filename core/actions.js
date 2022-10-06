@@ -363,6 +363,12 @@ const menuFilterBlur = async (context) => {
 		console.log(form);
 	}catch(e){}
 };
+const menuFilterNoise = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filterNoise');
+		console.log(form);
+	}catch(e){}
+};
 const menuFilterSharpen = async (context) => {
 	try {
 		const { form } = await ShowModal(context)('filterSharpen');
@@ -395,6 +401,7 @@ const actions = {
 	menuFileNew,
 	menuFileOpen,
 	menuFilterBlur,
+	menuFilterNoise,
 	menuFilterSharpen,
 };
 
