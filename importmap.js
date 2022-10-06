@@ -28,7 +28,12 @@ const imports = (base) => ({
 
 const scripturl = document.currentScript.src.split('?')[0].split('/').slice(0, -1).join('/')+'/';
 const docurl = document.location.href.split('?')[0].split('/').slice(0, -1).join('/')+'/';
-const BASE = docurl.replace(scripturl, '').split('/').map(x => '.').join('');
+const BASE = docurl
+	.replace(scripturl, '')
+	.split('/')
+	.map(x => '.')
+	.join('')
+	.replace(/(?<=^(?:.{2})+)(?!$)/g, '/' );
 
 // KLUDGE FOLLOWS: external import maps at time of writing sucks afaik
 // https://github.com/WICG/import-maps/issues/235
