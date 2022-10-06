@@ -1,50 +1,33 @@
-/*
-<input type="button">
-<input type="checkbox">
-<input type="color">
-<input type="date">
-<input type="datetime-local">
-<input type="email">
-<input type="file">
-<input type="hidden">
-<input type="image">
-<input type="month">
-<input type="number">
-<input type="password">
-<input type="radio">
-<input type="range">
-<input type="reset">
-<input type="search">
-<input type="submit">
-<input type="tel">
-<input type="text">
-<input type="time">
-<input type="url">
-<input type="week">
-*/
-
 import sheet from './components.css' assert { type: 'css' };
 
-
-class XInput extends HTMLElement {
+window.customElements.define('x-input', class extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.innerHTML = `<div>x-input</div>`;
 	}
-}
+});
 
-window.customElements.define(
-	'x-input', XInput
-);
+window.customElements.define('x-range', class extends HTMLElement {
+	constructor() {
+		super();
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.innerHTML = `<div>x-range</div>`;
+	}
+});
 
-class XSelect extends HTMLElement {
+window.customElements.define('x-select', class extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.innerHTML = ``;
 		this.shadowRoot.adoptedStyleSheets = [ sheet ];
+		const container = document.createElement('div');
+		container.classList.add('selector');
+		container.setAttribute("tabindex", 0);
+		this.shadowRoot.append(container);
 		for(const [i, child] of Object.entries(this.children)){
+			if(child.tagName !== 'OPTION') continue;
 			const childDiv = document.createElement('div');
 			childDiv.innerHTML = child.textContent;
 			childDiv.classList.add('optionButton');
@@ -57,11 +40,23 @@ class XSelect extends HTMLElement {
 			if(i==="0"){
 				childDiv.classList.add('selected');
 			}
-			this.shadowRoot.append(childDiv);
+			container.append(childDiv);
 		}
 	}
-}
+});
 
-window.customElements.define(
-	'x-select', XSelect
-);
+window.customElements.define('x-form', class extends HTMLElement {
+	constructor() {
+		super();
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.adoptedStyleSheets = [ sheet ];
+		this.shadowRoot.innerHTML = `<form></form>`;
+		const form = this.shadowRoot.querySelector('form');
+		for(const [i, child] of Object.entries(this.children)){
+			const childDiv = document.createElement('div');
+			childDiv.innerHTML = `<label>${child.type||child.tagName.toLowerCase()}</label>`
+			childDiv.append(child);
+			form.append(childDiv);
+		}
+	}
+});
