@@ -1,0 +1,37 @@
+<form>
+	<title>Filter</title>
+
+	{{#if blur}}
+	<div class="row filterBlur">
+		<label for="blurAmount">Blur Amount</p>
+		<input id="blurAmount" name="blurAmount" type="range" min="1" max="100" value="50">
+	</div>
+	{{/if}}
+
+	{{#if noise}}
+	<div class="row filterNoise">
+		<label for="noiseAmount">Noise Amount</p>
+		<input id="noiseAmount" name="noiseAmount" type="range" min="1" max="100" value="50">
+	</div>
+	{{/if}}
+
+	{{#if pixelate}}
+	<div class="row filterPixelate">
+		<label for="pixelateAmount">Pixelate Amount</p>
+		<input id="pixelateAmount" name="pixelateAmount" type="range" min="1" max="100" value="50">
+	</div>
+	{{/if}}
+
+	{{#if sharpen}}
+	<div class="row filterSharpen">
+		<label for="sharpenAmount">Sharpen Amount</p>
+		<input id="sharpenAmount" name="sharpenAmount" type="range" min="1" max="100" value="50">
+	</div>
+	{{/if}}
+
+	<div class="row align-right">
+		<input type="submit" value="Cancel">
+		<input type="submit" value="Apply">
+	</div>
+
+</form>
