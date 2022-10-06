@@ -22,6 +22,10 @@ window.customElements.define('x-select', class extends HTMLElement {
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.innerHTML = ``;
 		this.shadowRoot.adoptedStyleSheets = [ sheet ];
+		const container = document.createElement('div');
+		container.classList.add('selector');
+		container.setAttribute("tabindex", 0);
+		this.shadowRoot.append(container);
 		for(const [i, child] of Object.entries(this.children)){
 			if(child.tagName !== 'OPTION') continue;
 			const childDiv = document.createElement('div');
@@ -36,7 +40,7 @@ window.customElements.define('x-select', class extends HTMLElement {
 			if(i==="0"){
 				childDiv.classList.add('selected');
 			}
-			this.shadowRoot.append(childDiv);
+			container.append(childDiv);
 		}
 	}
 });

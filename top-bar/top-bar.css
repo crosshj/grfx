@@ -53,51 +53,36 @@ body:before {
 	margin-left: 1em;
 	margin-right: 0.5em;
 }
-input[type="color"] {
-	height: 20px;
-	border: 1px solid var(--main-text-color);
-	padding: 0;
-	overflow: hidden;
-}
-input[type="color"]::-webkit-color-swatch-wrapper {
-	padding: 0;
-}
 
-input[type="text"],
-input[type="number"],
-select[data-menu] {
-	background-color: var(--bg-light-color);
-	border: 0;
-	text-transform: uppercase;
-	padding: 0.5em;
-	border-radius: 0.25em;
-
-	font-size: 0.8em;
+.options input[type="text"],
+.options input[type="number"],
+.options input[type="password"],
+.options input[type="tel"],
+.options input[type="search"],
+.options input[type="email"],
+.options input[type="date"],
+.options input[type="time"],
+.options input[type="month"],
+.options input[type="datetime-local"],
+.options input[type="week"],
+.options input[type="url"],
+.options select {
+	background: var(--bg-light-color);
 }
 
-input[type="text"]:focus,
-input[type="number"]:focus,
-select[data-menu]:focus {
-	outline: 0;
-}
-
-input[type="text"]:hover,
-input[type="number"]:hover,
-select[data-menu]:hover {
-	background-color: var(--bg-light-hover-color);
-}
-
-select[data-menu] {
-	padding-right: 2.1em;
-	appearance: none;
-	background-image:
-		linear-gradient(45deg, transparent 50%, currentColor 50%),
-		linear-gradient(135deg, currentColor 50%, transparent 50%);
-	background-position:
-		calc(100% - 15px) calc(1em - 1px),
-		calc(100% - 10px) calc(1em - 1px);
-	background-size:
-		5px 5px,
-		5px 5px;
-	background-repeat: no-repeat;
+.options input[type="text"]:hover,
+.options input[type="number"]:hover,
+.options input[type="password"]:hover,
+.options input[type="tel"]:hover,
+.options input[type="search"]:hover,
+.options input[type="email"]:hover,
+.options input[type="date"]:hover,
+.options input[type="time"]:hover,
+.options input[type="month"]:hover,
+.options input[type="datetime-local"]:hover,
+.options input[type="week"]:hover,
+.options input[type="url"]:hover,
+.options select:hover {
+/* 	background: ButtonFace; */
+/* 	color: ButtonText; */
 }
