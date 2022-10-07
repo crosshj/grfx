@@ -6241,8 +6241,7 @@ function ContextPane({forms: forms = {}} = {}) {
             contextPane.classList.remove("modal");
             div.remove();
             hideMenu();
-            event.preventDefault();
-            const isCancel = event.submitter.value.toLowerCase() === "cancel";
+            const isCancel = event === "cancel";
             if (isCancel) {
                 contextMenuSelect({
                     detail: {
@@ -6251,6 +6250,7 @@ function ContextPane({forms: forms = {}} = {}) {
                 });
                 return;
             }
+            event.preventDefault();
             const data = await getFormData(event.target);
             contextMenuSelect({
                 detail: {

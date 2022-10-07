@@ -1,5 +1,6 @@
 /*
 https://joshuatz.com/posts/2021/common-css-color-variables-properties-theming/
+https://developer.mozilla.org/en-US/docs/Web/CSS/system-color
 */
 
 @media (prefers-color-scheme: dark) {
@@ -15,7 +16,7 @@ https://joshuatz.com/posts/2021/common-css-color-variables-properties-theming/
 		--medium
 		--light
 		*/
-	
+
 		--main-bg-color: ButtonFace;
 		--main-bg-color: #2a2a2a;
 		--bg-light-color: #383838;
