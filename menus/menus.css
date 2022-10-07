@@ -222,7 +222,18 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 1em;
 	min-width: 200px;
 }
-
+.filterSharpen {
+	padding: 1em;
+	min-width: 200px;
+}
+.filterNoise {
+	padding: 1em;
+	min-width: 200px;
+}
+.filterPixelate {
+	padding: 1em;
+	min-width: 200px;
+}
 
 /*
 html { 

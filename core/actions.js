@@ -359,11 +359,28 @@ const menuFileOpen = async (context) => {
 };
 const menuFilterBlur = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filterBlur');
+		const { form } = await ShowModal(context)('filter', { blur: true });
 		console.log(form);
 	}catch(e){}
 };
-
+const menuFilterSharpen = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filter', { sharpen: true });
+		console.log(form);
+	}catch(e){}
+};
+const menuFilterNoise = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filter', { noise: true });
+		console.log(form);
+	}catch(e){}
+};
+const menuFilterPixelate = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filter', { sharpen: true });
+		console.log(form);
+	}catch(e){}
+};
 const actions = {
 	paste,
 	layerAlpha,
@@ -389,7 +406,10 @@ const actions = {
 	menuFileSaveAs,
 	menuFileNew,
 	menuFileOpen,
-	menuFilterBlur
+	menuFilterBlur,
+	menuFilterSharpen,
+	menuFilterNoise,
+	menuFilterPixelate,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
