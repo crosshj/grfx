@@ -10,6 +10,10 @@ export function clone(o){
 	} catch(e){}
 }
 
+export function each(fnArr){
+	return (...args) => fnArr.forEach(fn => fn(...args));
+}
+
 export const dataUriImageFromUrl = (url) => {
 	const proxy = 'https://api.allorigins.win/raw?url='
 	return new Promise((resolve) => {

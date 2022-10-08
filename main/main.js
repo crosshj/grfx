@@ -47,7 +47,6 @@ document.body.addEventListener('wheel', (ev) => {
 
 }, { passive: false });
 
-
 listen('file-update', async (args) => {
 	const timerLabel = 'main: file-update [' + Date.now() + "]";
 	timer.start(timerLabel);
@@ -118,6 +117,15 @@ listen('file-update', async (args) => {
 
 	//timer.log(timerLabel);
 	return;
+});
+
+listen('tool-update', (tool) => {
+	detachDraw(canvas);
+	attachDraw(canvas, tool.id, (number, layer) => {
+		//TODO: should update layer def here (perhaps)
+		canvas.updateLayerThumb(number, layer);
+		send('update-thumbs', { thumbs: canvas.thumbs })
+	});
 });
 
 send('ping', 'main');

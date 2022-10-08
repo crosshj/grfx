@@ -1,5 +1,5 @@
 var roundNearQtr = function(number) {
-	return (Math.round(number * 2) / 2).toFixed(2);
+	return (Math.round(number * 2) / 2).toFixed(0);
 };
 
 export default (ctx, radius, path) => {
@@ -12,8 +12,8 @@ export default (ctx, radius, path) => {
 	ctx.fillRect(
 		roundNearQtr(x2-0.25),
 		roundNearQtr(y2-0.25),
-		0.5,
-		0.5
+		1, //0.5,
+		1, //0.5
 	);
 	ctx.fill();
 };

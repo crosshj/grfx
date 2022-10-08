@@ -3,7 +3,9 @@ import pixel from './brushes/pixel1.js';
 import airbrush from './brushes/airbrush1.js';
 
 const brushes = {
-	ink, pixel, airbrush
+	brush: ink,
+	pencil: pixel,
+	airbrush,
 };
 
 const brushImage = await new Promise(async (resolve) => {
@@ -91,8 +93,13 @@ const drawFn = (concrete, brushFn, updateThumbs) => {
 let attached;
 export const attachDraw = (concrete, brush, updateThumbs) => {
 	if(attached) return;
+	if(!brush) return;
 
-	const brushFn = brushes[brush] || brushes.pixel;
+	const brushFn = brushes[brush];
+	if(!brushFn){
+		return console.log('TODO: add tool - ' + brush);
+	}
+
 	const { canvas } = concrete?.viewport?.scene || {};
 	if(!canvas) return;
 

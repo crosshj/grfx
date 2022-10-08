@@ -1,7 +1,7 @@
 import ink from './inky1.js';
 
 export default (ctx, radius, path) => {
-	ctx.filter = "blur(40px)";
+	ctx.filter = "blur(10px)";
 	//ctx.globalAlpha = .3;
-	ink(ctx, 10, path);
+	ink(ctx, 1, path);
 };

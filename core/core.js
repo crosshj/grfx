@@ -1,7 +1,9 @@
-import { clone } from '@grfx/utils';
+import { clone, each } from '@grfx/utils';
 import fs from '@grfx/fs';
 import { HostState } from './state.js';
 import actions from './actions.js';
+import fileObserve from './middleware/fileObserve.js';
+import toolObserve from './middleware/toolObserve.js';
 
 const context = {
 	host: undefined,
@@ -39,10 +41,16 @@ const load = async ({ host, filename }) => {
 			layerOrder: config.layers.map(x => x.id || x.name),
 			layers: config.layers
 		}
-	}), (state, changes) => {
-		// this should be the update function (above)
-		console.warn(changes);
-	});
+	}), each([
+		fileObserve(console.log /* update*/),
+		toolObserve(async (data) => {
+			await host.broadcast({
+				eventName: 'tool-update',
+				type: 'tool-update',
+				data,
+			});
+		})
+	]));
 
 	context.currentFile = config;
 	context.currentFileName = filename;

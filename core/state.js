@@ -96,49 +96,14 @@ const Layer = (state) => ({
 
 const Editor = (state) => ({
 	tool: (id, props={}) => Setter(state)([
-		["editor/tool", (tool) => tool.id = undefined],
-		["editor/tool", Props.set({ ...props })],
+		["editor/tool", (tool) => tool.id = 'loading'],
+		["editor/tool", Props.set({ id: 'loading', ...props })],
 		["editor/tool", (tool) => tool.id = id],
 	]),
 	toolProps: (props={}) => Setter(state)([
 		["editor/tool", Props.upsert(props)]
 	]),
 });
-
-const fileObserveMiddleware = (fn) => {
-	let stack;
-	const stackHistory=[];
-	let stackRedo;
-	return (state, { patch }) => {
-		stack = stack || [];
-		stack.push(patch);
-		let isUndo;
-		if(stackRedo?.length === 1){
-			isUndo = true;
-			stackRedo = undefined;
-		}
-		if(patch.path.startsWith('/file/history/length')){
-			stackRedo = clone(stackHistory[patch.value]);
-		}
-		if(stackRedo?.length){
-			stackRedo.pop();
-			return;
-		}
-		const stackAction = stack.find(x =>
-			x.path.startsWith('/file/history/')
-		);
-		if(!stackAction) return
-		const isNew = !stackHistory.find(s => s.find(p => p.path === stackAction.path))
-		if(!isUndo && isNew){
-			stackAction.type = stackAction.value;
-			stackHistory.push(stack);
-		} else {
-			stackAction.type = isUndo ? "undo": "redo"
-		}
-		fn(state, stack);
-		stack = undefined;
-	}
-};
 
 export class HostState {
 	detach;
@@ -155,15 +120,7 @@ export class HostState {
 	}
 	observe(handler){
 		if(this.detach) this.detach();
-		this.detach = this.undoable.observe(
-			(state, change) => {
-				if(change.patch.path.startsWith('/editor')){
-					handler(state, change.patch);
-					return;
-				}
-				fileObserveMiddleware(handler)(state, change);
-			}
-		);
+		this.detach = this.undoable.observe(handler);
 	}
 	// set canvas(args){ this.set.canvas(args); }
 	// set layers(args){ this.set.layers(args); }
