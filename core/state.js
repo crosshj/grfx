@@ -38,7 +38,7 @@ const List = {
 	},
 	update: (pred, updates={}) => (arr) => {
 		const x = pred && arr.find(pred) || {};
-		Props.upsert(props)(x);
+		Props.upsert(updates)(x);
 	},
 	select: (pred) => (arr) => {
 		for(const item of arr){
