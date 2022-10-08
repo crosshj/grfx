@@ -17,6 +17,9 @@ window.customElements.define('x-range', class extends HTMLElement {
 });
 
 window.customElements.define('x-select', class extends HTMLElement {
+	static get observedAttributes() {
+		return ['value'];
+	}
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
@@ -30,7 +33,7 @@ window.customElements.define('x-select', class extends HTMLElement {
 			if(child.tagName !== 'OPTION') continue;
 			const childDiv = document.createElement('div');
 			childDiv.innerHTML = child.textContent;
-			childDiv.classList.add('optionButton');
+			//childDiv.classList.add('optionButton');
 			childDiv.onclick = (e) => {
 				const selected = this.shadowRoot.querySelector('.selected');
 				if(selected && selected !== e.target)
@@ -42,6 +45,12 @@ window.customElements.define('x-select', class extends HTMLElement {
 			}
 			container.append(childDiv);
 		}
+	}
+	attributeChangedCallback(name, oldValue, newValue) {
+		this.shadowRoot.querySelector('.selected').classList.remove('selected');
+		const options = this.shadowRoot.querySelectorAll('.selector > div');
+		const toSelect = Array.from(options).find(x => x.textContent === newValue);
+		toSelect && toSelect.classList.add('selected');
 	}
 });
 

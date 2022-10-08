@@ -2,6 +2,22 @@ import undoable from './undoable.js';
 import { uuidv4, clone } from '@grfx/utils';
 import produce, {applyPatches} from "immer";
 
+const Props = {
+	upsert: (props) => (obj) => {
+		for(const [k,v] of Object.entries(props)){
+			obj[k] = v;
+		}
+	},
+	set: (props) => (obj) => {
+		for(const [k,v] of Object.entries(obj)){
+			delete obj[k];
+		}
+		for(const [k,v] of Object.entries(props)){
+			obj[k] = v;
+		}
+	},
+};
+
 const List = {
 	append: (item) => (arr) => {
 		arr.push(item);
@@ -22,9 +38,7 @@ const List = {
 	},
 	update: (pred, updates={}) => (arr) => {
 		const x = pred && arr.find(pred) || {};
-		for(const [k,v] of Object.entries(updates)){
-			x[k] = v;
-		}
+		Props.upsert(props)(x);
 	},
 	select: (pred) => (arr) => {
 		for(const item of arr){
@@ -80,6 +94,17 @@ const Layer = (state) => ({
 	])
 });
 
+const Editor = (state) => ({
+	tool: (id, props={}) => Setter(state)([
+		["editor/tool", (tool) => tool.id = undefined],
+		["editor/tool", Props.set({ ...props })],
+		["editor/tool", (tool) => tool.id = id],
+	]),
+	toolProps: (props={}) => Setter(state)([
+		["editor/tool", Props.upsert(props)]
+	]),
+});
+
 const fileObserveMiddleware = (fn) => {
 	let stack;
 	const stackHistory=[];
@@ -123,6 +148,7 @@ export class HostState {
 		this.undoable = undoable(initialState);
 		this.observe(changeHandler);
 		this.layer = Layer(this.undoable);
+		this.editor = Editor(this.undoable);
 		this.undo = this.undoable.undo;
 		this.redo = this.undoable.redo;
 		this.get = this.undoable.get;
@@ -130,13 +156,19 @@ export class HostState {
 	observe(handler){
 		if(this.detach) this.detach();
 		this.detach = this.undoable.observe(
-			fileObserveMiddleware(handler)
+			(state, change) => {
+				if(change.patch.path.startsWith('/editor')){
+					handler(state, change.patch);
+					return;
+				}
+				fileObserveMiddleware(handler)(state, change);
+			}
 		);
 	}
-	set canvas(args){ this.set.canvas(args); }
-	set layers(args){ this.set.layers(args); }
-	set tool(args){ this.set.tool(args); }
-	set zoom(args){ this.set.zoom(args); }
+	// set canvas(args){ this.set.canvas(args); }
+	// set layers(args){ this.set.layers(args); }
+	// set tool(args){ this.set.tool(args); }
+	// set zoom(args){ this.set.zoom(args); }
 
 	undo(){ this.history.file.undo(); }
 	redo(){ this.history.file.undo(); }

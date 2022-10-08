@@ -16,41 +16,41 @@
 
 	<template class="selectfree">
 		<div class="options select-free">
-			<label for="select-type">Type</label>
-			<x-select id="select-type">
+			<label for="select-free-type">Type</label>
+			<x-select id="select-free-type">
 				<option>Free</option>
 				<option>Polygon</option>
 				<option>Bezier</option>
 				<option>Magnetic</option>
 			</x-select>
-			<label for="select-mode">Mode</label>
-			<select id="select-mode" data-menu="select-free-mode">
-				<option>New Selection</option>
-				<option>Add to Selected</option>
-				<option>Subtract from Selected</option>
+			<label for="select-free-mode">Mode</label>
+			<select id="select-free-mode" data-menu="select-free-mode">
+				<option value="new">New Selection</option>
+				<option value="add">Add to Selected</option>
+				<option value="subtract">Subtract from Selected</option>
 			</select>
-			<label for="select-size">Size</label>
-			<input type="number" id="select-size" min="1" max="120" value=50>
-			<label for="select-feather">Feather</label>
-			<input type="number" id="select-feather"  min="1" max="100" value=0>
+			<label for="select-free-size">Size</label>
+			<input type="number" id="select-free-size" min="1" max="120" value=50>
+			<label for="select-free-feather">Feather</label>
+			<input type="number" id="select-free-feather"  min="1" max="100" value=0>
 		</div>
 	</template>
 
 	<template class="selectbox">
 		<div class="options select-box">
-			<label for="select-type">Type</label>
-			<x-select id="select-type">
+			<label for="select-box-type">Type</label>
+			<x-select id="select-box-type">
 				<option>Rectangle</option>
 				<option>Ellipse</option>
 			</x-select>
-			<label for="select-mode">Mode</label>
-			<select id="select-mode" data-menu="select-box-mode">
-				<option>New Selection</option>
-				<option>Add to Selected</option>
-				<option>Subtract from Selected</option>
+			<label for="select-box-mode">Mode</label>
+			<select id="select-box-mode" data-menu="select-box-mode">
+				<option value="new">New Selection</option>
+				<option value="add">Add to Selected</option>
+				<option value="subtract">Subtract from Selected</option>
 			</select>
-			<label for="select-feather">Feather</label>
-			<input type="number" id="select-feather"  min="1" max="100" value=0>
+			<label for="select-box-feather">Feather</label>
+			<input type="number" id="select-box-feather"  min="1" max="100" value=0>
 		</div>
 	</template>
 
@@ -194,8 +194,8 @@
 
 	<template class="rect">
 		<div class="options rect">
-			<label for="rect-color">Color</label>
-			<input type="color" id="rect-color" value="#275BB0">
+			<label for="rect-fill">Fill</label>
+			<input type="color" id="rect-fill" value="#275BB0">
 		</div>
 	</template>
 
@@ -215,8 +215,8 @@
 
 	<template class="rounded">
 		<div class="options rounded">
-			<label for="rounded-color">Color</label>
-			<input type="color" id="rounded-color" value="#DA6C98">
+			<label for="rounded-fill">Fill</label>
+			<input type="color" id="rounded-fill" value="#DA6C98">
 			<label for="rounded-radius">Radius</label>
 			<input type="number" id="rounded-radius"  min="0" max="100" value=0>
 		</div>

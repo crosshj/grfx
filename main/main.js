@@ -116,7 +116,7 @@ listen('file-update', async (args) => {
 	}
 	send('update-thumbs', { thumbs: canvas.thumbs });
 
-	timer.log(timerLabel);
+	//timer.log(timerLabel);
 	return;
 });
 

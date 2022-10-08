@@ -44,13 +44,13 @@ const boot = async (fs) => {
 		await writeFile({ path, data });
 	}
 
-	await walk({
-		dir: '/',
-		callback: (err, results) => {
-			if (err) throw err;
-			console.log(results);
-		}
-	});
+	// await walk({
+	// 	dir: '/',
+	// 	callback: (err, results) => {
+	// 		if (err) throw err;
+	// 		console.log(results);
+	// 	}
+	// });
 };
 
 export default boot;

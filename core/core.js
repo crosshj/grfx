@@ -28,7 +28,7 @@ const load = async ({ host, filename }) => {
 		filename,
 		editor: {
 			zoom: config.zoom,
-			tool: { id: config.tool }
+			tool: { id: config.tool || "pencil" }
 		},
 		file: {
 			canvas: {
@@ -75,17 +75,20 @@ const Core = ({ host, layout }) => {
 		}
 		const name = key || which;
 		const action = actions["menu-" + name] || actions[name];
-		if(!action) return;
-		await doAction(action)({ form });
+		if(action){
+			return await doAction(action)({ form });
+		};
+		// TODO: result of an actual contextmenu-select
+		//console.log(name)
 	});
 
-	// window.addEventListener('contextmenu-select', (e) => {
-	// 	host.broadcast({
-	// 		eventName: 'contextmenu-select',
-	// 		type: 'contextmenu-select',
-	// 		data: e.detail,
-	// 	});
-	// });
+	window.addEventListener('contextmenu-select', (e) => {
+		host.broadcast({
+			eventName: 'contextmenu-select',
+			type: 'contextmenu-select',
+			data: e.detail,
+		});
+	});
 
 	return {
 		load: (filename) => load({ host, filename })

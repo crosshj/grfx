@@ -6,6 +6,8 @@ import {
 	dataUriToBlob
 } from '@grfx/utils';
 
+import ToolSettings from '../left/toolSettings.js';
+
 const ShowModal = (context) => async (modal, data) => {
 	const event = new CustomEvent('contextMenuShow', {
 		bubbles: true,
@@ -219,6 +221,11 @@ const paste = async (context, args) => {
 		type: '2d'
 	});
 };
+const toolSelect = async (context, args) => {
+	const { state } = context;
+	const { tool } = args;
+	state.editor.tool(tool, ToolSettings.get(tool));
+};
 
 const menuLayerNew = async (context) => {
 	const { host } = context;
@@ -394,6 +401,7 @@ const actions = {
 	hideLayerSource,
 	layersOrder,
 	fileSave,
+	toolSelect,
 
 	menuLayerNew,
 	menuShowLayerSource,

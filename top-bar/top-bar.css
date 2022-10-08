@@ -87,9 +87,7 @@ body:before {
 /* 	color: ButtonText; */
 }
 
-.options .selector > div.selected {
-    background: var(--bg-light-color);
-}
-.options .selector > div:not(:first-child) {
-    box-shadow: var(--bg-light-color) 0.5px 0px 0px 0px inset;
+.options x-select {
+	--select-main: var(--main-text-color);
+	--select-main-bg: var(--bg-light-color);
 }

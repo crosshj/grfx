@@ -40,7 +40,7 @@ s.layer.order([
 	"867f51d2-5b72-479d-83a8-602b42059075",
 ]);
 s.layer.add({ name: "newer" })
-s.undo(); 
+s.undo();
 s.redo();
 s.layer.remove("867f51d2-5b72-479d-83a8-602b42059075");
 s.undo();

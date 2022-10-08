@@ -78,8 +78,8 @@ const showMenu = (e) => {
 		}
 	});
 	window.selectListener = (selectEvent) => {
-		if(selectEvent.which){
-			e.target.value = selectEvent.which;
+		if(selectEvent.key){
+			e.target.value = selectEvent.key;
 		}
 		window.selectListener = undefined;
 	};
