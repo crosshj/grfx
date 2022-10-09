@@ -384,8 +384,20 @@ const menuFilterNoise = async (context) => {
 };
 const menuFilterPixelate = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { sharpen: true });
-		console.log(form);
+		const { form } = await ShowModal(context)('filter', { pixelate: true });
+		const { pixelateAmount } = form;
+		const { update, currentFile } = context;
+
+		const { layers } = currentFile;
+		const l = layers.find(x => x.selected);
+		if(l.type !== '2d') return;
+
+		l.def = l.def.replace(/\nfilter\("Mosaic",.*\);/g, '');
+		l.def += '\n' + `filter("Mosaic", ${pixelateAmount});`;
+		context.state.layer.update(l.id, l);
+		l.dirty = true;
+		await update();
+		l.dirty = undefined;
 	}catch(e){}
 };
 const actions = {

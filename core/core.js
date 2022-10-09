@@ -42,7 +42,7 @@ const load = async ({ host, filename }) => {
 			layers: config.layers
 		}
 	}), each([
-		fileObserve(console.log /* update*/),
+		fileObserve(() => {} /* update*/),
 		toolObserve(async (data) => {
 			await host.broadcast({
 				eventName: 'tool-update',
