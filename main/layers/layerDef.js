@@ -1,3 +1,4 @@
+import * as CanvasFilters from 'canvas-filters';
 import fs from '@grfx/fs';
 const init = fs.init();
 
@@ -45,6 +46,12 @@ const getDims = (width, height) => (i) => {
 	return [sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight];
 };
 
+const filter = (ctx, width, height) => (which, ...args) => {
+	const imageData = ctx.getImageData(0, 0, width, height);
+	const filtered = CanvasFilters[which](imageData, ...args);
+	ctx.putImageData(filtered, 0, 0);
+};
+
 const processDef = (layer) => {
 	const AsyncFunction = (async function () {}).constructor;
 	const def = layer.type === '2d'
@@ -56,11 +63,17 @@ const processDef = (layer) => {
 		ctx.restore();
 	`
 	: layer.def;
-	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', def);
+	const renderFn = new AsyncFunction('loadImage', 'loadFile', 'ctx', 'getDims', 'filter', def);
 
 	return async function drawImage({ ctx, width, height, layer }){
 		await init;
-		await renderFn(loadImage, loadFile, ctx, getDims(width, height));
+		await renderFn(
+			loadImage,
+			loadFile,
+			ctx,
+			getDims(width, height),
+			filter(ctx, 2*width, 2*height)
+		);
 	};
 }
 

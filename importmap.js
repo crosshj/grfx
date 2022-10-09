@@ -12,6 +12,7 @@ const imports = (base) => ({
 	"@syncstate/core": `${base}/vendor/syncstate.js`,
 	"@syncstate/history": "https://cdn.skypack.dev/-/@syncstate/history@v0.7.1-psbtWeyoL0b7NkoElJDM/dist=es2019,mode=imports/optimized/@syncstate/history.js",
 	"browserfs": "https://cdn.skypack.dev/browserfs",
+	"canvas-filters": "https://cdn.skypack.dev/canvas-filters",
 	"concretejs": `${base}/vendor/concrete.js`,
 	//"concretejs": "https://cdn.skypack.dev/concretejs",
 	"es-react": "https://unpkg.com/es-react",

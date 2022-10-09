@@ -17,3 +17,8 @@ TODO: how can we be more exact than this?
 
 - Open   
 it's all right here.  You don't owe us anything.
+
+
+## reference
+
+[canvas-filters](http://www.arahaya.com/imagefilters/)   
