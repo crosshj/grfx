@@ -24,3 +24,46 @@ body {
 	left:var(--button-pad); top:var(--button-pad);
 	right:var(--button-pad); bottom:var(--button-pad);
 }
+
+.color-container {
+	margin-top: 1em;
+}
+.color-controls {
+	display: flex;
+	height: 18px;
+	margin-bottom: 0.25em;
+	color: #666;
+}
+.color-controls > * {
+	padding: 0.1em;
+}
+.swatch-container {
+	position: relative;
+	width: 36px;
+	height: 36px;
+}
+#primary-color {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+#secondary-color {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+input[type="color"] {
+	appearance: none;
+	height: 23px;
+	width: 23px;
+	border: 0;
+	padding: 0;
+	overflow: hidden;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+	border: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: 0.25px solid ButtonBorder;
+}
