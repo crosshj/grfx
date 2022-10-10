@@ -382,6 +382,7 @@ const menuFilterNoise = async (context) => {
 		console.log(form);
 	}catch(e){}
 };
+// USE THIS AS AN EXAMPLE, AILEEN!!!
 const menuFilterPixelate = async (context) => {
 	try {
 		const { form } = await ShowModal(context)('filter', { pixelate: true });
