@@ -226,6 +226,13 @@ const toolSelect = async (context, args) => {
 	const { tool } = args;
 	state.editor.tool(tool, ToolSettings.get(tool));
 };
+const toolChange = async (context, args) => {
+	const { state } = context;
+	const { tool } = args;
+	const { id, ...props } = tool;
+	state.editor.toolProps(props);
+	ToolSettings.set(id, props);
+};
 
 const menuLayerNew = async (context) => {
 	const { host } = context;
@@ -415,6 +422,7 @@ const actions = {
 	layersOrder,
 	fileSave,
 	toolSelect,
+	toolChange,
 
 	menuLayerNew,
 	menuShowLayerSource,

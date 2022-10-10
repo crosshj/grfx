@@ -120,6 +120,11 @@ listen('file-update', async (args) => {
 });
 
 listen('tool-update', (tool) => {
+	const { op='' } = tool;
+	if(op){
+		console.log('TODO: upate tool properties');
+		return;
+	}
 	detachDraw(canvas);
 	attachDraw(canvas, tool.id, (number, layer) => {
 		//TODO: should update layer def here (perhaps)

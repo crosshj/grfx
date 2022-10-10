@@ -80,6 +80,7 @@ const showMenu = (e) => {
 	window.selectListener = (selectEvent) => {
 		if(selectEvent.key){
 			e.target.value = selectEvent.key;
+			e.target.dispatchEvent(new Event("change"));
 		}
 		window.selectListener = undefined;
 	};

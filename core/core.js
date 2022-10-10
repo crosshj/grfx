@@ -86,8 +86,6 @@ const Core = ({ host, layout }) => {
 		if(action){
 			return await doAction(action)({ form });
 		};
-		// TODO: result of an actual contextmenu-select
-		//console.log(name)
 	});
 
 	window.addEventListener('contextmenu-select', (e) => {

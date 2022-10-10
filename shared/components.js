@@ -39,6 +39,8 @@ window.customElements.define('x-select', class extends HTMLElement {
 				if(selected && selected !== e.target)
 					selected.classList.remove('selected');
 				e.target.classList.add('selected');
+				this.value = e.target.value || e.target.textContent;
+				this.dispatchEvent(new window.Event('change'));
 			};
 			if(i==="0"){
 				childDiv.classList.add('selected');
