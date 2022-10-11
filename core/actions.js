@@ -378,7 +378,19 @@ const menuFileOpen = async (context) => {
 const menuFilterBlur = async (context) => {
 	try {
 		const { form } = await ShowModal(context)('filter', { blur: true });
-		console.log(form);
+		const { blurAmount } = form;
+		const { update, currentFile } = context;
+
+		const { layers } = currentFile;
+		const l = layers.find(x => x.selected);
+		if(l.type !== '2d') return;
+
+		l.def = l.def.replace(/\nfilter\("GaussianBlur",.*\);/g, '');
+		l.def += '\n' + `filter("GaussianBlur", ${blurAmount});`;
+		context.state.layer.update(l.id, l);
+		l.dirty = true;
+		await update();
+		l.dirty = undefined;
 	}catch(e){}
 };
 const menuFilterSharpen = async (context) => {
