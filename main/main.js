@@ -7,7 +7,7 @@ import { client as Hotkeys } from '@grfx/hotkeys';
 import Canvas from './canvas.js';
 import layerDef from './layers/layerDef.js';
 import './cursor.js';
-import { attachDraw, detachDraw } from './draw.js';
+import { attachDraw, detachDraw, updateDraw } from './draw.js';
 
 Hotkeys();
 
@@ -131,6 +131,10 @@ listen('tool-update', (tool) => {
 		canvas.updateLayerThumb(number, layer);
 		send('update-thumbs', { thumbs: canvas.thumbs })
 	});
+});
+
+listen('color-update', ({ primary, secondary }) => {
+	updateDraw({ color: { primary, secondary } });
 });
 
 send('ping', 'main');

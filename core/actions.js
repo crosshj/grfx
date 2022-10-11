@@ -233,6 +233,10 @@ const toolChange = async (context, args) => {
 	state.editor.toolProps(props);
 	ToolSettings.set(id, props);
 };
+const colorUpdate = async (context, args) => {
+	const { primary, secondary } = args;
+	console.log(`TODO: save colors - ${primary}, ${secondary}`);
+};
 
 const menuLayerNew = async (context) => {
 	const { host } = context;
@@ -423,6 +427,7 @@ const actions = {
 	fileSave,
 	toolSelect,
 	toolChange,
+	colorUpdate,
 
 	menuLayerNew,
 	menuShowLayerSource,

@@ -1,5 +1,6 @@
 import { send } from '@grfx/messages';
 import { client as Hotkeys } from '@grfx/hotkeys';
+import './colorTool.js';
 // import { InlineSVG } from '@grfx/utils.js';
 
 // await InlineSVG('./icons.svg', "svg-icons");
@@ -30,3 +31,8 @@ document.addEventListener('pointerdown', (e) => {
 setTimeout(() => {
 	selectTool(localStorage.getItem('gfx-currentTool') || "pencil");
 }, 300);
+
+window.updateColor = (selector) => {
+	const { primary, secondary } = selector;
+	send('color-update', { primary, secondary });
+};

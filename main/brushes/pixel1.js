@@ -2,7 +2,11 @@ var roundNearQtr = function(number) {
 	return (Math.round(number * 2) / 2).toFixed(0);
 };
 
-export default (ctx, radius, path) => {
+export default (ctx, radius, path, opts={}) => {
+	if(opts?.color?.primary){
+		ctx.fillStyle = opts.color.primary;
+		ctx.strokeStyle = opts.color.primary;
+	}
 	const {x1, y1, x2, y2} = path;
 	ctx.beginPath();
 	// ctx.rect(

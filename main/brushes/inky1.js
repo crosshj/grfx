@@ -4,7 +4,12 @@ function getDistance({ x1, y1, x2, y2 }){
 	return Math.sqrt(x * x + y * y);
 }
 
-export default (ctx, radius, path) => {
+export default (ctx, radius, path, opts={}) => {
+	if(opts?.color?.primary){
+		ctx.fillStyle = opts.color.primary;
+		ctx.strokeStyle = opts.color.primary;
+	}
+
 	const {x1, y1, x2, y2} = path;
 	const dist = getDistance(path);
 	if(dist <= radius){

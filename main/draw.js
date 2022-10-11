@@ -2,6 +2,8 @@ import ink from './brushes/inky1.js';
 import pixel from './brushes/pixel1.js';
 import airbrush from './brushes/airbrush1.js';
 
+let opts = {};
+
 const brushes = {
 	brush: ink,
 	pencil: pixel,
@@ -81,7 +83,7 @@ const drawFn = (concrete, brushFn, updateThumbs) => {
 		ctx.save();
 
 		const radius = 2.5;
-		brushFn(ctx, radius, path);
+		brushFn(ctx, radius, path, opts);
 		ctx.restore();
 		requestAnimationFrame(() => {
 			concrete.viewport.render();
@@ -131,6 +133,10 @@ export const detachDraw = (concrete) => {
 	if(!canvas) return;
 	canvas.removeEventListener("pointerdown", attached, false);
 	attached = undefined;
+};
+
+export const updateDraw = (props) => {
+	opts = { ...opts, ...props };
 };
 
 
