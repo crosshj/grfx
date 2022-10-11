@@ -17,7 +17,7 @@
 - [ ] history, undo, and redo
 - [ ] canvas selection tools and features
 - [ ] layers moveable and sizeable on canvas
-- [ ] eraser tool
+- [X] eraser tool
 - [ ] text tool
 - [ ] line and shape tools
 - [ ] tools connected and working (DEPENDENCIES)

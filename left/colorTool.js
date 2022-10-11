@@ -66,6 +66,6 @@ window.customElements.define('color-selector', class extends HTMLElement {
 		this.secondary = this.getAttribute('secondary') || this.inputs.secondary.value;
 	}
 	attributeChangedCallback(name, oldValue, newValue) {
-		console.log(name)
+		console.log(name);
 	}
 });
