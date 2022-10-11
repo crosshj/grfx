@@ -1,6 +1,7 @@
 import ink from './brushes/inky1.js';
 import pixel from './brushes/pixel1.js';
 import airbrush from './brushes/airbrush1.js';
+import erase from './brushes/erase1.js';
 
 let opts = {};
 
@@ -8,6 +9,7 @@ const brushes = {
 	brush: ink,
 	pencil: pixel,
 	airbrush,
+	erase,
 };
 
 const brushImage = await new Promise(async (resolve) => {
