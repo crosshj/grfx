@@ -417,6 +417,25 @@ const menuFilterNoise = async (context) => {
 		console.log(form);
 	}catch(e){}
 };
+const menuFilterSepia = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filter', { sepia: true });
+		const { sepiaAmount } = form;
+		const { update, currentFile } = context;
+
+		const { layers } = currentFile;
+		const l = layers.find(x => x.selected);
+		if(l.type !== '2d') return;
+
+		l.def = l.def.replace(/\nfilter\("Sepia");/g, '');
+		l.def += '\n' + `filter("Sepia");`;
+		context.state.layer.update(l.id, l);
+		l.dirty = true;
+		await update();
+		l.dirty = undefined;
+	}catch(e){}
+};
+
 // USE THIS AS AN EXAMPLE, AILEEN!!!
 const menuFilterPixelate = async (context) => {
 	try {
@@ -468,6 +487,7 @@ const actions = {
 	menuFilterSharpen,
 	menuFilterNoise,
 	menuFilterPixelate,
+	menuFilterSepia,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
