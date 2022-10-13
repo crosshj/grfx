@@ -50,17 +50,19 @@ const speech = async (args) => {
 	const { text, x, y, width, height, radius, tailx, taily } = args;
 	return await new Promise((resolve) => {
 		const svg = `
-			<svg viewBox="0 0 200 150"  xmlns="http://www.w3.org/2000/svg" width="200px">
-				<rect style="stroke: rgb(0, 0, 0); stroke-linejoin: round; fill: rgb(255, 255, 255);" x="21.074" y="22.171" width="161.051" height="103.651" rx="100" ry="100"></rect>
+		<svg viewBox="0 0 200 150"  xmlns="http://www.w3.org/2000/svg" width="200px">
+			<rect style="stroke: rgb(0, 0, 0); stroke-linejoin: round; fill: rgb(255, 255, 255);" x="21.074" y="22.171" width="161.051" height="103.651" rx="20" ry="20"></rect>
 
-				<g transform="matrix(1, 0, 0, 1, 60, 0)">
-					<path style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-miterlimit: 1; stroke-linejoin: round;" d="M 32.092 125.785 L 31.502 125.725 L 22.539 141.944 L 43.14 125.665"></path>
-					<path style="fill: rgb(255, 255, 255);" d="M 31.199 127.301 L 33.312 123.564 L 44.586 123.88 L 39.992 127.512"></path>
-				</g>
+			<g transform="matrix(1, 0, 0, 1, 60, 0)">
+				<path style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-miterlimit: 1; stroke-linejoin: round;" d="M 32.092 125.785 L 31.502 125.725 L 22 150 L 43.14 125.665"></path>
+				<path style="fill: rgb(255, 255, 255);" d="M 31.199 127.301 L 33.312 123.564 L 44.586 123.88 L 39.992 127.512"></path>
+			</g>
 
-				<text style="font-family: 'Comic Sans MS'; font-size: 25px; white-space: pre;" x="53" y="65">Mandrill,</text>
-				<text style="font-family: 'Comic Sans MS'; font-size: 25px; white-space: pre;" x="53" y="100">for real!</text>
-			</svg>
+			<text style="font-family: 'Comic Sans MS'; font-size: 25px; white-space: pre;" y="37">
+				<tspan x="53" dy="1.2em">Mandrill,</tspan>
+				<tspan x="53" dy="1.2em">for real!</tspan>
+			</text>
+		</svg>
 		`;
 		const img = new Image();
 		img.onload = function() {
