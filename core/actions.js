@@ -385,8 +385,8 @@ const menuFilterBlur = async (context) => {
 		const l = layers.find(x => x.selected);
 		if(l.type !== '2d') return;
 
-		l.def = l.def.replace(/\nfilter\("GaussianBlur",.*\);/g, '');
-		l.def += '\n' + `filter("GaussianBlur", ${blurAmount});`;
+		l.def = l.def.replace(/\nfilter\("StackBlur",.*\);/g, '');
+		l.def += '\n' + `filter("StackBlur", ${blurAmount});`;
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
 		await update();
