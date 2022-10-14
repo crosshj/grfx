@@ -22,6 +22,13 @@
 	</div>
 	{{/if}}
 
+	{{#if rescale}}
+	<div class="row filterRescale">
+		<label for="rescaleAmount">Rescale Amount</p>
+		<input id="rescaleAmount" name="rescaleAmount" type="range" min="1" max="5" value="2">
+	</div>
+	{{/if}}
+
 	{{#if sharpen}}
 	<div class="row filterSharpen">
 		<label for="sharpenAmount">Sharpen Amount</p>
