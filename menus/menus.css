@@ -242,6 +242,10 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 1em;
 	min-width: 200px;
 }
+.filterBinarize {
+	padding: 1em;
+	min-width: 200px;
+}
 
 
 /*

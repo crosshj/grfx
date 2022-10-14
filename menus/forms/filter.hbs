@@ -8,6 +8,13 @@
 	</div>
 	{{/if}}
 
+	{{#if binarize}}
+	<div class="row filterBinarize">
+		<label for="binarizeAmount">Binarize Amount</p>
+		<input id="binarizeAmount" name="binarizeAmount" type="range" min="0" max="1" value="0.5">
+	</div>
+	{{/if}}
+
 	{{#if dither}}
 	<div class="row filterDither">
 		<label for="ditherAmount">Dither Amount</p>
