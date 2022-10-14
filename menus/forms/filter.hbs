@@ -8,6 +8,13 @@
 	</div>
 	{{/if}}
 
+	{{#if dither}}
+	<div class="row filterDither">
+		<label for="ditherAmount">Dither Amount</p>
+		<input id="ditherAmount" name="ditherAmount" type="range" min="1" max="32" value="8">
+	</div>
+	{{/if}}
+
 	{{#if noise}}
 	<div class="row filterNoise">
 		<label for="noiseAmount">Noise Amount</p>
