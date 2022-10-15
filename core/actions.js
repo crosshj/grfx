@@ -483,8 +483,8 @@ const menuFilterBinarize = async (context) => {
 		if(l.type !== '2d') return;
 
 		// this is what it will look like if no args
-		// l.def = l.def.replace(/\nfilter\("Binarize"\);/g, '');
-		// l.def += '\n' + `filter("Binarize");`;
+		// l.def = l.def.replace(/\nops.filter\("Binarize"\);/g, '');
+		// l.def += '\n' + `ops.filter("Binarize");`;
 
 		l.def = l.def.replace(/\nops.filter\("Binarize",.*\);/g, '');
 		l.def += '\n' + `ops.filter("Binarize", ${binarizeAmount});`;
@@ -504,9 +504,9 @@ const menuFilterEdge = async (context) => {
 		const { layers } = currentFile;
 		const l = layers.find(x => x.selected);
 		if(l.type !== '2d') return;
-		l.def = l.def.replace(/\nfilter\("Edge"\);/g, '');
+		l.def = l.def.replace(/\nops.filter\("Edge"\);/g, '');
 		if(edgeAmount){
-			l.def += '\n' + `filter("Edge");`;
+			l.def += '\n' + `ops.filter("Edge");`;
 		}
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
