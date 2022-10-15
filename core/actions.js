@@ -494,6 +494,26 @@ const menuFilterBinarize = async (context) => {
 		l.dirty = undefined;
 	}catch(e){}
 };
+const menuFilterEdge = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filter', { edge: true });
+		const { edgeAmount } = form;
+		
+		const { update, currentFile } = context;
+
+		const { layers } = currentFile;
+		const l = layers.find(x => x.selected);
+		if(l.type !== '2d') return;
+		l.def = l.def.replace(/\nfilter\("Edge"\);/g, '');
+		if(edgeAmount){
+			l.def += '\n' + `filter("Edge");`;
+		}
+		context.state.layer.update(l.id, l);
+		l.dirty = true;
+		await update();
+		l.dirty = undefined;
+	}catch(e){}
+};
 const actions = {
 	paste,
 	layerAlpha,
@@ -529,6 +549,7 @@ const actions = {
 	menuFilterRescale,
 	menuFilterDither,
 	menuFilterBinarize,
+	menuFilterEdge,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
