@@ -482,6 +482,10 @@ const menuFilterBinarize = async (context) => {
 		const l = layers.find(x => x.selected);
 		if(l.type !== '2d') return;
 
+		// this is what it will look like if no args
+		// l.def = l.def.replace(/\nfilter\("Binarize"\);/g, '');
+		// l.def += '\n' + `filter("Binarize");`;
+
 		l.def = l.def.replace(/\nfilter\("Binarize",.*\);/g, '');
 		l.def += '\n' + `filter("Binarize", ${binarizeAmount});`;
 		context.state.layer.update(l.id, l);
