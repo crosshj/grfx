@@ -109,8 +109,9 @@ const speech = (ctx, width, height) => async (args) => {
 				></path>
 			</g>
 
+			<!-- Arial,Comic Sans MS, Helvetica, Impact -->
 			<text
-				style="font-family: 'Comic Sans MS'; font-size: 25px; white-space: pre; filter: url(#distort);"
+				style="font-family: 'Helvetica'; font-size: 25px; white-space: pre; filter: url(#distort);"
 				y="37"
 			>
 				${lines.map(line => {
