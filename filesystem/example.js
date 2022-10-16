@@ -50,6 +50,20 @@ const basicCanvas = `
 	ctx.fillStyle = '#992b99';
 	ctx.font = width*0.1 + 'px sans-serif';
 	ctx.fillText(getRandom(26, tibetan), 0, height-(width*0.06), width);
+
+	//ctx.filter = 'invert(1)';
+	await ops.speech({
+		 text: "one\\ntwo\\nthree",
+		 x: width/2 -200,
+		 y: height/2 -210,
+		 radius: 0,
+		 scale: 2,
+		 distort: 0.05,
+	});
+
+
+
+
 `.replace(/^\t/gm, '');
 
 
