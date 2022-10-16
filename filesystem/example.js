@@ -51,17 +51,17 @@ const basicCanvas = `
 	ctx.font = width*0.1 + 'px sans-serif';
 	ctx.fillText(getRandom(26, tibetan), 0, height-(width*0.06), width);
 
-	//ctx.filter = 'invert(1)';
+	ctx.filter = 'invert(1)';
 	await ops.speech({
-		 text: "one\\ntwo\\nthree",
-		 x: width/2 -200,
-		 y: height/2 -210,
-		 radius: 0,
-		 scale: 2,
-		 distort: 0.05,
+		text: "An old silent pond\nA frog jumps into the pond--\nSplash! Silence again.",
+		x: width/2 -200,
+		y: height/2 -210,
+		radius: 30,
+		scale: 1,
+		distort: 0.05,
+		tailX: -30,
+		tailY: 50,
 	});
-
-
 
 
 `.replace(/^\t/gm, '');

@@ -4,6 +4,26 @@ import * as CanvasFilters from 'canvas-filters';
 import fs from '@grfx/fs';
 const init = fs.init();
 
+//https://stackoverflow.com/questions/2057682/determine-pixel-length-of-string-in-javascript-jquery
+const getMaxPixelsOfStrings = ({ strings, styles = {} }) => {
+	const spans = strings.map(str => {
+		const span = document.createElement('span')
+		span.append(str)
+		Object.assign(span.style, {
+			position: 'absolute',
+			whiteSpace: 'nowrap',
+			...styles,
+		})
+		return span
+	})
+	document.querySelector('html').prepend(...spans)
+	const maxPixels = Math.max(...spans.map(span => {
+		return span.getBoundingClientRect().width;
+	}))
+	spans.forEach(span => span.remove())
+	return maxPixels
+};
+
 const loadImage = (url) => new Promise(async (resolve) => {
 	if(url.startsWith('data:')){
 		const image = new Image();
@@ -50,15 +70,20 @@ const getDims = (width, height) => (i) => {
 
 const speech = (ctx, width, height) => async (args) => {
 	return await new Promise((resolve) => {
-		const { text, x, y, scale=1, radius=20, distort=0 } = args;
+		const { text, x, y, scale=1, radius=20, distort=0, tailX=-20, tailY=30 } = args;
 
 		const lines = text.split('\n');
 
-		const longest = Math.max(...(lines.map(el => el.length)));
-		//https://stackoverflow.com/questions/2057682/determine-pixel-length-of-string-in-javascript-jquery
+		//const longest = 11.05*Math.max(...(lines.map(el => el.length)));
+		const longest = getMaxPixelsOfStrings({
+			strings: lines,
+			styles: {
+				letterSpacing: '5px',
+			},
+		});
 
-		const _width = 130+longest*11.05;
-		const _height = 100 + 30*lines.length;
+		const _width = 106+longest;
+		const _height = tailY + 70 + 30*lines.length;
 		const svg = `
 		<svg
 			viewBox="0 0 ${_width} ${_height}"
@@ -82,30 +107,32 @@ const speech = (ctx, width, height) => async (args) => {
 					x="20"
 					y="23"
 					width="${_width-40}"
-					height="${_height-58}"
+					height="${_height-28-tailY}"
 					rx="${radius}"
 					ry="${radius}"
 				></rect>
 
 				<g
-					transform="matrix(1, 0, 0, 1, ${_width/4}, 0)"
+					transform="
+	
+					"
 				>
 					<path
 						style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-miterlimit: 1; stroke-linejoin: round;"
 						d="
-							M 30 ${_height-35}
-							L 30 ${_height-35}
-							L 22 ${_height-5}
-							L 50 ${_height-35}
+							M ${_width/2 -10} ${_height-5-tailY}
+							L ${_width/2 -10} ${_height-5-tailY}
+							L ${_width/2 +tailX} ${_height-5}
+							L ${_width/2+10} ${_height-5-tailY}
 						"
 					></path>
 					<path
 						style="fill: rgb(255, 255, 255);"
 						d="
-							M 30 ${_height-33}
-							L 30 ${_height-37}
-							L 57 ${_height-37}
-							L 40 ${_height-33}
+							M ${_width/2 -10} ${_height-5-tailY}
+							L ${_width/2 -10} ${_height-8-tailY}
+							L ${_width/2 +10} ${_height-8-tailY}
+							L ${_width/2 +10} ${_height-5-tailY}
 						"
 					></path>
 				</g>
