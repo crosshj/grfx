@@ -51,16 +51,47 @@ const basicCanvas = `
 	ctx.font = width*0.1 + 'px sans-serif';
 	ctx.fillText(getRandom(26, tibetan), 0, height-(width*0.06), width);
 
+
+`.replace(/^\t/gm, '');
+
+const speech = `
+	const { width, height } = getDims();
 	ctx.filter = 'invert(1)';
 	await ops.speech({
-		text: "An old silent pond\nA frog jumps into the pond--\nSplash! Silence again.",
-		x: width/2 -200,
-		y: height/2 -210,
+		text: \`
+			An old silent pond
+			A frog jumps into the pond--
+			Splash! Silence again.
+		\`,
+		x: width/2 +10,
+		y: height/2 -300,
+		radius: 5,
+		scale: 1,
+		distort: 0.01,
+		tailX: 0,
+		tailY: 0,
+	});
+
+	await ops.speech({
+		text: "Ribbit...",
+		x: width/2 -270,
+		y: height/2 -100,
 		radius: 30,
 		scale: 1,
 		distort: 0.05,
-		tailX: -30,
-		tailY: 50,
+		tailX: 50,
+		tailY: 30,
+	});
+
+	await ops.speech({
+		text: "Ribbit...",
+		x: width/2+30,
+		y: height/2 -40,
+		radius: 30,
+		scale: 1,
+		distort: 0.03,
+		tailX: -50,
+		tailY: 30,
 	});
 
 
@@ -74,6 +105,11 @@ export default {
 	tool: "airbrush",
 	layers: [{
 		number: 0,
+		name: "Speech",
+		type: '2d',
+		def: speech
+	},{
+		number: 1,
 		name: "Basic Canvas Ops",
 		selected: true,
 		alpha: 0.6,
@@ -81,7 +117,7 @@ export default {
 		type: '2d',
 		def: basicCanvas
 	}, {
-		number: 1,
+		number: 2,
 		name: "Dangerous Clouds",
 		visible: true,
 		// alpha: 0.5,
@@ -93,7 +129,7 @@ export default {
 			ctx.drawImage(image, ...getDims(image));
 		`.replace(/^\t\t\t/gm, '')
 	}, {
-		number: 2,
+		number: 3,
 		name: "Owl At Sea",
 		alpha: 0.1,
 		blendMode: 'saturation',
@@ -103,7 +139,7 @@ export default {
 			ctx.drawImage(image, ...getDims(image));
 		`.replace(/^\t\t\t/gm, '')
 	}, {
-		number: 3,
+		number: 4,
 		name: "Golden Boy",
 		visible: false,
 		type: '2d',
@@ -112,7 +148,7 @@ export default {
 			ctx.drawImage(image, ...getDims(image));
 		`.replace(/^\t\t\t/gm, '')
 	}, {
-		number: 4,
+		number: 5,
 		name: "Mon*star's Sky-Runner",
 		type: '2d',
 		def: `
@@ -120,7 +156,7 @@ export default {
 			ctx.drawImage(image, ...getDims(image));
 		`.replace(/^\t\t\t/gm, '')
 	}, {
-		number: 5,
+		number: 6,
 		name: "Cyberpunk Robot",
 		type: '2d',
 		def: `
