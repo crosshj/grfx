@@ -62,7 +62,7 @@ const speech = `
 			An old silent pond
 			A frog jumps into the pond--
 			Splash! Silence again.
-		\`,
+		\`.trim(),
 		x: width/2 +10,
 		y: height/2 -300,
 		radius: 5,
