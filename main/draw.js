@@ -2,6 +2,11 @@ import ink from './brushes/inky1.js';
 import pixel from './brushes/pixel1.js';
 import airbrush from './brushes/airbrush1.js';
 import erase from './brushes/erase1.js';
+import rect from './brushes/rect1.js';
+import rounded from './brushes/rounded1.js';
+import ellipse from './brushes/ellipse1.js';
+import line from './brushes/line1.js';
+import curve from './brushes/curve1.js';
 
 let opts = {};
 
@@ -10,6 +15,11 @@ const brushes = {
 	pencil: pixel,
 	airbrush,
 	erase,
+	rect,
+	rounded,
+	ellipse,
+	line,
+	curve,
 };
 
 const brushImage = await new Promise(async (resolve) => {
