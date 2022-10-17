@@ -161,6 +161,7 @@ gl.drawArrays(gl.TRIANGLES, 0, vertices.length/2);
 	//.concat(document.getElementById("gl-function").text);
 
 export default () => ({
+	blank: 'const { width, height } = getDims();\n\n',
 	circle,
 	octagon,
 	smiley,

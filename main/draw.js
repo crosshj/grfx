@@ -7,6 +7,9 @@ import rounded from './brushes/rounded1.js';
 import ellipse from './brushes/ellipse1.js';
 import line from './brushes/line1.js';
 import curve from './brushes/curve1.js';
+import selectBox from './brushes/selectBox1.js';
+import selectFree from './brushes/selectFree1.js';
+import poly from './brushes/poly1.js';
 
 let opts = {};
 
@@ -20,6 +23,9 @@ const brushes = {
 	ellipse,
 	line,
 	curve,
+	poly,
+	'select-box': selectBox,
+	'select-free': selectFree
 };
 
 const brushImage = await new Promise(async (resolve) => {
