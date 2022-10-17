@@ -1,14 +1,17 @@
 let startX;
 let startY;
+let drawOver;
 
 export default (ctx, radius, path, opts={}) => {
 	const radii = [30];
-	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	if(opts?.color?.primary){
 		ctx.fillStyle = opts.color.primary;
 		ctx.strokeStyle = opts.color.secondary;
 	}
 	const {x1, y1, x2, y2} = path;
+
+	drawOver && ctx.putImageData(drawOver,0,0);
+	drawOver = drawOver || ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
 	startX = startX || x1;
 	startY = startY || y1;
 
@@ -23,5 +26,6 @@ export default (ctx, radius, path, opts={}) => {
 	if(x1 === x2 && y1 === y2){
 		startX = undefined;
 		startY = undefined;
+		drawOver = undefined;
 	}
 };
