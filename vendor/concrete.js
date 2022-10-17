@@ -6,7 +6,8 @@ var Concrete = {},
 Concrete.pixelRatio = (function() {
 	// client browsers
 	if (window && window.navigator && window.navigator.userAgent && !/PhantomJS/.test(window.navigator.userAgent)) {
-		return 2;
+		//return 2;
+		return 1;
 	}
 	// headless browsers
 	else {
