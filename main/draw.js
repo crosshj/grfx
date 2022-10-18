@@ -11,8 +11,6 @@ import selectBox from './brushes/selectBox1.js';
 import selectFree from './brushes/selectFree1.js';
 import poly from './brushes/poly1.js';
 
-let opts = {};
-
 const brushes = {
 	brush: ink,
 	pencil: pixel,
@@ -28,25 +26,25 @@ const brushes = {
 	'select-free': selectFree
 };
 
-const brushImage = await new Promise(async (resolve) => {
-	const image = new Image();
-	image.onload = () => resolve(image);
-	image.src = 'https://www.html5canvastutorials.com/demos/assets/wood-pattern.png';
-});
+// const brushImage = await new Promise(async (resolve) => {
+// 	const image = new Image();
+// 	image.onload = () => resolve(image);
+// 	image.src = 'https://www.html5canvastutorials.com/demos/assets/wood-pattern.png';
+// });
 
-function getOffset(obj) {
-	var offsetLeft = 0;
-	var offsetTop = 0;
-	do {
-		if (!isNaN(obj.offsetLeft)) {
-			offsetLeft += obj.offsetLeft;
-		}
-		if (!isNaN(obj.offsetTop)) {
-			offsetTop += obj.offsetTop;
-		}
-	} while(obj = obj.offsetParent );
-	return {left: offsetLeft, top: offsetTop};
-}
+// function getOffset(obj) {
+// 	var offsetLeft = 0;
+// 	var offsetTop = 0;
+// 	do {
+// 		if (!isNaN(obj.offsetLeft)) {
+// 			offsetLeft += obj.offsetLeft;
+// 		}
+// 		if (!isNaN(obj.offsetTop)) {
+// 			offsetTop += obj.offsetTop;
+// 		}
+// 	} while(obj = obj.offsetParent );
+// 	return {left: offsetLeft, top: offsetTop};
+// }
 
 function getMousePos(canvas, evt) {
 	let ctx = canvas.getContext("2d");
@@ -63,95 +61,152 @@ function getMousePos(canvas, evt) {
 	return { x, y };
 }
 
-const getDraw = (canvas, listen, state) => (e, eventName="") => {
-	const offset  = getOffset(canvas);
+let opts = {
+	color: {
+		primary: '#000000',
+		secondary: '#ffffff'
+	}
+};
+const cursor = document.querySelector('.cursor');
+
+const state = {
+	prev: null
+};
+let eventState = {
+	down: false,
+	brush: undefined,
+	updateThumbs: undefined,
+	concrete: undefined,
+};
+
+let drawStarted;
+const drawFn = (path, event) => {
+	const { brush, concrete, updateThumbs } = eventState;
+	if(!concrete || !updateThumbs) return;
+	const brushFn = brushes[brush?.id] || brushes[brush];
+	if(!brushFn){
+		return console.log('TODO: add tool - ' + brush);
+	}
+	const { canvas } = concrete.viewport?.scene || {};
+
+	const [selectedNumber, selected] = (Object.entries(concrete.layers)).find(([,x]) => x.selected);
+	const ctx = selected.scene.context;
+	if(event === "start"){
+		console.log("brushStart");
+		//if(!(brushFn.before || ctx.save)) return;
+		(brushFn.before ? brushFn.before(ctx) : ctx.save());
+		drawStarted = true;
+	}
+	const radius = 2.5;
+	path && brushFn(ctx, radius, path, opts);
+	
+	if(event === "end"){
+		console.log("brushEnd");
+		drawStarted = false;
+		//if(!(brushFn.after || ctx.save)) return;
+		(brushFn.after ? brushFn.after(ctx) : ctx.restore());
+	}
+
+	requestAnimationFrame(() => {
+		concrete.viewport.render();
+		updateThumbs(selectedNumber, selected, path);
+	});
+};
+
+const draw = (e, eventName="") => {
+	const { concrete, brush } = eventState;
+	const { canvas } = concrete.viewport?.scene || {};
+	if(!concrete) return;
+
+	//const offset  = getOffset(canvas);
 	const pos = getMousePos(canvas, e);
 	if(state.prev !== null){
-		listen({
+		drawFn({
 			x1: state.prev.x,
 			y1: state.prev.y,
 			x2: pos.x,
 			y2: pos.y
-		});
+		}, drawStarted ? "" : "start");
 	}
 	if(state.prev === null && eventName === "end"){
-		listen({
+		drawFn({
 			x1: pos.x,
 			y1: pos.y,
 			x2: pos.x,
 			y2: pos.y
-		});
+		}, eventName);
 	}
 	state.prev = pos;
 };
 
-const drawFn = (concrete, brushFn, updateThumbs) => {
-	//const ctx = canvas.viewport.scene.context;
-	//console.log(selectedNumber, selected)
+const eventHandler = (e) => {
+	const { type, target: { tagName } } = e;
 
-	//const ctx = concrete.layers[0].scene.context;
-	// const pattern = ctx.createPattern(brushImage, 'repeat');
-	// ctx.strokeStyle = pattern;
-	// ctx.fillStyle = pattern;
-
-	return (path) => {
-		const [selectedNumber, selected] = (Object.entries(concrete.layers)).find(([,x]) => x.selected);
-		const ctx = selected.scene.context;
-		if(!ctx.save) return;
-		ctx.save();
-
-		const radius = 2.5;
-		brushFn(ctx, radius, path, opts);
-		ctx.restore();
-		requestAnimationFrame(() => {
-			concrete.viewport.render();
-			updateThumbs(selectedNumber, selected, path);
-		});
-	};
-};
-
-let attached;
-export const attachDraw = (concrete, brush, updateThumbs) => {
-	if(attached) return;
-	if(!brush) return;
-
-	const brushFn = brushes[brush];
-	if(!brushFn){
-		return console.log('TODO: add tool - ' + brush);
-	}
-
-	const { canvas } = concrete?.viewport?.scene || {};
-	if(!canvas) return;
-
-	const state = {
-		prev: null
-	};
-
-	let draw;
-	const end = (e) => {
-		draw(e, "end");
-		canvas.removeEventListener("pointermove", draw, false);
-		canvas.removeEventListener("pointerup", end, false);
-		canvas.removeEventListener("pointerleave", end, false);
+	if(type === "pointerdown"){
 		state.prev = null;
-		draw = null;
-	};
-	const down = () => {
-		draw = getDraw(canvas, drawFn(concrete, brushFn, updateThumbs), state);
-		canvas.addEventListener("pointermove", draw, false);
-		canvas.addEventListener("pointerup", end, false);
-		canvas.addEventListener("pointerleave", end, false);
-	};
-	canvas.addEventListener("pointerdown", down, false);
-	attached = down;
+		eventState.down = true;
+		return;
+	}
+	if(type === "pointerup"){
+		state.prev = null;
+		drawFn(undefined, "end");
+		eventState.down = false;
+		return;
+	}
+	if(["pointerleave", "pointercancel"].includes(type)){
+		state.prev = null;
+		cursor.style.display = "none";
+		return;
+	}
+	if(type === "pointerenter"){
+		cursor.style.display = "";
+		return;
+	}
+	if(type === "pointermove"){
+		cursor.style.left = e.clientX + 'px';
+		cursor.style.top = e.clientY + 'px';
+		if(!eventState.down) return
+		if(tagName !== "CANVAS"){
+			state.prev = null;
+			draw && draw(e, "end");
+			return;
+		}
+		draw && draw(e);
+		return;
+	}
 };
 
-export const detachDraw = (concrete) => {
-	const { canvas } = concrete?.viewport?.scene || {};
-	if(!canvas) return;
-	canvas.removeEventListener("pointerdown", attached, false);
-	attached = undefined;
+const addListeners = () => {
+	removeListeners();
+	document.body.addEventListener("pointerdown", eventHandler, false);
+	document.body.addEventListener("pointermove", eventHandler, false);
+	document.body.addEventListener("pointerup", eventHandler, false);
+	document.body.addEventListener("pointerleave", eventHandler, false);
+	document.body.addEventListener("pointerenter", eventHandler, false);
+	document.body.addEventListener("pointercancel", eventHandler, false);
 };
+const removeListeners = () => {
+	document.body.removeEventListener("pointerdown", eventHandler, false);
+	document.body.removeEventListener("pointermove", eventHandler, false);
+	document.body.removeEventListener("pointerup", eventHandler, false);
+	document.body.removeEventListener("pointerleave", eventHandler, false);
+	document.body.removeEventListener("pointerenter", eventHandler, false);
+	document.body.removeEventListener("pointercancel", eventHandler, false);
+};
+
+export const attachDraw = (concrete, brush, updateThumbs) => {
+	console.log(brush || eventState.brush)
+	eventState = {
+		...eventState,
+		concrete,
+		canvas: concrete?.viewport?.scene?.canvas,
+		brush: brush || eventState.brush,
+		updateThumbs,
+	};
+	addListeners();
+};
+
+export const detachDraw = removeListeners;
 
 export const updateDraw = (props) => {
 	opts = { ...opts, ...props };

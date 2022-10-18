@@ -2,7 +2,7 @@ let startX;
 let startY;
 let drawOver;
 
-export default (ctx, radius, path, opts={}) => {
+const brush = (ctx, radius, path, opts={}) => {
 	if(opts?.color?.primary){
 		ctx.fillStyle = opts.color.secondary;
 		ctx.strokeStyle = opts.color.primary;
@@ -18,10 +18,17 @@ export default (ctx, radius, path, opts={}) => {
 	ctx.moveTo(startX, startY);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
-
-	if(x1 === x2 && y1 === y2){
-		startX = undefined;
-		startY = undefined;
-		drawOver = undefined;
-	}
 };
+
+brush.before = (ctx) => {
+	ctx.save();
+};
+
+brush.after = (ctx) => {
+	ctx.restore();
+	startX = undefined;
+	startY = undefined;
+	drawOver = undefined;
+};
+
+export default brush;

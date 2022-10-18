@@ -19,7 +19,7 @@ let startX;
 let startY;
 let drawOver;
 
-export default (ctx, radius, path, opts={}) => {
+const brush = (ctx, radius, path, opts={}) => {
 	if(opts?.color?.primary){
 		ctx.fillStyle = opts.color.primary;
 		ctx.strokeStyle = opts.color.secondary;
@@ -38,10 +38,18 @@ export default (ctx, radius, path, opts={}) => {
 	ctx.beginPath();
 	ellipse(ctx, startX, startY, x2-startX, y2-startY);
 	ctx.stroke();
-
-	if(x1 === x2 && y1 === y2){
-		startX = undefined;
-		startY = undefined;
-		drawOver = undefined;
-	}
 };
+
+brush.before = (ctx) => {
+	ctx.save();
+};
+
+brush.after = (ctx) => {
+	ctx.restore();
+	startX = undefined;
+	startY = undefined;
+	drawOver = undefined;
+};
+
+export default brush;
+
