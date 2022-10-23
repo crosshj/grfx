@@ -1,39 +1,54 @@
 let startX;
 let startY;
-let drawOver;
+let width;
+let height;
 
-const brush = (ctx, radius, path, opts={}) => {
-	const {x1, y1, x2, y2} = path;
+const selectTool = document.querySelector('.selectTool');
+selectTool.style.position = 'absolute';
+selectTool.style.boxShadow = "0 0 0 1px black";
+selectTool.style.outline = "dashed 1px white";
 
-	drawOver && ctx.putImageData(drawOver,0,0);
-	drawOver = drawOver || ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
-	startX = startX || x1;
-	startY = startY || y1;
+selectTool.style.display = 'none';
+selectTool.style.pointerEvents = 'none';
 
-	ctx.strokeStyle = "white";
-	ctx.setLineDash([5, 5]);
-	ctx.beginPath();
+const brush = (e, eventName) => {
+	const x = e?.clientX;
+	const y = e?.clientY;
+	if(!startX || !startY){
+		return brush.before(x, y);
+	}
+	if(eventName === 'end'){
+		return brush.after();
+	}
+	width = x-startX;
+	height = y-startY;
 
-	ctx.moveTo(startX, startY);
-	ctx.lineTo(startX, y2);
-	ctx.lineTo(x2, y2);
+	if(width < 0){
+		selectTool.style.left = x + 'px'
+	}
+	if(height < 0){
+		selectTool.style.top = y + 'px'
+	}
 
-	ctx.moveTo(startX, startY);
-	ctx.lineTo(x2, startY);
-	ctx.lineTo(x2, y2);
-
-	ctx.stroke();
+	selectTool.style.width = Math.abs(width) + 'px';
+	selectTool.style.height = Math.abs(height) + 'px';
 };
 
-brush.before = (ctx) => {
-	ctx.save();
+brush.before = (x, y) => {
+	startX = x;
+	startY = y;
+	selectTool.style.display = '';
+	selectTool.style.left = x + 'px';
+	selectTool.style.top = y + 'px';
+	selectTool.style.width = 0;
+	selectTool.style.height = 0;
 };
 
 brush.after = (ctx) => {
-	ctx.restore();
+	console.log({ startX, startY, width, height });
 	startX = undefined;
 	startY = undefined;
-	drawOver = undefined;
+	selectTool.style.display = 'none';
 };
 
 export default brush;

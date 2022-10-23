@@ -87,6 +87,9 @@ const drawFn = (path, event) => {
 	if(!brushFn){
 		return console.log('TODO: add tool - ' + brush);
 	}
+	if(['select-box'].includes(brush.id)){
+		return brushFn(path, event);
+	}
 	const { canvas } = concrete.viewport?.scene || {};
 
 	const [selectedNumber, selected] = (Object.entries(concrete.layers)).find(([,x]) => x.selected);
@@ -116,6 +119,9 @@ const drawFn = (path, event) => {
 const draw = (e, eventName="") => {
 	const { concrete, brush } = eventState;
 	const { canvas } = concrete.viewport?.scene || {};
+	if(['select-box'].includes(eventState.brush.id)){
+		return drawFn(e);
+	}
 	if(!concrete) return;
 
 	//const offset  = getOffset(canvas);
@@ -166,6 +172,10 @@ const eventHandler = (e) => {
 		cursor.style.left = e.clientX + 'px';
 		cursor.style.top = e.clientY + 'px';
 		if(!eventState.down) return
+		if(['select-box'].includes(eventState.brush.id)){
+			draw && draw(e);
+			return;
+		}
 		if(tagName !== "CANVAS"){
 			state.prev = null;
 			draw && draw(e, "end");
@@ -195,7 +205,6 @@ const removeListeners = () => {
 };
 
 export const attachDraw = (concrete, brush, updateThumbs) => {
-	console.log(brush || eventState.brush)
 	eventState = {
 		...eventState,
 		concrete,

@@ -119,7 +119,7 @@ listen('file-update', async (args) => {
 });
 
 listen('tool-update', (tool) => {
-	console.log('tool update: ', tool);
+	//console.log('tool update: ', tool);
 	const { op='' } = tool;
 	if(op){
 		console.log('TODO: upate tool properties');
