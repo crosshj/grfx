@@ -1,3 +1,5 @@
+import { getMousePos } from './utils.js';
+
 import ink from './brushes/inky1.js';
 import pixel from './brushes/pixel1.js';
 import airbrush from './brushes/airbrush1.js';
@@ -26,41 +28,6 @@ const brushes = {
 	'select-free': selectFree
 };
 
-// const brushImage = await new Promise(async (resolve) => {
-// 	const image = new Image();
-// 	image.onload = () => resolve(image);
-// 	image.src = 'https://www.html5canvastutorials.com/demos/assets/wood-pattern.png';
-// });
-
-// function getOffset(obj) {
-// 	var offsetLeft = 0;
-// 	var offsetTop = 0;
-// 	do {
-// 		if (!isNaN(obj.offsetLeft)) {
-// 			offsetLeft += obj.offsetLeft;
-// 		}
-// 		if (!isNaN(obj.offsetTop)) {
-// 			offsetTop += obj.offsetTop;
-// 		}
-// 	} while(obj = obj.offsetParent );
-// 	return {left: offsetLeft, top: offsetTop};
-// }
-
-function getMousePos(canvas, evt) {
-	let ctx = canvas.getContext("2d");
-	var rect = canvas.getBoundingClientRect(), // abs. size of element
-			scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
-			scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
-
-	const screenX = (evt.clientX - rect.left) * scaleX;
-	const screenY = (evt.clientY - rect.top) * scaleY;
-	let matrix = ctx.getTransform();
-	var imatrix = matrix.invertSelf();
-	let x = screenX * imatrix.a + screenY * imatrix.c + imatrix.e;
-	let y = screenX * imatrix.b + screenY * imatrix.d + imatrix.f;
-	return { x, y };
-}
-
 let opts = {
 	color: {
 		primary: '#000000',
@@ -68,6 +35,7 @@ let opts = {
 	}
 };
 const cursor = document.querySelector('.cursor');
+
 
 const state = {
 	prev: null
@@ -78,20 +46,52 @@ let eventState = {
 	updateThumbs: undefined,
 	concrete: undefined,
 };
+const setCursor = () => {
+	if(['select-box'].includes(eventState.brush.id)){
+		document.body.style.cursor = "crosshair";
+		cursor.style.display = "none";
+	} else {
+		document.body.style.cursor = "none";
+		cursor.style.display = "";
+	}
+};
 
 let drawStarted;
-const drawFn = (path, event) => {
-	const { brush, concrete, updateThumbs } = eventState;
+const draw = (e, eventName="") => {
+	const { concrete, brush, updateThumbs } = eventState;
+	const { canvas } = concrete.viewport?.scene || {};
 	if(!concrete || !updateThumbs) return;
+
+	let event = eventName;
+	if(state.prev !== null){
+		event = drawStarted ? "" : "start";
+	}
 	const brushFn = brushes[brush?.id] || brushes[brush];
 	if(!brushFn){
 		return console.log('TODO: add tool - ' + brush);
 	}
-	if(['select-box'].includes(brush.id)){
-		return brushFn(path, event);
+	if(['select-box'].includes(eventState.brush.id)){
+		return brushFn(e, event, canvas);
 	}
-	const { canvas } = concrete.viewport?.scene || {};
 
+	const pos = getMousePos(canvas, e);
+	let path;
+	if(state.prev !== null){
+		path = {
+			x1: state.prev.x,
+			y1: state.prev.y,
+			x2: pos.x,
+			y2: pos.y
+		}
+	}
+	if(state.prev === null && eventName === "end"){
+		path = {
+			x1: pos.x,
+			y1: pos.y,
+			x2: pos.x,
+			y2: pos.y
+		};
+	}
 	const [selectedNumber, selected] = (Object.entries(concrete.layers)).find(([,x]) => x.selected);
 	const ctx = selected.scene.context;
 	if(event === "start"){
@@ -109,40 +109,11 @@ const drawFn = (path, event) => {
 		//if(!(brushFn.after || ctx.save)) return;
 		(brushFn.after ? brushFn.after(ctx) : ctx.restore());
 	}
-
+	state.prev = pos;
 	requestAnimationFrame(() => {
 		concrete.viewport.render();
 		updateThumbs(selectedNumber, selected, path);
 	});
-};
-
-const draw = (e, eventName="") => {
-	const { concrete, brush } = eventState;
-	const { canvas } = concrete.viewport?.scene || {};
-	if(['select-box'].includes(eventState.brush.id)){
-		return drawFn(e);
-	}
-	if(!concrete) return;
-
-	//const offset  = getOffset(canvas);
-	const pos = getMousePos(canvas, e);
-	if(state.prev !== null){
-		drawFn({
-			x1: state.prev.x,
-			y1: state.prev.y,
-			x2: pos.x,
-			y2: pos.y
-		}, drawStarted ? "" : "start");
-	}
-	if(state.prev === null && eventName === "end"){
-		drawFn({
-			x1: pos.x,
-			y1: pos.y,
-			x2: pos.x,
-			y2: pos.y
-		}, eventName);
-	}
-	state.prev = pos;
 };
 
 const eventHandler = (e) => {
@@ -155,7 +126,7 @@ const eventHandler = (e) => {
 	}
 	if(type === "pointerup"){
 		state.prev = null;
-		drawFn(undefined, "end");
+		draw(undefined, "end");
 		eventState.down = false;
 		return;
 	}
@@ -165,7 +136,7 @@ const eventHandler = (e) => {
 		return;
 	}
 	if(type === "pointerenter"){
-		cursor.style.display = "";
+		setCursor();
 		return;
 	}
 	if(type === "pointermove"){
@@ -212,6 +183,7 @@ export const attachDraw = (concrete, brush, updateThumbs) => {
 		brush: brush || eventState.brush,
 		updateThumbs,
 	};
+	setCursor();
 	addListeners();
 };
 

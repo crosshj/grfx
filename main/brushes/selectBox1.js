@@ -1,3 +1,5 @@
+import { send } from '@grfx/messages';
+
 let startX;
 let startY;
 let width;
@@ -11,14 +13,16 @@ selectTool.style.outline = "dashed 1px white";
 selectTool.style.display = 'none';
 selectTool.style.pointerEvents = 'none';
 
-const brush = (e, eventName) => {
+import { getMousePos } from '../utils.js';
+
+const brush = (e, eventName, canvas) => {
 	const x = e?.clientX;
 	const y = e?.clientY;
 	if(!startX || !startY){
 		return brush.before(x, y);
 	}
 	if(eventName === 'end'){
-		return brush.after();
+		return brush.after(canvas);
 	}
 	width = x-startX;
 	height = y-startY;
@@ -44,8 +48,17 @@ brush.before = (x, y) => {
 	selectTool.style.height = 0;
 };
 
-brush.after = (ctx) => {
-	console.log({ startX, startY, width, height });
+brush.after = (canvas) => {
+	const pos1 = getMousePos(canvas, {
+		clientX: startX,
+		clientY: startY,
+	});
+	const pos2 = getMousePos(canvas, {
+		clientX: startX + width,
+		clientY: startY + height,
+	});
+	send('select-canvas', { selection: [pos1, pos2] });
+
 	startX = undefined;
 	startY = undefined;
 	selectTool.style.display = 'none';

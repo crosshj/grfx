@@ -490,6 +490,11 @@ const menuFilterBinarize = async (context) => {
 		l.dirty = undefined;
 	}catch(e){}
 };
+const selectCanvas = async (context, args) => {
+	const { selection } = args;
+	console.log(selection);
+};
+
 const actions = {
 	paste,
 	layerAlpha,
@@ -506,6 +511,7 @@ const actions = {
 	toolSelect,
 	toolChange,
 	colorUpdate,
+	selectCanvas,
 
 	menuLayerNew,
 	menuShowLayerSource,

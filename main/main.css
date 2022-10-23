@@ -20,7 +20,6 @@ https://philiprogers.com/svgpatterns
 	--cursor-inner-pos: 24px;
 	--cursor-color: black;
 }
-* { cursor: none; }
 .cursor {
 	left: -9999px;
 	top: -9999px;
