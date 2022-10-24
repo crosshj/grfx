@@ -102,7 +102,7 @@ export default async function constructLayer({ number, goFn, cancelFn, name, def
 	// }, false);
 
 	const examples = getExamples();
-	const defaultExample = isEditing ? null : "smiley";
+	const defaultExample = isEditing ? null : "blank";
 	const code = isEditing
 		? def
 		: examples[defaultExample];

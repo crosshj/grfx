@@ -494,6 +494,11 @@ const menuFilterBinarize = async (context) => {
 		l.dirty = undefined;
 	}catch(e){}
 };
+const selectCanvas = async (context, args) => {
+	const { selection } = args;
+	console.log(selection);
+};
+
 const menuFilterEdge = async (context) => {
 	try {
 		const { form } = await ShowModal(context)('filter', { edge: true });
@@ -530,6 +535,7 @@ const actions = {
 	toolSelect,
 	toolChange,
 	colorUpdate,
+	selectCanvas,
 
 	menuLayerNew,
 	menuShowLayerSource,
