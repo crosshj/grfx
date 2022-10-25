@@ -94,6 +94,10 @@ async function Canvas(args) {
 		renderFns[layerDef.number] = res.render;
 		renderFns[layerDef.number].update = updateRenderFn;
 	}
+
+	const toolLayer = new Concrete.Layer();
+	viewport.add(toolLayer);
+
 	viewport.render();
 
 	return {
@@ -101,7 +105,8 @@ async function Canvas(args) {
 		updateLayerThumb,
 		viewport,
 		layers,
-		renderFns
+		renderFns,
+		toolLayer,
 	};
 }
 

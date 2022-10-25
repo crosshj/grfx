@@ -71,7 +71,7 @@ const draw = (e, eventName="") => {
 		return console.log('TODO: add tool - ' + brush);
 	}
 	if(['select-box'].includes(eventState.brush.id)){
-		return brushFn(e, event, canvas);
+		return brushFn(e, event, canvas, concrete);
 	}
 
 	const pos = getMousePos(canvas, e);

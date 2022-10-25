@@ -15,14 +15,14 @@ selectTool.style.pointerEvents = 'none';
 
 import { getMousePos } from '../utils.js';
 
-const brush = (e, eventName, canvas) => {
+const brush = (e, eventName, canvas, concrete) => {
 	const x = e?.clientX;
 	const y = e?.clientY;
-	if(!startX || !startY){
-		return brush.before(x, y);
-	}
 	if(eventName === 'end'){
-		return brush.after(canvas);
+		return brush.after(canvas, concrete);
+	}
+	if(!startX || !startY){
+		return brush.before(x, y, concrete);
 	}
 	width = x-startX;
 	height = y-startY;
@@ -38,7 +38,7 @@ const brush = (e, eventName, canvas) => {
 	selectTool.style.height = Math.abs(height) + 'px';
 };
 
-brush.before = (x, y) => {
+brush.before = (x, y, concrete) => {
 	startX = x;
 	startY = y;
 	selectTool.style.display = '';
@@ -46,9 +46,21 @@ brush.before = (x, y) => {
 	selectTool.style.top = y + 'px';
 	selectTool.style.width = 0;
 	selectTool.style.height = 0;
+	const ctx = concrete?.toolLayer?.scene?.context;
+	ctx.clearRect(0,0,concrete.viewport.width, concrete.viewport.height);
+	concrete.viewport.render();
 };
 
-brush.after = (canvas) => {
+brush.after = (canvas, concrete) => {
+	selectTool.style.display = 'none';
+
+	if(!startX || !startY){
+		const ctx = concrete?.toolLayer?.scene?.context;
+		ctx.clearRect(0,0,concrete.viewport.width, concrete.viewport.height);
+		concrete.viewport.render();
+		send('select-canvas', { selection: undefined });
+		return;
+	}
 	const pos1 = getMousePos(canvas, {
 		clientX: startX,
 		clientY: startY,
@@ -57,6 +69,9 @@ brush.after = (canvas) => {
 		clientX: startX + width,
 		clientY: startY + height,
 	});
+	startX = undefined;
+	startY = undefined;
+
 	if(pos1.x < pos2.x){
 		pos1.x = Math.floor(pos1.x);
 		pos2.x = Math.ceil(pos2.x);
@@ -79,9 +94,6 @@ brush.after = (canvas) => {
 	}
 	send('select-canvas', { selection: [pos1, pos2] });
 
-	startX = undefined;
-	startY = undefined;
-	selectTool.style.display = 'none';
 };
 
 export default brush;
