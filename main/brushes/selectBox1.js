@@ -57,6 +57,26 @@ brush.after = (canvas) => {
 		clientX: startX + width,
 		clientY: startY + height,
 	});
+	if(pos1.x < pos2.x){
+		pos1.x = Math.floor(pos1.x);
+		pos2.x = Math.ceil(pos2.x);
+	} else {
+		pos1.x = Math.ceil(pos1.x);
+		pos2.x = Math.floor(pos2.x);
+	}
+	if(pos1.y < pos2.y){
+		pos1.y = Math.floor(pos1.y);
+		pos2.y = Math.ceil(pos2.y);
+	} else {
+		pos1.y = Math.ceil(pos1.y);
+		pos2.y = Math.floor(pos2.y);
+	}
+	for(const pos of [pos1, pos2]){
+		if(pos.x < 0) pos.x = 0;
+		if(pos.y < 0) pos.y = 0;
+		if(pos.x > canvas.width-1) pos.x = canvas.width-1;
+		if(pos.y > canvas.height-1) pos.y = canvas.height-1;
+	}
 	send('select-canvas', { selection: [pos1, pos2] });
 
 	startX = undefined;

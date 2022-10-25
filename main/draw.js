@@ -47,7 +47,7 @@ let eventState = {
 	concrete: undefined,
 };
 const setCursor = () => {
-	if(['select-box'].includes(eventState.brush.id)){
+	if(['select-box'].includes(eventState?.brush?.id)){
 		document.body.style.cursor = "crosshair";
 		cursor.style.display = "none";
 	} else {
