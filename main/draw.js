@@ -47,7 +47,7 @@ let eventState = {
 	concrete: undefined,
 };
 const setCursor = () => {
-	if(['select-box'].includes(eventState.brush.id)){
+	if(['select-box'].includes(eventState?.brush?.id)){
 		document.body.style.cursor = "crosshair";
 		cursor.style.display = "none";
 	} else {
@@ -71,7 +71,7 @@ const draw = (e, eventName="") => {
 		return console.log('TODO: add tool - ' + brush);
 	}
 	if(['select-box'].includes(eventState.brush.id)){
-		return brushFn(e, event, canvas);
+		return brushFn(e, event, canvas, concrete);
 	}
 
 	const pos = getMousePos(canvas, e);

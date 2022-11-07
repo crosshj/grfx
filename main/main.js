@@ -136,5 +136,36 @@ listen('color-update', ({ primary, secondary }) => {
 	updateDraw({ color: { primary, secondary } });
 });
 
+listen('select-canvas', ({ selection }) => {
+	if(!selection) return;
+
+	const [p1,p2] = selection;
+	const ctx = canvas?.toolLayer?.scene?.context;
+	ctx.imageSmoothingEnabled = false;
+	ctx.translate(0.5, 0.5);
+	ctx.strokeStyle = "white";
+	ctx.lineWidth = 1;
+	ctx.lineCap = 'square';
+	ctx.setLineDash([3]);
+	ctx.beginPath();
+
+	ctx.moveTo(p1.x, p1.y);
+	ctx.lineTo(p1.x, p2.y);
+	ctx.lineTo(p2.x, p2.y);
+
+	ctx.moveTo(p1.x, p1.y);
+	ctx.lineTo(p2.x, p1.y);
+	ctx.lineTo(p2.x, p2.y);
+
+	ctx.stroke();
+	ctx.translate(-0.5, -0.5);
+	canvas.viewport.render();
+});
+
+listen('contextmenu-select', (args) => {
+	const { key } = args;
+	console.log(`TODO: main canvas - ${key}`)
+});
+
 send('ping', 'main');
 
