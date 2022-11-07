@@ -514,6 +514,24 @@ const menuFilterEdge = async (context) => {
 		l.dirty = undefined;
 	}catch(e){}
 };
+
+const selectCanvas = async (context, args) => {
+	const { selection } = args;
+	//console.log(selection);
+};
+const menuCut = async (context) => {
+	//console.log('menuCut');
+};
+const menuCopy = async (context) => {
+	//console.log('menuCopy');
+};
+const menuPaste = async (context) => {
+	//console.log('menuPaste');
+};
+const menuClear = async (context) => {
+	//console.log('menuClear');
+};
+
 const actions = {
 	paste,
 	layerAlpha,
@@ -530,7 +548,12 @@ const actions = {
 	toolSelect,
 	toolChange,
 	colorUpdate,
+	selectCanvas,
 
+	menuCut,
+	menuCopy,
+	menuPaste,
+	menuClear,
 	menuLayerNew,
 	menuShowLayerSource,
 	menuImageSize,

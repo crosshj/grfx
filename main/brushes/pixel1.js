@@ -1,3 +1,5 @@
+//https://www.npmjs.com/package/px-brush
+
 var roundNearQtr = function(number) {
 	return (Math.round(number * 2) / 2).toFixed(0);
 };

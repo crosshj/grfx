@@ -28,6 +28,9 @@
 - [ ] controls and tools for 3D layers
 - [ ] filters and plugins
 - [ ] vector / SVG layers
+	- [why svg](https://www.linkedin.com/pulse/best-worst-patterns-2021-bence-szab%C3%B3?trk=pulse-article_more-articles_related-content-card)
+	- [why svg](https://www.linkedin.com/pulse/26-images-you-wont-believe-were-created-only-svg-bence-szab%C3%B3/)
+	- [why svg](https://www.bit-101.com/blog/2021/07/svg-filters-in-canvas/)
 - [ ] shader layers
 
 - [ ] search web for images within app

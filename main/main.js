@@ -6,8 +6,8 @@ import { client as Hotkeys } from '@grfx/hotkeys';
 
 import Canvas from './canvas.js';
 import layerDef from './layers/layerDef.js';
-import './cursor.js';
-import { attachDraw, detachDraw, updateDraw } from './draw.js';
+
+import { attachDraw, updateDraw } from './draw.js';
 
 Hotkeys();
 
@@ -54,7 +54,6 @@ listen('file-update', async (args) => {
 	const { layers, width, height, zoom, tool, dirty } = args;
 
 	if(dirty){
-		detachDraw(canvas);
 		canvas?.viewport && canvas.viewport.destroy();
 		canvas = undefined;
 	}
@@ -71,7 +70,7 @@ listen('file-update', async (args) => {
 		),
 		container
 	});
-	attachDraw(canvas, tool, (number, layer) => {
+	attachDraw(canvas, undefined, (number, layer) => {
 		//TODO: should update layer def here (perhaps)
 		canvas.updateLayerThumb(number, layer);
 		send('update-thumbs', { thumbs: canvas.thumbs })
@@ -120,13 +119,13 @@ listen('file-update', async (args) => {
 });
 
 listen('tool-update', (tool) => {
+	//console.log('tool update: ', tool);
 	const { op='' } = tool;
 	if(op){
 		console.log('TODO: upate tool properties');
 		return;
 	}
-	detachDraw(canvas);
-	attachDraw(canvas, tool.id, (number, layer) => {
+	attachDraw(canvas, tool, (number, layer) => {
 		//TODO: should update layer def here (perhaps)
 		canvas.updateLayerThumb(number, layer);
 		send('update-thumbs', { thumbs: canvas.thumbs })
@@ -135,6 +134,37 @@ listen('tool-update', (tool) => {
 
 listen('color-update', ({ primary, secondary }) => {
 	updateDraw({ color: { primary, secondary } });
+});
+
+listen('select-canvas', ({ selection }) => {
+	if(!selection) return;
+
+	const [p1,p2] = selection;
+	const ctx = canvas?.toolLayer?.scene?.context;
+	ctx.imageSmoothingEnabled = false;
+	ctx.translate(0.5, 0.5);
+	ctx.strokeStyle = "white";
+	ctx.lineWidth = 1;
+	ctx.lineCap = 'square';
+	ctx.setLineDash([3]);
+	ctx.beginPath();
+
+	ctx.moveTo(p1.x, p1.y);
+	ctx.lineTo(p1.x, p2.y);
+	ctx.lineTo(p2.x, p2.y);
+
+	ctx.moveTo(p1.x, p1.y);
+	ctx.lineTo(p2.x, p1.y);
+	ctx.lineTo(p2.x, p2.y);
+
+	ctx.stroke();
+	ctx.translate(-0.5, -0.5);
+	canvas.viewport.render();
+});
+
+listen('contextmenu-select', (args) => {
+	const { key } = args;
+	console.log(`TODO: main canvas - ${key}`)
 });
 
 send('ping', 'main');
