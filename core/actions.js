@@ -482,6 +482,10 @@ const menuFilterBinarize = async (context) => {
 		const l = layers.find(x => x.selected);
 		if(l.type !== '2d') return;
 
+		// this is what it will look like if no args
+		// l.def = l.def.replace(/\nops.filter\("Binarize"\);/g, '');
+		// l.def += '\n' + `ops.filter("Binarize");`;
+
 		l.def = l.def.replace(/\nops.filter\("Binarize",.*\);/g, '');
 		l.def += '\n' + `ops.filter("Binarize", ${binarizeAmount});`;
 		context.state.layer.update(l.id, l);
@@ -490,6 +494,27 @@ const menuFilterBinarize = async (context) => {
 		l.dirty = undefined;
 	}catch(e){}
 };
+const menuFilterEdge = async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filter', { edge: true });
+		const { edgeAmount } = form;
+		
+		const { update, currentFile } = context;
+
+		const { layers } = currentFile;
+		const l = layers.find(x => x.selected);
+		if(l.type !== '2d') return;
+		l.def = l.def.replace(/\nops.filter\("Edge"\);/g, '');
+		if(edgeAmount){
+			l.def += '\n' + `ops.filter("Edge");`;
+		}
+		context.state.layer.update(l.id, l);
+		l.dirty = true;
+		await update();
+		l.dirty = undefined;
+	}catch(e){}
+};
+
 const selectCanvas = async (context, args) => {
 	const { selection } = args;
 	//console.log(selection);
@@ -547,6 +572,7 @@ const actions = {
 	menuFilterRescale,
 	menuFilterDither,
 	menuFilterBinarize,
+	menuFilterEdge,
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
