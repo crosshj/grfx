@@ -375,6 +375,13 @@ const menuFileOpen = async (context) => {
 		context.currentFile.dirty = undefined;
 	} catch(e){}
 };
+
+/*
+
+FOR EACH ONE OF THES FUNCTIONS:
+- they look the same, but are they?
+- what parts are different?
+
 const menuFilterBlur = async (context) => {
 	try {
 		const { form } = await ShowModal(context)('filter', { blur: true });
@@ -513,6 +520,37 @@ const menuFilterEdge = async (context) => {
 		await update();
 		l.dirty = undefined;
 	}catch(e){}
+}*/
+
+const filterMain = (which) => async (context) => {
+	try {
+		const { form } = await ShowModal(context)('filter', { [which]: true });
+		const { blurAmount, binarizeAmount, edgeAmount, /* etc */ } = form;
+		
+		const { update, currentFile } = context;
+
+		const { layers } = currentFile;
+		const l = layers.find(x => x.selected);
+		if(l.type !== '2d') return;
+
+		// -------
+		if(which === "edge"){
+			l.def = l.def.replace(/\nops.filter\("Edge"\);/g, '');
+			if(edgeAmount){
+				l.def += '\n' + `ops.filter("Edge");`;
+			}
+		}
+		if(which === "binarize"){
+			l.def = l.def.replace(/\nops.filter\("Binarize",.*\);/g, '');
+			l.def += '\n' + `ops.filter("Binarize", ${binarizeAmount});`;
+		}
+		// -------
+
+		context.state.layer.update(l.id, l);
+		l.dirty = true;
+		await update();
+		l.dirty = undefined;
+	}catch(e){}
 };
 
 const selectCanvas = async (context, args) => {
@@ -565,14 +603,15 @@ const actions = {
 	menuFileSaveAs,
 	menuFileNew,
 	menuFileOpen,
-	menuFilterBlur,
-	menuFilterSharpen,
-	menuFilterNoise,
-	menuFilterPixelate,
-	menuFilterRescale,
-	menuFilterDither,
-	menuFilterBinarize,
-	menuFilterEdge,
+
+	menuFilterBlur: filterMain('blur'),
+	menuFilterSharpen: filterMain('sharpen'),
+	menuFilterNoise: filterMain('noise'),
+	menuFilterPixelate: filterMain('pixelate'),
+	menuFilterRescale: filterMain('rescale'),
+	menuFilterDither: filterMain('dither'),
+	menuFilterBinarize: filterMain('binarize'),
+	menuFilterEdge: filterMain('edge'),
 };
 
 const camelPropsAsDashed = obj => Object.entries(obj)
