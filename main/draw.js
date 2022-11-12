@@ -100,9 +100,10 @@ const draw = (e, eventName="") => {
 		(brushFn.before ? brushFn.before(ctx) : ctx.save());
 		drawStarted = true;
 	}
-	const radius = 2.5;
-	path && brushFn(ctx, radius, path, opts);
-	
+	if(!['end'].includes(event)){
+		const radius = 2.5;
+		path && brushFn(ctx, radius, path, opts);
+	}
 	if(event === "end"){
 		console.log("brushEnd");
 		drawStarted = false;

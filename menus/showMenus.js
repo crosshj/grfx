@@ -64,7 +64,11 @@ const getMenuItems = (e) => {
 	return items;
 };
 
-const showMenu = (e) => {
+let clicked;
+const showMenu = (e, isClick) => {
+	if(isClick) clicked = true;
+	if(!clicked) return;
+
 	e.preventDefault();
 	const { bottom, left } = getCoords(e.target);
 
@@ -91,7 +95,7 @@ const showMenu = (e) => {
 const attach = () => {
 	document.addEventListener('pointerdown', (e) => {
 		const menu = e.target.dataset.menu;
-		if(menu) return showMenu(e);
+		if(menu) return showMenu(e, true);
 	});
 	const selectElements = Array.from(document.querySelectorAll('select'));
 	for(const selectEl of selectElements){
