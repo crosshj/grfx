@@ -87,6 +87,7 @@ const showMenu = (e, isClick) => {
 			e.target.dispatchEvent(new Event("change"));
 		}
 		window.selectListener = undefined;
+		clicked = undefined;
 	};
 	window.top.dispatchEvent(event);
 	return false;
