@@ -24,12 +24,3 @@ it's all right here.  You don't owe us anything.
 [canvas-filters](http://www.arahaya.com/imagefilters/)   
 [px-brush](https://medium.com/@kozo002/how-to-draw-without-antialiasing-on-html5-canvas-cf13294a8e58)   
 [lines in canvas](https://zetcode.com/gfx/html5canvas/lines/)   
-
-## developed with fiug.dev
-
-### to test
-Enter `preview tests.html` in terminal, press ENTER.
-To add tests, follow example at `tests.html` and `core/state.test.js`
-
-### to preview
-right click on `index.html` and select `Open in New Window`

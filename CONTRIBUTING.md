@@ -20,3 +20,16 @@ handler. add handler for a modal
 5. also in core/actions.js, add a handler for the form submit;
 this should match what the form has for data-action
  - name it like 'menu' + data-action
+
+
+## Development with fiug.dev
+
+### get started
+In terminal, type `git clone crosshj/grfx` and press ENTER.  Note: you may have to update the repository address to reflect your fork.   
+
+### to test
+Type `preview tests.html` in terminal and press ENTER.
+To add tests, follow example at `tests.html` and `core/state.test.js`
+
+### to preview
+right click on `index.html` and select `Open in New Window`
