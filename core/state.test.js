@@ -1,5 +1,7 @@
-
+import { describe, it, expect } from 'footils/test';
 import { HostState, ClientState } from './state.js';
+
+const logJSON = x => console.log(JSON.stringify(x, null, 2));
 
 const state = {
 	editor: {
@@ -28,36 +30,6 @@ const state = {
 	}
 };
 
-// -------------------------------
-
-const s = new HostState(state, (state, changes) => {
-	document.body.textContent += JSON.stringify(changes,null,2) + '\n\n'
-});
-
-document.body.textContent = JSON.stringify(state,null,2) + '\n\n-----------\n\n';
-
-s.layer.order([
-	"70b129f8-1e7d-4080-854c-1279ea63dd86",
-	"867f51d2-5b72-479d-83a8-602b42059075",
-]);
-s.layer.add({ name: "newer" })
-s.undo();
-s.redo();
-s.layer.remove("867f51d2-5b72-479d-83a8-602b42059075");
-s.undo();
-
-s.layer.update("867f51d2-5b72-479d-83a8-602b42059075", { opacity: 0.5 });
-s.layer.update("867f51d2-5b72-479d-83a8-602b42059075", { opacity: 1, selected: false });
-
-document.body.textContent += '\n\n-----------\n\n' + JSON.stringify(s.get(),null,2);
-
-// TODO: make this possible
-// set.layers((x) => x.name==="foo", (layer) => layer.name = "new");
-
-// TODO: make this possible (for that matter)
-// set.file({ dims, layers })
-
-
 const patches = [
 	{
 		"op": "replace",
@@ -71,10 +43,64 @@ const patches = [
 	},
 	{
 		"op": "add",
-		"path": "/file/history/3",
-		"value": "layerProperties",
-		"type": "layerProperties"
+		"path": "/file/history/0",
+		"value": "layerProperties"
 	}
 ];
-const stateClone = ClientState(state, patches);
-console.log(stateClone);
+
+describe('Host State', () => {
+	it('should track change with history', () => {
+		const changes = [];
+		const s = new HostState(state, (state, { patch }) => changes.push(patch));
+		s.layer.order();
+		const mainChange = changes[0];
+		expect(changes.length).toEqual(2);
+		expect(mainChange.op).toEqual("replace");
+		expect(mainChange.path).toEqual("/file/layerOrder");
+	});
+
+	it('should keep history', () => {
+		const changes = [];
+		const s = new HostState(state, (state, { patch }) => changes.push(patch));
+		s.layer.order();
+		const historyChange = changes[1];
+		expect(changes.length).toEqual(2);
+		expect(historyChange.op).toEqual("add");
+		expect(historyChange.path).toEqual("/file/history/0");
+	});
+
+	it('should track all changes', () => {
+		const changes = [];
+		const s = new HostState(state, (state, change) => {
+			changes.push({ state, change });
+		});
+
+		s.layer.order([
+			"70b129f8-1e7d-4080-854c-1279ea63dd86",
+			"867f51d2-5b72-479d-83a8-602b42059075",
+		]);
+		s.layer.add({ name: "newer" })
+		s.undo();
+		s.redo();
+		s.layer.remove("867f51d2-5b72-479d-83a8-602b42059075");
+		s.undo();
+		s.layer.update("867f51d2-5b72-479d-83a8-602b42059075", { opacity: 0.5 });
+		s.layer.update("867f51d2-5b72-479d-83a8-602b42059075", { opacity: 1, selected: false });
+
+		const exampleChange = changes[0].change.patch;
+		expect(exampleChange.op).toEqual("replace");
+		expect(exampleChange.path).toEqual("/file/layerOrder");
+		expect(changes.length).toEqual(32);
+	});
+});
+
+
+describe('Client State', () => {
+	it('should reconstitute state from patches', () => {
+		const s = ClientState(state, patches);
+		const { history, layers } = s.file;
+		expect(layers[0].opacity).toEqual(1);
+		expect(layers[0].selected).toEqual(false);
+		expect(history[0]).toEqual("layerProperties");
+	});
+});
