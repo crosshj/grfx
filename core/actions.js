@@ -530,6 +530,9 @@ const filterMain = (which) => async (context) => {
 			binarizeAmount, 
 			edgeAmount, 
 			ditherAmount,
+			rescaleAmount,
+			pixelateAmount,
+			sharpenAmount,
 			
 			/* etc */ } = form;
 		
@@ -557,6 +560,18 @@ const filterMain = (which) => async (context) => {
 		if(which === "blur") {
 			l.def = l.def.replace(/\nops.filter\("StackBlur",.*\);/g, '');
 			l.def += '\n' + `ops.filter("StackBlur", ${blurAmount});`;
+		}
+		if(which === "rescale") {
+			l.def = l.def.replace(/\nops.filter\("Rescale",.*\);/g, '');
+			l.def += '\n' + `ops.filter("Rescale", ${rescaleAmount});`;
+		}
+		if(which === "pixelate") {
+			l.def = l.def.replace(/\nops.filter\("Mosaic",.*\);/g, '');
+			l.def += '\n' + `ops.filter("Mosaic", ${pixelateAmount});`;
+		}
+		if(which === "sharpen") {
+			l.def = l.def.replace(/\nops.filter\("Sharpen",.*\);/g, '');
+			l.def += '\n' + `ops.filter("Sharpen", ${sharpenAmount});`;
 		}
 
 		// -------
