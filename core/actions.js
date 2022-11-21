@@ -532,7 +532,13 @@ const menuFilterEdge = async (context) => {
 const filterMain = (which) => async (context) => {
 	try {
 		const { form } = await ShowModal(context)('filter', { [which]: true });
-		const { blurAmount, binarizeAmount, edgeAmount, /* etc */ } = form;
+		const { 
+			blurAmount, 
+			binarizeAmount, 
+			edgeAmount, 
+			ditherAmount,
+			
+			/* etc */ } = form;
 		
 		const { update, currentFile } = context;
 
@@ -551,6 +557,15 @@ const filterMain = (which) => async (context) => {
 			l.def = l.def.replace(/\nops.filter\("Binarize",.*\);/g, '');
 			l.def += '\n' + `ops.filter("Binarize", ${binarizeAmount});`;
 		}
+		if(which === "dither") {
+			l.def = l.def.replace(/\nops.filter\("Dither",.*\);/g, '');
+			l.def += '\n' + `ops.filter("Dither", ${ditherAmount});`;
+		}
+		if(which === "blur") {
+			l.def = l.def.replace(/\nops.filter\("StackBlur",.*\);/g, '');
+			l.def += '\n' + `ops.filter("StackBlur", ${blurAmount});`;
+		}
+
 		// -------
 
 		context.state.layer.update(l.id, l);
