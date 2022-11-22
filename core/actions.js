@@ -474,7 +474,7 @@ const menuFilterDither = async (context) => {
 };
 const menuFilterBinarize = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { binarize: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { binarize: true });
 		const { binarizeAmount } = form;
 		const { update, currentFile } = context;
 
