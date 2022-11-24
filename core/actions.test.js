@@ -18,7 +18,7 @@ const ContextMock = ({ modalReturn }) => {
 			layers: [{
 				selected: true,
 				type: '2d',
-				def: ``
+				def: layerDef
 			}]
 		},
 		update: () => {},
@@ -33,7 +33,7 @@ const ContextMock = ({ modalReturn }) => {
 }
 
 describe('Filter Statements in Layer Definition', () => {
-	it('should add blur', async () => {
+	it('should ADD blur', async () => {
 		const filterName = "menu-filter-blur";
 		const context = ContextMock({
 			modalReturn: { blurAmount: 1 }
@@ -42,7 +42,27 @@ describe('Filter Statements in Layer Definition', () => {
 		const layerDef = context.currentFile.layers[0].def;
 		expect(layerDef.includes('ops.filter("StackBlur", 1);')).toEqual(true);
 	});
-	it('should add sharpen', async () => {
+	it('should REMOVE blur', async () => {
+		const filterName = "menu-filter-blur";
+		const context = ContextMock({
+			modalReturn: { blurAmount: 0 }
+		});
+		const thisLayer = context.currentFile.layers[0];
+		thisLayer.def += `ops.filter("StackBlur", 1);`;
+		const actionResult = await actions[filterName](context);
+		expect(thisLayer.def.includes('ops.filter("StackBlur", 0);')).toEqual(false);
+	});
+	it('should UPDATE blur', async () => {
+		const filterName = "menu-filter-blur";
+		const context = ContextMock({
+			modalReturn: { blurAmount: 0.5 }
+		});
+		const thisLayer = context.currentFile.layers[0];
+		thisLayer.def += `ops.filter("StackBlur", 1);`;
+		const actionResult = await actions[filterName](context);
+		expect(thisLayer.def.includes('ops.filter("StackBlur", 0.5);')).toEqual(true);
+	});
+	it('should ADD sharpen', async () => {
 		const filterName = "menu-filter-sharpen";
 		const context = ContextMock({
 			modalReturn: { sharpenAmount: 1 }
@@ -51,7 +71,7 @@ describe('Filter Statements in Layer Definition', () => {
 		const layerDef = context.currentFile.layers[0].def;
 		expect(layerDef.includes('ops.filter("Sharpen", 1);')).toEqual(true);
 	});
-	it('should add pixelate', async () => {
+	it('should ADD pixelate', async () => {
 		const filterName = "menu-filter-pixelate";
 		const context = ContextMock({
 			modalReturn: { pixelateAmount: 1 }
@@ -60,7 +80,7 @@ describe('Filter Statements in Layer Definition', () => {
 		const layerDef = context.currentFile.layers[0].def;
 		expect(layerDef.includes('ops.filter("Mosaic", 1);')).toEqual(true);
 	});
-	it('should add rescale', async () => {
+	it('should ADD rescale', async () => {
 		const filterName = "menu-filter-rescale";
 		const context = ContextMock({
 			modalReturn: { rescaleAmount: 1 }
@@ -69,7 +89,7 @@ describe('Filter Statements in Layer Definition', () => {
 		const layerDef = context.currentFile.layers[0].def;
 		expect(layerDef.includes('ops.filter("Rescale", 1);')).toEqual(true);
 	});
-	it('should add dither', async () => {
+	it('should ADD dither', async () => {
 		const filterName = "menu-filter-dither";
 		const context = ContextMock({
 			modalReturn: { ditherAmount: 1 }
@@ -78,7 +98,7 @@ describe('Filter Statements in Layer Definition', () => {
 		const layerDef = context.currentFile.layers[0].def;
 		expect(layerDef.includes('ops.filter("Dither", 1);')).toEqual(true);
 	});
-	it('should add binarize', async () => {
+	it('should ADD binarize', async () => {
 		const filterName = "menu-filter-binarize";
 		const context = ContextMock({
 			modalReturn: { binarizeAmount: 1 }
@@ -87,7 +107,7 @@ describe('Filter Statements in Layer Definition', () => {
 		const layerDef = context.currentFile.layers[0].def;
 		expect(layerDef.includes('ops.filter("Binarize", 1);')).toEqual(true);
 	});
-	it('should add edge', async () => {
+	it('should ADD edge', async () => {
 		const filterName = "menu-filter-edge";
 		const context = ContextMock({
 			modalReturn: { edgeAmount: 1 }

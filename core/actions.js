@@ -386,7 +386,9 @@ const menuFilterBlur = async (context) => {
 		if(l.type !== '2d') return;
 
 		l.def = l.def.replace(/\nops.filter\("StackBlur",.*\);/g, '');
-		l.def += '\n' + `ops.filter("StackBlur", ${blurAmount});`;
+		if(Number(blurAmount)){
+			l.def += '\n' + `ops.filter("StackBlur", ${blurAmount});`;
+		}
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
 		await update();
@@ -404,7 +406,9 @@ const menuFilterSharpen = async (context) => {
 		if(l.type !== '2d') return;
 
 		l.def = l.def.replace(/\nops.filter\("Sharpen",.*\);/g, '');
-		l.def += '\n' + `ops.filter("Sharpen", ${sharpenAmount});`;
+		if(Number(sharpenAmount)){
+			l.def += '\n' + `ops.filter("Sharpen", ${sharpenAmount});`;
+		}
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
 		await update();
@@ -429,7 +433,9 @@ const menuFilterPixelate = async (context) => {
 		if(l.type !== '2d') return;
 
 		l.def = l.def.replace(/\nops.filter\("Mosaic",.*\);/g, '');
-		l.def += '\n' + `ops.filter("Mosaic", ${pixelateAmount});`;
+		if(Number(pixelateAmount)){
+			l.def += '\n' + `ops.filter("Mosaic", ${pixelateAmount});`;
+		}
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
 		await update();
@@ -447,7 +453,9 @@ const menuFilterRescale = async (context) => {
 		if(l.type !== '2d') return;
 
 		l.def = l.def.replace(/\nops.filter\("Rescale",.*\);/g, '');
-		l.def += '\n' + `ops.filter("Rescale", ${rescaleAmount});`;
+		if(Number(rescaleAmount)){
+			l.def += '\n' + `ops.filter("Rescale", ${rescaleAmount});`;
+		}
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
 		await update();
@@ -465,7 +473,9 @@ const menuFilterDither = async (context) => {
 		if(l.type !== '2d') return;
 
 		l.def = l.def.replace(/\nops.filter\("Dither",.*\);/g, '');
-		l.def += '\n' + `ops.filter("Dither", ${ditherAmount});`;
+		if(Number(ditherAmount)){
+			l.def += '\n' + `ops.filter("Dither", ${ditherAmount});`;
+		}
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
 		await update();
@@ -482,12 +492,10 @@ const menuFilterBinarize = async (context) => {
 		const l = layers.find(x => x.selected);
 		if(l.type !== '2d') return;
 
-		// this is what it will look like if no args
-		// l.def = l.def.replace(/\nops.filter\("Binarize"\);/g, '');
-		// l.def += '\n' + `ops.filter("Binarize");`;
-
 		l.def = l.def.replace(/\nops.filter\("Binarize",.*\);/g, '');
-		l.def += '\n' + `ops.filter("Binarize", ${binarizeAmount});`;
+		if(Number(binarizeAmount)){
+			l.def += '\n' + `ops.filter("Binarize", ${binarizeAmount});`;
+		}
 		context.state.layer.update(l.id, l);
 		l.dirty = true;
 		await update();
@@ -498,14 +506,13 @@ const menuFilterEdge = async (context) => {
 	try {
 		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { edge: true });
 		const { edgeAmount } = form;
-		
 		const { update, currentFile } = context;
 
 		const { layers } = currentFile;
 		const l = layers.find(x => x.selected);
 		if(l.type !== '2d') return;
 		l.def = l.def.replace(/\nops.filter\("Edge"\);/g, '');
-		if(edgeAmount){
+		if(Number(edgeAmount)){
 			l.def += '\n' + `ops.filter("Edge");`;
 		}
 		context.state.layer.update(l.id, l);
