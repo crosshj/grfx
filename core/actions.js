@@ -262,7 +262,7 @@ const menuImageSize = async (context) => {
 	const { currentFile } = context;
 	const { width, height } = currentFile;
 	try {
-		const { form } = await ShowModal(context)('imageSize', { width, height });
+		const { form } = await (context.ShowModal || ShowModal)(context)('imageSize', { width, height });
 		console.log(form);
 	} catch(e){}
 };
@@ -270,7 +270,7 @@ const menuCanvasSize = async (context) => {
 	const { currentFile } = context;
 	const { width, height } = currentFile;
 	try {
-		const { form } = await ShowModal(context)('canvasSize', { width, height });
+		const { form } = await (context.ShowModal || ShowModal)(context)('canvasSize', { width, height });
 		console.log(form);
 	} catch(e){}
 };
@@ -284,7 +284,7 @@ const menuLayerDelete = async (context) => {
 };
 const menuLayerNewUrl = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('layerNew', { fromUrl: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('layerNew', { fromUrl: true });
 		const [url] = form['image-url'] || [];
 		const value = await dataUriImageFromUrl(url);
 		const name = url.split('?')[0].split('#')[0].split('/').pop();
@@ -301,7 +301,7 @@ const menuLayerNewUrl = async (context) => {
 };
 const menuLayerNewImage = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('layerNew', { fromImage: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('layerNew', { fromImage: true });
 		const [{ name, value }] = form.image || [];
 		await fs.writeFile({
 			path: `/indexDB/downloads/${name}`,
@@ -317,7 +317,7 @@ const menuLayerNewImage = async (context) => {
 const menuFileSaveAs = async (context, args) => {
 	const { currentFileName } = context;
 	try {
-		const { form } = await ShowModal(context)('fileSaveAs', { filename: currentFileName.replace(/\.js$/, '') });
+		const { form } = await (context.ShowModal || ShowModal)(context)('fileSaveAs', { filename: currentFileName.replace(/\.js$/, '') });
 		const { filename: [filename] } = form;
 		await fileSave(context, { filename });
 	} catch(e){}
@@ -325,7 +325,7 @@ const menuFileSaveAs = async (context, args) => {
 const menuFileNew = async (context) => {
 	const { load, host, update } = context;
 	try {
-		const { form } = await ShowModal(context)('fileNew');
+		const { form } = await (context.ShowModal || ShowModal)(context)('fileNew');
 		const { height: [height], width: [width], name: [filename], bgColor: [bgColor]} = form;
 		const newFile = {
 			zoom: 1,
@@ -367,7 +367,7 @@ const menuFileOpen = async (context) => {
 		selected: i===0,
 	}));
 	try {
-		const { form } = await ShowModal(context)('fileOpen', { files });
+		const { form } = await (context.ShowModal || ShowModal)(context)('fileOpen', { files });
 		const { filename: [filename] } = form;
 		await load({ host, filename: filename + '.js' });
 		context.currentFile.dirty = true;
@@ -377,7 +377,7 @@ const menuFileOpen = async (context) => {
 };
 const menuFilterBlur = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { blur: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { blur: true });
 		const { blurAmount } = form;
 		const { update, currentFile } = context;
 
@@ -395,7 +395,7 @@ const menuFilterBlur = async (context) => {
 };
 const menuFilterSharpen = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { sharpen: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { sharpen: true });
 		const { sharpenAmount } = form;
 		const { update, currentFile } = context;
 
@@ -413,14 +413,14 @@ const menuFilterSharpen = async (context) => {
 };
 const menuFilterNoise = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { noise: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { noise: true });
 		console.log(form);
 	}catch(e){}
 };
 // USE THIS AS AN EXAMPLE, AILEEN!!!
 const menuFilterPixelate = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { pixelate: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { pixelate: true });
 		const { pixelateAmount } = form;
 		const { update, currentFile } = context;
 
@@ -438,7 +438,7 @@ const menuFilterPixelate = async (context) => {
 };
 const menuFilterRescale = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { rescale: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { rescale: true });
 		const { rescaleAmount } = form;
 		const { update, currentFile } = context;
 
@@ -456,7 +456,7 @@ const menuFilterRescale = async (context) => {
 };
 const menuFilterDither = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { dither: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { dither: true });
 		const { ditherAmount } = form;
 		const { update, currentFile } = context;
 
@@ -496,7 +496,7 @@ const menuFilterBinarize = async (context) => {
 };
 const menuFilterEdge = async (context) => {
 	try {
-		const { form } = await ShowModal(context)('filter', { edge: true });
+		const { form } = await (context.ShowModal || ShowModal)(context)('filter', { edge: true });
 		const { edgeAmount } = form;
 		
 		const { update, currentFile } = context;
