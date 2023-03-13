@@ -27,16 +27,16 @@ export const host = () => {
 	window.addEventListener("message", (event) => {
 		const { eventName } = event.data;
 		const { href: source } = event.source.location;
-		if(eventName === "ping" && source.includes('grfx/main')){
+		if(eventName === "ping" && source.includes('/main')){
 			return resolve.main();
 		}
-		if(eventName === "ping" && source.includes('grfx/right')){
+		if(eventName === "ping" && source.includes('/right')){
 			return resolve.right();
 		}
-		if(eventName === "ping" && source.includes('grfx/top-bar')){
+		if(eventName === "ping" && source.includes('/top-bar')){
 			return resolve['top-bar']();
 		}
-		if(eventName === "ping" && source.includes('grfx/editor')){
+		if(eventName === "ping" && source.includes('/editor')){
 			return resolve['editor']();
 		}
 		if(listeners[eventName]){

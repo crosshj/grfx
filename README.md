@@ -26,7 +26,5 @@ it's all right here.  You don't owe us anything.
 [lines in canvas](https://zetcode.com/gfx/html5canvas/lines/)   
 
 ## run locally
-if node is installed
-```
-npx http-server
-```
+with node installed:   
+`npx http-server`
