@@ -1,0 +1,96 @@
+<style>
+	body { display: flex; flex-direction: column; align-items: center; gap: 2em;}
+	body { font-family: sans-serif; }
+	img { max-width: 95vw; }
+</style>
+
+<body>
+	Input:
+	<img id="source">
+	Output:
+	<img id="resized">
+	<pre style="white-space: pre-wrap;">
+Notes:
+- see ffmpeg param builder <a href="https://alfg.dev/ffmpeg-commander/">here</a>
+- https://github.com/dlemstra/magick-wasm
+- https://video.stackexchange.com/questions/27744/how-to-monochrome-haze-video-effect-in-ffmpeg
+- https://ffmpeg.org/ffmpeg-filters.html#curves
+
+	</pre>
+</body>
+
+
+<script type="module">
+	// https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js
+	//import { FFmpeg } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js'
+	import { FFmpeg } from './ffmpeg.js';
+	import { fetchFile, toBlobURL } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js'
+
+	const ffmpeg = new FFmpeg();
+
+	// const inputUrl = 'https://upload.wikimedia.org/wikipedia/commons/0/01/Acid3_reference.png';
+	const inputUrl = 'https://images.pexels.com/photos/2156881/pexels-photo-2156881.jpeg';
+	document.getElementById("source").src = inputUrl;
+
+	const load = async () => {
+		const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/esm'
+		const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+		const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
+		ffmpeg.on('log', ({ message }) => console.log(message));
+		await ffmpeg.load({ coreURL, wasmURL });
+		console.log('loaded')
+	};
+
+	const transcode = async () => {
+		//const ffmpeg = ffmpegRef.current;
+		await ffmpeg.writeFile('input.webm', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm'));
+		await ffmpeg.exec(['-i', 'input.webm', 'output.mp4']);
+		const data = await ffmpeg.readFile('output.mp4');
+		// videoRef.current.src =
+		// 		URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
+	};
+	
+	function createPlaceholderCanvas(width, height) {
+		const element = document.createElement("canvas");
+		const context = element.getContext("2d");
+
+		element.width = width;
+		element.height = height;
+
+		// Fill in the background
+		context.fillStyle = "#aaaaaa";
+		context.fillRect(0, 0, element.width, element.height);
+
+		// Place the text
+		context.font = "bold 45px sans-serif";
+		context.fillStyle = "#333333";
+		context.textAlign = "center";
+		context.textBaseline = "middle";
+		context.fillText(`${width}x${height}`, element.width / 2, element.height / 2);
+		context.font = "30px sans-serif";
+		context.fillText(`loading...`, element.width / 2, 45 + element.height / 2);
+
+		return element.toDataURL();
+	}
+
+	const resize = async () => {
+		document.getElementById("resized").src = createPlaceholderCanvas(320, 240)
+		const file = await fetchFile(inputUrl)
+		await ffmpeg.writeFile('input.png', file);
+
+		await ffmpeg.exec(`-i input.png -filter_complex colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131 -pix_fmt yuv420p sepia.png`.split(" "));
+		await ffmpeg.exec(`-i sepia.png -vf scale=320:240,curves=preset=strong_contrast output.png`.split(" "));
+
+		// await ffmpeg.exec(`-i input.png -vf scale=1308:982,hue=s=0 -c:a copy -loglevel error output.png`.split(" "));
+
+		//https://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction
+		//const filter = "split [main][tmp]; [tmp] crop=iw:ih/2:0:0, vflip [flip]; [main][flip] overlay=0:H/2";
+		//await ffmpeg.exec(['-i', 'input.png', '-vf', `"${filter}"`, "output.png"]);
+
+		const data = await ffmpeg.readFile('output.png');
+		document.getElementById("resized").src = URL.createObjectURL(new Blob([data.buffer], {type: 'image/png'}));
+	};
+
+	await load();
+	await resize();
+</script>
