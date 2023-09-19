@@ -37,3 +37,10 @@ body {
 	color: inherit !important;
 	filter: grayscale(1);
 }
+
+body .sizer:after {
+	content: '';
+	display: block;
+	background: var(--main-text-color);
+	opacity: 0.1;
+}
