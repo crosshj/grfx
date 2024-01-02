@@ -17,6 +17,7 @@ const imports = (base) => ({
 	//"concretejs": "https://cdn.skypack.dev/concretejs",
 	"es-react": "https://unpkg.com/es-react",
 	"footils": "https://cdn.skypack.dev/footils",
+	"footils/test": "https://cdn.skypack.dev/footils/fiug.test.js",
 	"immer": "https://cdn.skypack.dev/-/immer@v7.0.15-7TvRXFAjwhTKJWP7XBf6/dist=es2019,mode=imports/optimized/immer.js",
 	"lodash/get": "https://cdn.skypack.dev/-/lodash.get@v4.4.2-BmwyhyYUfa0zoZ0JKXri/dist=es2019,mode=imports/optimized/lodash.get.js",
 	"redux": "https://cdn.skypack.dev/-/redux@v4.1.1-XG1G4MAJLJXXzlRpXjOG/dist=es2019,mode=imports/optimized/redux.js",
@@ -27,8 +28,15 @@ const imports = (base) => ({
 	"yaml": "https://cdn.skypack.dev/yaml",
 });
 
-const scripturl = document.currentScript.src.split('?')[0].split('/').slice(0, -1).join('/')+'/';
-const docurl = document.location.href.split('?')[0].split('/').slice(0, -1).join('/')+'/';
+const scripturl = document.currentScript.src.split('?')[0]
+	.split('/')
+	.slice(0, -1)
+	.join('/')+'/';
+const docurl = document.location.href.split('?')[0]
+	.replace('/::preview::/', '')
+	.split('/')
+	.slice(0, -1)
+	.join('/')+'/';
 const BASE = docurl
 	.replace(scripturl, '')
 	.split('/')

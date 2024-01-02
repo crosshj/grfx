@@ -23,3 +23,8 @@ it's all right here.  You don't owe us anything.
 
 [canvas-filters](http://www.arahaya.com/imagefilters/)   
 [px-brush](https://medium.com/@kozo002/how-to-draw-without-antialiasing-on-html5-canvas-cf13294a8e58)   
+[lines in canvas](https://zetcode.com/gfx/html5canvas/lines/)   
+
+## run locally
+with node installed:   
+`npx http-server`
