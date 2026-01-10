@@ -1,4 +1,4 @@
-import sheet from './colorTool.css' assert { type: 'css' };
+import sheet from './colorTool.css' with { type: 'css' };
 
 const toolDom = `
 <div class="color-controls">

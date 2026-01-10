@@ -1,4 +1,4 @@
-import sheet from './components.css' assert { type: 'css' };
+import sheet from './components.css' with { type: 'css' };
 
 window.customElements.define('x-input', class extends HTMLElement {
 	constructor() {
