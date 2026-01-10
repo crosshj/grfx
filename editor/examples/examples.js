@@ -1,6 +1,6 @@
-import vertShader from './vertShader.gl.js';
-import fragShader from './fragShader.gl.js';
-import glAdvanced from './webgl-advanced.js';
+import vertShader from "./vertShader.gl.js";
+import fragShader from "./fragShader.gl.js";
+import glAdvanced from "./webgl-advanced.js";
 
 const smiley = `
 const { width, height } = getDims();
@@ -38,7 +38,8 @@ ctx.stroke();
 
 const colors = ["red", "orange", "yellow", "green", "indigo", "violet"];
 
-const getNgonCode = (sides) => `
+const getNgonCode = (sides) =>
+  `
 const { width, height } = getDims();
 const numberOfSides = ${sides};
 const size = 200;
@@ -129,8 +130,8 @@ var fragCode = \`
 	uniform vec2 u_resolution;
 
 	void main(void) {
-		//gl_FragColor = vec4(fract(gl_FragCoord.xy / 600.0), 0, \${alpha});
-		gl_FragColor = vec4(fract(gl_FragCoord.xy / u_resolution), 0, \${alpha});
+		//gl_FragColor = vec4(fract(gl_FragCoord.xy / 600.0), 0, 1.0);
+		gl_FragColor = vec4(fract(gl_FragCoord.xy / u_resolution), 0, 1.0);
 	}
 \`;
 var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -158,16 +159,16 @@ gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
 
 gl.drawArrays(gl.TRIANGLES, 0, vertices.length/2);
 `;
-	//.concat(document.getElementById("gl-function").text);
+//.concat(document.getElementById("gl-function").text);
 
 export default () => ({
-	blank: 'const { width, height } = getDims();\n\n',
-	circle,
-	octagon,
-	smiley,
-	square,
-	text,
-	triangle,
-	webgl,
-	webgl2: glAdvanced
+  blank: "const { width, height } = getDims();\n\n",
+  circle,
+  octagon,
+  smiley,
+  square,
+  text,
+  triangle,
+  webgl,
+  webgl2: glAdvanced,
 });

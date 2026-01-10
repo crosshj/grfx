@@ -152,7 +152,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 	col = pow(col, vec3(.55,0.65,0.6))*vec3(1.,.97,.9);
 
 	col *= pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.12)*0.7+0.3; //Vign
-	fragColor = vec4( col, \${alpha} );
+	fragColor = vec4( col, 1.0 );
 }
 
 void main() {
