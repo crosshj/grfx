@@ -27,6 +27,7 @@ export const host = () => {
 	window.addEventListener("message", (event) => {
 		const { eventName } = event.data;
 		const { href: source } = event.source.location;
+		debugger;
 		if(eventName === "ping" && source.includes('/main')){
 			return resolve.main();
 		}
